@@ -1,9 +1,12 @@
 ---
 # defaults file for docker
 
+# Package to install
 docker_package: "docker"
+
+# Name of docker service to run
 docker_service: "docker"
 
-# Whether or not to enable and start the SSH server.
+# Whether or not to enable and start the docker service.
 # By default, this is done unless running in a container.
 docker_run_service: "ansible_virtualization_role != 'guest' or ansible_virtualization_type != 'docker'"
