@@ -1,0 +1,10 @@
+---
+# tasks file for running docker
+
+- name: docker | service | enable and run
+  service:
+    name: "{{ docker_service }}"
+    state: started
+    enabled: yes
+  when: "docker_run_service"
+  
