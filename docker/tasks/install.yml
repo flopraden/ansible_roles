@@ -1,0 +1,7 @@
+---
+# tasks file for installing docker
+
+- name: docker | package | install
+  package:
+    name: "{{ docker_package }}"
+    state: present
