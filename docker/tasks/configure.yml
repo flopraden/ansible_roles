@@ -16,4 +16,20 @@
     owner: root
     group: "{{ docker_group }}"
     mode: "0640"
-    
+
+- name: docker | configuration | create sysconfig file
+  copy:
+    dest: "{{ docker_environment_file }}"
+    content: "DOCKER_OPTS='--config-file {{ docker_config_file }} --group {{ docker_group }}'\n"
+    owner: root
+    group: root
+    mode: "0640"
+
+- name: docker | configuration | create drop-in directory
+  file:
+    name: /etc/systemd/system/{{ docker_service }}.service.d/
+    state: directory
+    owner: root
+    group: root
+    mode: "01750"
+  when: "ansible_service_mgr == 'systemd'"
