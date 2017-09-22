@@ -1,0 +1,19 @@
+---
+# tasks file for configuring docker
+
+- name: docker | configuration | create directory
+  file:
+    name: /etc/docker
+    state: directory
+    owner: root
+    group: root
+    mode: "01750"
+    
+- name: "docker | configuration | create {{ docker_config_file }}"
+  copy:
+    dest: "{{ docker_config_file }}"
+    content: "{{ docker_config | to_json() }}"
+    owner: root
+    group: "{{ docker_group }}"
+    mode: "0640"
+    

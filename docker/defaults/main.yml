@@ -22,3 +22,4 @@ docker_config:
   host:
     - fd:///var/run/docker.sock
   "storage-driver": "overlay2"
+  group: "{{ docker_group }}"
