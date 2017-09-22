@@ -7,6 +7,18 @@ docker_package: "docker"
 # Name of docker service to run
 docker_service: "docker"
 
+# Name of docker group, and owning group of the docker socket
+docker_group: "docker"
+
+# Path to docker config file
+docker_config_file: "/etc/docker/daemon.json"
+
 # Whether or not to enable and start the docker service.
 # By default, this is done unless running in a container.
 docker_run_service: "ansible_virtualization_role != 'guest' or ansible_virtualization_type != 'docker'"
+
+# Sockets to listen on.
+docker_config:
+  host:
+    - fd:///var/run/docker.sock
+  "storage-driver": "overlay2"
