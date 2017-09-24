@@ -1,2 +1,5 @@
 ---
 # defaults file for os-hardening
+
+# Mandatory Access Control framework (seLinux or AppArmor).
+os_hardening_mac: "selinux"
