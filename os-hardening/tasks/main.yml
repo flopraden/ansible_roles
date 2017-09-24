@@ -1,2 +1,6 @@
 ---
 # tasks file for os-hardening
+
+
+- include: selinux.yml
+  when: "os_hardening_mac == 'selinux'"
