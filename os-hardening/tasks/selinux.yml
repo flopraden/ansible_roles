@@ -1,0 +1,7 @@
+---
+# task file for selinux-related OS hardening
+
+- name: os hardening | selinux | install
+  package:
+    name: selinux
+    state: present
