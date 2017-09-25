@@ -3,3 +3,4 @@
 
 # Mandatory Access Control framework (seLinux or AppArmor).
 os_hardening_mac: "selinux"
+os_hardening_selinux_policy: "targeted"
