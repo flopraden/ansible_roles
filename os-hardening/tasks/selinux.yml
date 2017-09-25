@@ -3,5 +3,14 @@
 
 - name: os hardening | selinux | install
   package:
-    name: selinux
+    name: "{{ item }}"
     state: present
+  with_items:
+    - selinux
+    - python-selinux
+
+- name: os hardening | selinux | set enforcing
+  selinux:
+    name: selinux
+    policy: "{{ os_hardening_selinux_policy }}"
+    state: enforcing
