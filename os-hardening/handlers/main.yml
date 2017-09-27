@@ -1,2 +1,6 @@
 ---
 # handlers file for os-hardening
+
+- name: os hardening | sysctl | reload system rules
+  command: /usr/sbin/sysctl --system
+  become: root
