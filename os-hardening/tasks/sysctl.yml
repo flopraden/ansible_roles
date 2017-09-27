@@ -1,0 +1,23 @@
+---
+# tasks for hardening sysctl settings
+
+- task: os hardening | sysctl | create config dir
+  file:
+    name: /etc/sysctl.d
+    owner: root
+    group: root
+    mode: "01750"
+
+
+- task: os hardening | sysctl | create 50-*.conf files
+  template:
+    src: "sysctl.{{ item }}.j2"
+    dest: "/etc/sysctl.d/50-{{ item }}.conf"
+    owner: root
+    group: root
+    mode: "0640"
+  notify:
+    - os hardening | sysctl | reload system rules
+  with_items:
+    - network
+    - kernel
