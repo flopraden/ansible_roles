@@ -1,0 +1,41 @@
+net.ipv4.ip_forward = 0
+net.ipv4.conf.all.send_redirects = 0
+net.ipv4.conf.default.send_redirects = 0
+net.ipv4.tcp_max_syn_backlog = 1280
+net.ipv4.icmp_echo_ignore_broadcasts = 1
+net.ipv4.conf.all.accept_source_route = 0
+net.ipv4.conf.all.accept_redirects = 0
+net.ipv4.conf.all.secure_redirects = 0
+net.ipv4.conf.all.log_martians = 1
+net.ipv4.conf.default.accept_source_route = 0
+net.ipv4.conf.default.accept_redirects = 0
+net.ipv4.conf.default.secure_redirects = 0
+net.ipv4.icmp_echo_ignore_broadcasts = 1
+net.ipv4.icmp_ignore_bogus_error_responses = 1
+net.ipv4.tcp_syncookies = 1
+net.ipv4.conf.all.rp_filter = 1
+net.ipv4.conf.default.rp_filter = 1
+net.ipv4.tcp_timestamps = 0
+
+# ipv6 config
+# Disable acceptance of IPv6 router solicitations messages
+net.ipv6.conf.default.router_solicitations = 0
+
+# Disable Accept Router Preference from router advertisement
+net.ipv6.conf.default.accept_ra_rtr_pref =  0
+
+# Disable learning Prefix Information from router advertisement
+net.ipv6.conf.default.accept_ra_pinfo = 0
+
+# Disable learning Hop limit from router advertisement
+net.ipv6.conf.default.accept_ra_defrtr = 0
+
+# Disable IPv6 autoconfiguration
+net.ipv6.conf.default.autoconf = 0
+
+# Disable neighbor solicitations to send out per address
+net.ipv6.conf.default.dad_transmits = 0
+
+# Assign one global unicast IPv6 addresses to each interface
+net.ipv6.conf.default.max_addresses = 1
+
