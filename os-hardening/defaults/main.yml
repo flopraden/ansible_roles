@@ -3,4 +3,14 @@
 
 # Mandatory Access Control framework (seLinux or AppArmor).
 os_hardening_mac: "selinux"
+
+# Integrity checking
+# Currently only aide is supported.
+# Set to anything but aide to skip
+os_hardening_integrity: "aide"
+
+# seLinux settings
 os_hardening_selinux_policy: "targeted"
+
+
+
