@@ -1,6 +1,21 @@
 ---
 # tasks file for os-hardening
 
-
 - include: selinux.yml
   when: "os_hardening_mac == 'selinux'"
+  tags:
+    - os_hardening
+    - selinux
+
+- include: aide.yml
+  when: "os_hardening_integrity == 'aide'"
+  tags:
+    - os_hardening
+    - integrity
+    - aide
+    
+- include: sysctl.yml
+  tags:
+    - os_hardening
+    - sysctl
+
