@@ -1,7 +1,7 @@
 ---
 # tasks for hardening sysctl settings
 
-- task: os hardening | sysctl | create config dir
+- name: os hardening | sysctl | create config dir
   file:
     name: /etc/sysctl.d
     owner: root
@@ -9,7 +9,7 @@
     mode: "01750"
 
 
-- task: os hardening | sysctl | create 50-*.conf files
+- name: os hardening | sysctl | create 50-*.conf files
   template:
     src: "sysctl.{{ item }}.j2"
     dest: "/etc/sysctl.d/50-{{ item }}.conf"

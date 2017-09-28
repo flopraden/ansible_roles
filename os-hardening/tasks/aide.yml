@@ -1,7 +1,7 @@
 ---
 # tasks for aide-based integrity checks
 
-- task: os hardening | package | install aide
+- name: os hardening | package | install aide
   package:
     name: aide
     state: present
