@@ -6,11 +6,12 @@
     name: "{{ item }}"
     state: present
   with_items:
-    - selinux
-    - python-selinux
+    - libselinux
+    - container-selinux
+    # Needed for ansible to speak to selinux
+    - policycoreutils-python
 
 - name: os hardening | selinux | set enforcing
   selinux:
-    name: selinux
-    policy: "{{ os_hardening_selinux_policy }}"
     state: enforcing
+    policy: "{{ os_hardening_selinux_policy }}"
