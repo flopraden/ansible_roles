@@ -1,0 +1,11 @@
+[Unit]
+Description=Periodically check integrity with AIDE
+
+[Timer]
+OnBootSec=15min
+OnCalendar={{ os_hardening_integrity_check_frequency }}
+Persistent=true
+
+
+[Install]
+WantedBy=timers.target

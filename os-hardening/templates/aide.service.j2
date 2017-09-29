@@ -1,0 +1,8 @@
+[Unit]
+Description=Check system integrity using AIDE
+
+[Service]
+Type=oneshot
+ExecStart=/usr/sbin/aide --update
+ExecStartPost=/bin/bash -c "/usr/bin/mv /var/lib/aide/aide.db.gz /var/lib/aide/aide.db.$( date "+%Y%m%d.%s" ).gz" 
+ExecStartPost=/usr/bin/mv /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz
