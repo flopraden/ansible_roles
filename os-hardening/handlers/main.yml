@@ -4,3 +4,5 @@
 - name: os hardening | sysctl | reload system rules
   command: /usr/sbin/sysctl --system
   become: root
+  # Reloading sysctl within containers does not work due to some endpoints being read-only
+  when: "not (ansible_virtualization_role == 'guest' and ansible_virtualization_type == 'docker')"
