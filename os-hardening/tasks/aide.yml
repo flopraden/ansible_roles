@@ -1,8 +1,48 @@
 ---
 # tasks for aide-based integrity checks
 
+- name: os hardening | aide | create db directory
+  file:
+    name: /var/lib/aide
+    state: directory
+    owner: root
+    group: root
+    mode: "01750"
+
 - name: os hardening | package | install aide
   package:
     name: aide
     state: present
 
+- name: os hardening | aide | initialise database
+  command: aide --init
+  register: aide_init -A "database_out=file:/var/lib/aide.db.gz"
+  args:
+    creates: /var/lib/aide/aide.db.gz
+
+- name: os hardening | aide | create systemd service to run integrity check
+  template:
+    src: aide.service.j2
+    dest: /etc/systemd/system/aide.service
+    owner: root
+    group: root
+    mode: "0640"
+  #when: "ansible_service_mgr == 'systemd'"
+
+- name: os hardening | aide | create systemd timer to run integrity check
+  template:
+    src: aide.timer.j2
+    dest: /etc/systemd/system/aide.timer
+    owner: root
+    group: root
+    mode: "0640"
+  #when: "ansible_service_mgr == 'systemd'"
+
+- name: os hardening | aide | enable period integrity checks
+  service:
+    name: aide.timer
+    state: started
+    enabled: yes
+  when: "ansible_service_mgr == 'systemd' \
+        and (os_hardening_integrity_check_frequency | default(false,true)) \
+        and os_hardening_run_services"
