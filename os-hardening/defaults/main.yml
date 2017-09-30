@@ -60,6 +60,12 @@ os_hardening_disable_legacy_services:
   - dovecot
   - squid
   - snmpd
+  - rpcgssd
+  - rpcsvcgssd
+  - rpcidmapd
+  - avahi-daemon
+  - cups
+  - dhcpd
 
 
 # Packages linked to legacy services that should be absent from the system.
@@ -82,3 +88,5 @@ os_hardening_remove_legacy_packages:
   - dovecot
   - squid
   - net-snmpd
+  - dhcp
+  - sendmail
