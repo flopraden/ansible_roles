@@ -7,6 +7,11 @@
     - os_hardening
     - selinux
 
+- include: prelink.yml
+  tags:
+    - os_hardening
+    - prelink
+
 - include: aide.yml
   when: "os_hardening_integrity == 'aide'"
   tags:
