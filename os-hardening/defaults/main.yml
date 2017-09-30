@@ -30,6 +30,18 @@ os_hardening_selinux_policy: "targeted"
 os_hardening_disable_services:
   - xinetd
   - rexec
+  # Following block are NSA and CIS recommendations
+  - chargen-dgram
+  - chargen-stream
+  - daytime-dgram
+  - daytime-stream
+  - echo-dgram
+  - echo-stream
+  - tcpmux-server
+  - avahi-daemon
+  # CUPS and DHCP are not scored, but should be removed/disabled unless needed
+  - cups
+  # 
   - rsh
   - rlogin
   - ypbind
@@ -54,6 +66,7 @@ os_hardening_disable_services:
   - smartd
   - sysstat
   - atd
+  - cron
   - nfslock
   - named
   - httpd
@@ -63,8 +76,6 @@ os_hardening_disable_services:
   - rpcgssd
   - rpcsvcgssd
   - rpcidmapd
-  - avahi-daemon
-  - cups
   - dhcpd
 
 
@@ -78,6 +89,7 @@ os_hardening_remove_packages:
   - telnet
   - rsh-server
   - rsh
+  - talk-server
   - ypbind
   - ypserv
   - tftp-server
@@ -90,3 +102,4 @@ os_hardening_remove_packages:
   - net-snmpd
   - dhcp
   - sendmail
+  - xorg-x11-server-common
