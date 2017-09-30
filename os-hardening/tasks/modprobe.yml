@@ -1,0 +1,22 @@
+---
+# Tasks for removing uneeded kernel modules
+
+- name: os hardening | modprobe | create config directory
+  file:
+    name: /etc/modprobe.d
+    state: directory
+    owner: root
+    group: root
+    mode: "01750"
+
+- name: os hardening | modprobe | disable uncommon protocols
+  copy:
+    dest: /etc/modprobe.d/10-disable-uncommon-protocols.conf
+    content: |
+      install dccp /bin/false
+      install sctp /bin/false
+      install rds /bin/false
+      install tipc /bin/false
+    owner: root
+    group: root
+    mode: "0640"
