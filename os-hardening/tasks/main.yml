@@ -12,15 +12,20 @@
     - os_hardening
     - prelink
 
+- include: modprobe.yml
+  tags:
+    - os_hardening
+    - modprobe
+    
+- include: sysctl.yml
+  tags:
+    - os_hardening
+    - sysctl
+
 - include: aide.yml
   when: "os_hardening_integrity == 'aide'"
   tags:
     - os_hardening
     - integrity
     - aide
-    
-- include: sysctl.yml
-  tags:
-    - os_hardening
-    - sysctl
 
