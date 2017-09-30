@@ -7,16 +7,15 @@
     - os_hardening
     - selinux
 
-- include: legacy.yml
+- include: removal.yml
   tags:
     - os_hardening
-    - legacy
+    - removal
 
 - include: prelink.yml
   tags:
     - os_hardening
     - prelink
-    
 
 - include: modprobe.yml
   tags:
