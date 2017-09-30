@@ -7,11 +7,11 @@
     name: "{{ item }}"
     state: stopped
     enabled: false
-  with_items: "{{ os_hardening_disable_legacy_services }}"
+  with_items: "{{ os_hardening_disable_services }}"
   ignore_errors: true
 
 - name: os hardening | package | remove legacy server/client 
   package:
     name: "{{ item }}"
     state: absent
-  with_items: "{{ os_hardening_remove_legacy_packages }}"    
+  with_items: "{{ os_hardening_remove_packages }}"    
