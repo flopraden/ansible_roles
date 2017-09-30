@@ -27,7 +27,7 @@ os_hardening_selinux_policy: "targeted"
 # (legacy) Services to ensure are disabled.
 # These are a 'standard' set of things most machines don't need to run.
 # The list may need to be adjusted for e.g. squid proxies and dovecot mail servers.
-os_hardening_disable_legacy_services:
+os_hardening_disable_services:
   - xinetd
   - rexec
   - rsh
@@ -71,7 +71,7 @@ os_hardening_disable_legacy_services:
 # Packages linked to legacy services that should be absent from the system.
 # For e.g. squid/httpd/dovecot servers (where the service does not run in a container),
 #   it may be necessary to override this list.
-os_hardening_remove_legacy_packages:
+os_hardening_remove_packages:
   - xinetd
   - telnet-server
   - rsh-server
