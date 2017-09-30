@@ -1,0 +1,17 @@
+---
+# Tasks for removing legacy service client/server packages, and disabling their services
+
+
+- name: os hardening | service | disable legacy services
+  service:
+    name: "{{ item }}"
+    state: stopped
+    enabled: false
+  with_items: "{{ os_hardening_disable_legacy_services }}"
+  ignore_errors: true
+
+- name: os hardening | package | remove legacy server/client 
+  package:
+    name: "{{ item }}"
+    state: absent
+  with_items: "{{ os_hardening_remove_legacy_packages }}"    
