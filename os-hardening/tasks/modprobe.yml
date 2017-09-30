@@ -20,3 +20,18 @@
     owner: root
     group: root
     mode: "0640"
+
+- name: os hardening | modprobe | disable uncommon filesystems
+  copy:
+    dest: /etc/modprobe.d/10-disable-uncommon-filesystems.conf
+    content: |
+      install cramfs /bin/false
+      install freevxfs /bin/false
+      install jffs2 /bin/false
+      install hfs /bin/false
+      install hfsplus /bin/false
+      install squashfs /bin/false
+      install udf /bin/false
+    owner: root
+    group: root
+    mode: "0640"
