@@ -1,0 +1,16 @@
+---
+# Tasks for disabling pre-linking
+
+
+- name: os hardening | prelink | disable via sysconfig
+  copy:
+    dest: /etc/sysconfig/prelink
+    content: "# Disable prelinking\nPRELINKING=no\n"
+    owner: root
+    group: root
+    mode: "0640"
+
+- name: os hardening | prelink | disable previous prelink changes
+  command: /usr/sbin/prelink -ua
+  ignore_errors: true
+  
