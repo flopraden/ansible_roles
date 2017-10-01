@@ -1,0 +1,32 @@
+---
+# Tasks for installing and using tcp_wrappers
+
+
+- name: os hardening | package | install tcp_wrappers
+  package:
+    name: tcp_wrappers
+    state: present
+
+- name: os hardening | tcp_wrappers | ensure /etc/hosts.equiv is absent
+  file:
+    name: /etc/hosts.equiv
+    state: absent
+
+- name: os hardening | tcp_wrappers | create hosts.allow
+  copy:
+    dest: /etc/hosts.allow
+    content: "{{ os_hardening_hosts_allow_rules | join('\n') }}"
+    owner: root
+    group: root
+    mode: "0644"
+    force: yes
+    
+- name: os hardening | tcp_wrappers | create hosts.deny
+  copy:
+    dest: /etc/hosts.deny
+    content: "ALL: ALL"
+    owner: root
+    group: root
+    mode: "0644"
+    force: yes
+    
