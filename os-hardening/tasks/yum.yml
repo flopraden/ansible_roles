@@ -1,0 +1,14 @@
+---
+# tasks for hardening yum 
+
+# This ensures that gpg and ssl are checked by default.
+# It also prevents man/info pages from being installed.
+- name: os hardening | config | harden yum defaults
+  template:
+    src: yum.conf.j2
+    dest: /etc/yum.conf
+    owner: root
+    group: root
+    mode: "0640"
+
+
