@@ -1,6 +1,12 @@
 ---
 # tasks file for os-hardening
 
+- include: yum.yml
+  when: "ansible_pkg_mgr == 'yum'"
+  tags:
+    - os_hardening
+    - selinux
+
 - include: selinux.yml
   when: "os_hardening_mac == 'selinux'"
   tags:
