@@ -13,10 +13,11 @@
     - os_hardening
     - selinux
 
-- include: removal.yml
+- include: tcp_wrappers.yml
   tags:
     - os_hardening
-    - removal
+    - network
+    - tcp_wrappers
 
 - include: prelink.yml
   tags:
@@ -32,6 +33,11 @@
   tags:
     - os_hardening
     - sysctl
+
+- include: removal.yml
+  tags:
+    - os_hardening
+    - removal
 
 - include: aide.yml
   when: "os_hardening_integrity == 'aide'"
