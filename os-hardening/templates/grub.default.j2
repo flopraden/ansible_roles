@@ -1,0 +1,13 @@
+# {{ ansible_managed }}
+
+GRUB_CMDLINE_LINUX_DEFAULT="text"
+
+# Better accounting/resource allocation for containers
+GRUB_CMDLINE_LINUX_DEFAULT=" $GRUB_CMDLINE_LINUX_DEFAULT cgroup_enable=memory swapaccount=1 use_hierarchy=1"
+
+# Security settings
+GRUB_CMDLINE_LINUX_DEFAULT="$GRUB_CMDLINE_LINUX_DEFAULT audit=1 {{ 'selinux=1' if os_hardening_mac == 'selinux' else '' }}"
+
+# kernel command line options for failsafe mode
+GRUB_CMDLINE_LINUX_RECOVERY=single
+GRUB_CMDLINE_LINUX=""
