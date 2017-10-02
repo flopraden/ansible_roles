@@ -24,7 +24,7 @@ os_hardening_integrity_check_frequency: "daily"
 
 # Rules for /etc/hosts.allow
 os_hardening_hosts_allow_rules:
-  - "SSH: ALL"
+  - "sshd: ALL"
 
 # seLinux settings
 os_hardening_selinux_policy: "targeted"
