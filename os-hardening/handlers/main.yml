@@ -6,3 +6,10 @@
   become: root
   # Reloading sysctl within containers does not work due to some endpoints being read-only
   when: "not (ansible_virtualization_role == 'guest' and ansible_virtualization_type == 'docker')"
+
+
+- name: os hardening | grub | rebuild grub.cfg
+  command: grub2-mkconfig -o /boot/grub2/grub.cfg
+  # Building grub in a container is of limited use.
+  when: "not (ansible_virtualization_role == 'guest' and ansible_virtualization_type == 'docker')"
+  
