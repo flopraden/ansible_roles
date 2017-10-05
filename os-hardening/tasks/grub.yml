@@ -1,0 +1,30 @@
+---
+# Tasks for hardening grub
+
+- name: os hardening | packages | install grub2
+  package:
+    name: grub2
+    state: present
+
+- name: os hardening | config | create /etc/default/grub
+  template:
+    src: grub.default.j2
+    dest: /etc/default/grub
+    owner: root
+    group: root
+    mode: "0600"
+  notify:
+    - os hardening | grub | rebuild grub.cfg
+
+
+- name: os hardening | grub | secure grub.cfg permissions
+  file:
+    name: /boot/grub2/grub.cfg
+    state: present
+    owner: root
+    group: root
+    mode: "0000"
+  when: "not (ansible_virtualization_role == 'guest' and ansible_virtualization_type == 'docker')"
+  
+
+

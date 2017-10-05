@@ -1,11 +1,18 @@
 ---
 # tasks file for os-hardening
 
+# Try and ensure the package manager installs sane things before starting.
 - include: yum.yml
   when: "ansible_pkg_mgr == 'yum'"
   tags:
     - os_hardening
     - selinux
+
+- include: grub.yml
+  tags:
+    - os_hardening
+    - grub
+    - bootloader
 
 - include: selinux.yml
   when: "os_hardening_mac == 'selinux'"
