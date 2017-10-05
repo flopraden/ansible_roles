@@ -1,0 +1,21 @@
+---
+
+- name: os hardening | shadow| secure  database file permissions
+  file:
+    name: "{{ item }}"
+    owner: root
+    group: root
+    mode: "0000"
+  with_items:
+    - /etc/shadow
+    - /etc/gshadow
+
+- name: os hardening | shadow | configure login.defs
+  template:
+    src: login.defs.j2
+    dest: /etc/login.defs
+    owner: root
+    group: root
+    mode: "0644"
+  
+    
