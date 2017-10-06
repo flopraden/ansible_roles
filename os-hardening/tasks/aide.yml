@@ -16,9 +16,19 @@
 
 - name: os hardening | aide | initialise database
   command: aide --init
-  register: aide_init -A "database_out=file:/var/lib/aide.db.gz"
+  register: aide_init
   args:
-    creates: /var/lib/aide/aide.db.gz
+    creates: /var/lib/aide/aide.db.new.gz
+
+- name: os hardening | aide | copy database
+  copy:
+    src: /var/lib/aide/aide.db.new.gz
+    dest: /var/lib/aide/aide.db.gz
+    remote_src: yes
+    owner: root
+    group: root
+    mode: "0640"
+  when: aide_init.changed
 
 - name: os hardening | aide | create systemd service to run integrity check
   template:
