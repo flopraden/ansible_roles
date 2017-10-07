@@ -12,11 +12,18 @@
     group: root
     mode: "0640"
 
-
 - include: system.yml
   tags:
     - pam
     - system
     - password_quality
     - hardening
+
+- include: smartcard.yml
+  tags:
+    - pam
+    - system
+    - smartcard
+    - hardening
+
 

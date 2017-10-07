@@ -1,0 +1,15 @@
+---
+
+# Task for PAM to use smartcards
+
+- name: pam | smartcard | install module
+  package:
+    name: pam_pkcs11
+    state: present
+
+- name: pam | smartcard | enable module
+  command: authconfig --enablesmartcard --update
+
+- name: pam | smartcard | require smartcard authentication
+  command: authconfig --enablerequiresmartcard --update
+  when: pam_smartcard_required
