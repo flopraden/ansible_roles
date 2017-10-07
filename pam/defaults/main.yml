@@ -1,7 +1,9 @@
 ---
 # defaults file for pam
 
-pam_remember_passwords: 4
+pam_remember_passwords: 5
+
+pam_run_services: "ansible_virtualization_role != 'guest' or ansible_virtualization_type != 'docker'"
 
 pam_failed_password_attempts: 6
 pam_unlock_failed_after: 1800
