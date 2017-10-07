@@ -1,2 +1,7 @@
 ---
 # defaults file for ipsec
+
+
+ipsec_run_services: not (ansible_virtualization_role == 'guest' and ansible_virtualization_type == 'docker')
+
+ipsec_provider: "libreswan"
