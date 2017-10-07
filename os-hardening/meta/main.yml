@@ -56,3 +56,4 @@ dependencies:
   - auditd
   - ntp
   - pam
+  - ipsec
