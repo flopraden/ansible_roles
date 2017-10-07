@@ -14,6 +14,22 @@
     - grub
     - bootloader
 
+- include: securetty.yml
+  tags:
+    - os_hardening
+    - securetty
+
+- include: shadow.yml
+  tags:
+    - os_hardening
+    - shadow
+
+
+- include: permissions.yml
+  tags:
+    - os_hardening
+    - permissions
+
 - include: selinux.yml
   when: "os_hardening_mac == 'selinux'"
   tags:
@@ -35,7 +51,7 @@
   tags:
     - os_hardening
     - modprobe
-    
+
 - include: sysctl.yml
   tags:
     - os_hardening
