@@ -11,28 +11,26 @@
     mode: "0600"
 
 - name: auditd | ruleset | find suid/sgid programmes
-  command: sudo find / -xdev -type f -perm -4000 -o -perm -2000 2>/dev/null
+  command: 'find / -xdev -type f -perm -4000 -o -perm -2000'
+  become: root
   register: auditd_suid_progs
 
 - name: auditd | ruleset | audit use of SUID/SGID programmes
   copy:
     dest: "/etc/audit/rules.d/20-suid.conf"
-    state: present
     force: yes
     owner: root
     group: root
     mode: "0600"
     content: |
-      # {{ ansible_managed }}
-      #Ensure auditd Collects Information on the Use of Privileged Commands
-      {% for path in auditd_suid_progs.stdout_lines %}
-      -a always,exit -F path={{ path }} -F perm=x -F auid>=500 -F auid!=4294967295 -k privileged
-      {% endfor %}
+        # Ensure auditd Collects Information on the Use of Privileged Commands
+        {% for path in auditd_suid_progs.stdout_lines %}
+        -a always,exit -F path={{ path }} -F perm=x -F auid>=500 -F auid!=4294967295 -k privileged
+        {% endfor %}
 
 - name: auditd | ruleset | create rule to make ruleset immutable
   copy:
     dest: "/etc/audit/rules.d/999-immutable.conf"
-    state: present
     force: yes
     content: "-e 2"
     owner: root
