@@ -1,6 +1,18 @@
 ---
 # tasks file for pam
 
+#
+- name: pam | expiration | configure maximum inactivity
+  lineinfile:
+    path: /etc/default/useradd
+    regexp: INACTIVE=\d+
+    line: "INACTIVE={{pam_max_inactive}}"
+    create: yes
+    owner: root
+    group: root
+    mode: "0640"
+
+
 - include: system.yml
   tags:
     - pam
