@@ -1,6 +1,6 @@
 ---
 
-+# tasks file to create the base PAM environment for the system
+# tasks file to create the base PAM environment for the system
 
 - name: pam | base | install pwquality and cracklib
   package:
