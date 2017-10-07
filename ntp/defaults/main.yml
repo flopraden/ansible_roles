@@ -1,2 +1,23 @@
 ---
 # defaults file for ntp
+
+# Default servers to use as time sources
+ntp_servers:
+  - 0.pool.ntp.org
+  - 1.pool.ntp.org
+  - 2.pool.ntp.org
+  - 3.pool.ntp.org
+
+# NTP clients to accept queries from
+# Default is to not accept any clients.
+ntp_clients: []
+
+# Whether to use chrony in place of the classic/legacy ntp client.
+# Default is to do so.
+ntp_use_chrony: yes
+
+# Whether or not to run the NTP service (which might be chronyd, ntpd, or something else).
+ntp_run_services: not (ansible_virtualization_role == 'guest' and ansible_virtualization_type == 'docker')
+
+# Name of the package to install for chrony-based NTP.
+ntp_chrony_package: "chrony"
