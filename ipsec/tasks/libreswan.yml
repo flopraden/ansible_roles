@@ -1,0 +1,14 @@
+---
+# tasks for ipsec setup using libreswan
+
+- name: ipsec | libreswan | install
+  package:
+    name: libreswan
+    state: present
+
+- name: ipsec | libreswan | enable and run
+  service:
+    name: ipsec
+    state: started
+    enabled: yes
+  when: ipsec_run_services
