@@ -1,9 +1,12 @@
 # {{ ansible_managed }}
 
 auth        required      pam_env.so
+auth        [success=1 default=ignore] pam_succeed_if.so service notin login:gdm:xdm:kdm:xscreensaver:gnome-screensaver:kscreensaver quiet use_uid
+auth        [success=done authinfo_unavail=ignore ignore=ignore default=die] pam_pkcs11.so nodebug wait_for_card
+auth        required      pam_faildelay.so delay=2000000
 auth        required      pam_faillock.so preauth silent deny={{ pam_failed_password_attempts }} unlock_time={{ pam_unlock_failed_after }} fail_interval={{ pam_fail_interval }}
 auth        sufficient    pam_unix.so try_first_pass
-auth [default=die] pam_faillock.so authfail deny=6 unlock_time=1800 fail_interval=900
+auth        [default=die] pam_faillock.so authfail deny={{ pam_failed_password_attempts }} unlock_time={{ pam_unlock_failed_after }} fail_interval={{ pam_fail_interval }}
 auth        required      pam_deny.so
 
 account     required      pam_faillock.so
