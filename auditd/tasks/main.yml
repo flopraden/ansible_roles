@@ -1,0 +1,22 @@
+---
+# tasks file for auditd
+
+- name: audit | config | create directories
+  file:
+    name: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "01750"
+  with_items:
+    - /etc/audit
+    - /etc/audit/rules.d
+
+- include: ruleset.yml
+
+- name: audit | service | enable and start
+  service:
+    name: audit
+    state: started
+    enabled: yes
+  when: auditd_run_services
