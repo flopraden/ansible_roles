@@ -1,0 +1,29 @@
+---
+# Task to harden filesystem permissions
+
+- name: os hardening | permissions | secure passwd and group files
+  file:
+    name: "{{ item }}"
+    owner: root
+    group: root
+    mode: "0644"
+  with_items:
+    - /etc/passwd
+    - /etc/group
+
+
+- name: os hardening | permissions | set default umask for init processes and shells
+  lineinfile:
+    path: "{{ item }}"
+    state: present
+    # This needs to be single quoted to avoid triggering YAML issues.
+    # https://docs.ansible.com/ansible/latest/lineinfile_module.html#examples
+    regexp: '^umask\s+\d+'
+    line: "umask 077"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  with_fileglob:
+    - "/etc/profile.d/*"
+    - "/etc/*shrc"    
+    - "etc/sysconfig/init"
