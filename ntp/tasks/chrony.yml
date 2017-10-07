@@ -1,0 +1,23 @@
+---
+# tasks for NTP to be provided using chrony
+
+- name: ntp | package | install chrony
+  package:
+    name: "{{ ntp_chrony_package }}"
+    state: present
+
+
+- name: ntp | config | configure chrony
+  template:
+    src: chrony.conf.j2
+    dest: /etc/chrony.conf
+    owner: root
+    group: root
+    mode: "0640"
+
+- name: ntp | service | run and enable chrony
+  service:
+    name: chronyd
+    state: started
+    enabled: yes
+  when: ntp_run_services
