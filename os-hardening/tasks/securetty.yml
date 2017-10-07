@@ -1,0 +1,19 @@
+---
+# Tasks to limit root access
+
+- name: os hardening | root | create /etc/securetty
+  copy:
+    dest: /etc/securetty
+    content: "{{ os_hardening_securetty | join('\n') }}"
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: os hardening | root | limit su - root to wheel group
+  lineinfile:
+    path: "/etc/pam.d/su"
+    state: "present"
+    line: "auth required pam_wheel.so use_uid"
+    owner: root
+    group: root
+    mode: "0640"
