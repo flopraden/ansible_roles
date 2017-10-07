@@ -1,2 +1,6 @@
 ---
+
 # tasks file for ntp
+
+- include: chrony.yml
+  when: ntp_use_chrony
