@@ -6,9 +6,43 @@
     name: rsyslog
     state: present
 
+- name: rsyslog | local | create configuration
+  template:
+    src: rsyslog.conf.j2
+    dest: /etc/rsyslog.conf
+    owner: root
+    group: root
+    mode: "0640"
+    validate: "rsyslogd -nN 1 -f %s"
+
+- name: rsyslog | local | create configuration directory
+  file:
+    name: /etc/rsyslog.d
+    state: directory
+    owner: root
+    group: root
+    mode: "0600"
+
+- name: rsyslog | local | ensure logfiles are secure
+  file:
+    name: "{{ item }}"
+    # using state: file will fail if one of the files doesn't exist.
+    state: touch
+    owner: root
+    group: root
+    mode: "0600"
+  with_items:
+    - /var/log/boot.log
+    - /var/log/cron
+    - /var/log/maillog
+    - /var/log/messages
+    - /var/log/secure
+    - /var/log/spooler
+
 - name: rsyslog | local | start and run service
   service:
     name: rsyslog
     state: started
     enabled: yes
   when: rsyslog_run_services
+
