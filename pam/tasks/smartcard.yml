@@ -2,14 +2,36 @@
 
 # Task for PAM to use smartcards
 
-- name: pam | smartcard | install module
+- name: pam | smartcard | install pam_pkcs11 and esc
   package:
-    name: pam_pkcs11
+    name: "{{ item }}"
     state: present
+  with_items:
+    - pam_pkcs11
+    - esc
 
-- name: pam | smartcard | enable module
-  command: authconfig --enablesmartcard --update
+- name: pam | smartcard | create smartcard-auth config
+  template:
+    src: smartcard-auth.j2
+    dest: "{{ item }}"
+    owner: root
+    group: root
+    mode: "0640"
+  with_items:
+    - /etc/pam.d/smartcard-auth
+    - /etc/pam.d/smartcard-auth-ac
 
-- name: pam | smartcard | require smartcard authentication
-  command: authconfig --enablerequiresmartcard --update
-  when: pam_smartcard_required
+- name: pam | smartcard | create pam_pkcs11.conf
+  template:
+    src: pam_pkcs11.conf.j2
+    dest: /etc/pam_pkcs11/pam_pkcs11.conf
+    owner: root
+    group: root
+    mode: "0640"
+
+- name: pam | smartcard | enable PC/SC smart card service
+  service:
+    name: pcscd
+    state: started
+    enabled: yes
+  when: pam_run_services
