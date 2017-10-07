@@ -1,2 +1,5 @@
 ---
 # tasks file for rsyslog
+
+# Config for local syslog setup.
+- include: local.yml
