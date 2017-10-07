@@ -10,7 +10,11 @@
     group: root
     mode: "0640"
 
+- name: os hardening | package | install prelink
+  package:
+    name: prelink
+    state: present
+
 - name: os hardening | prelink | disable previous prelink changes
   command: /usr/sbin/prelink -ua
-  ignore_errors: true
-  
+
