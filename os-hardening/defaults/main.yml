@@ -22,6 +22,14 @@ os_hardening_integrity: "aide"
 os_hardening_integrity_check_frequency: "daily"
 
 
+# TTYs/locations from which root can log in directly.
+# So long as you have another user you can log in as (preferrably localy),
+# there is no real need to allow root to log in directly from anywhere.
+# Example:
+# os_hardening_securetty:
+#   - tty1
+os_hardening_securetty: []
+
 # Rules for /etc/hosts.allow
 os_hardening_hosts_allow_rules:
   - "sshd: ALL"
