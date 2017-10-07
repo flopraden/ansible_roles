@@ -131,7 +131,8 @@ UID_MIN                  1000
 UID_MAX                 60000
 # System accounts
 SYS_UID_MIN               100
-SYS_UID_MAX               499
+SYS_UID_MAX               999
+
 # Extra per user uids
 SUB_UID_MIN                100000
 SUB_UID_MAX             600100000
@@ -170,7 +171,7 @@ LOGIN_TIMEOUT           60
 # any combination of letters "frwh" (full name, room number, work
 # phone, home phone).  If not defined, no changes are allowed.
 # For backward compatibility, "yes" = "rwh" and "no" = "frwh".
-# 
+#
 CHFN_RESTRICT           rwh
 
 #
