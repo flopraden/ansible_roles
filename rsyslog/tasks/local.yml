@@ -1,0 +1,14 @@
+---
+# Tasks for local rsyslog install and config.
+
+- name: rsyslog | local | install base packages
+  package:
+    name: rsyslog
+    state: present
+
+- name: rsyslog | local | start and run service
+  service:
+    name: rsyslog
+    state: started
+    enabled: yes
+  when: rsyslog_run_services
