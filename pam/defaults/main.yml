@@ -11,6 +11,9 @@ pam_fail_interval: 900
 # This isn't _really_ PAM related, but makes most sense to deal with here.
 pam_max_inactive: 90
 
+#
+pam_smartcard_required: no
+
 # Number of characters in the new password that must not be present in the
 # old password.
 pam_pwquality_difok: 4
