@@ -1,0 +1,35 @@
+---
+
+# tasks file for ensuring quality of passwords
+
+- name: pam | base | install pwquality and cracklib
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - cracklib
+    - libpwquality-devel
+
+- name: pam | base | create pwquality configuration
+  template:
+    src: pwquality.conf.j2
+    dest: /etc/security/pwquality.conf
+    owner: root
+    group: root
+    mode: "0640"
+
+- name: pam | base | create system-auth
+  template:
+    src: system-auth.j2
+    dest: /etc/pam.d/system-auth
+    owner: root
+    group: root
+    mode: "0640"
+
+- name: pam | base | create password-auth
+  template:
+    src: password-auth.j2
+    dest: /etc/pam.d/password-auth
+    owner: root
+    group: root
+    mode: "0640"

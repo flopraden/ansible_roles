@@ -1,0 +1,10 @@
+---
+# tasks file for pam
+
+- include: system.yml
+  tags:
+    - pam
+    - system
+    - password_quality
+    - hardening
+
