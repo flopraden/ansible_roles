@@ -59,3 +59,4 @@ dependencies:
   - ipsec
   - rsyslog
   - logrotate
+  - firewalld
