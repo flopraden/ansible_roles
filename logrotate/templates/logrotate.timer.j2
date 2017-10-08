@@ -1,0 +1,11 @@
+[Unit]
+Description=Run daily logrotate
+
+[Timer]
+OnBootSec=15min
+OnCalendar=daily
+Persistent=true
+
+
+[Install]
+WantedBy=timers.target

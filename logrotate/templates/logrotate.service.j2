@@ -1,0 +1,6 @@
+[Unit]
+Description=Rotate system logs using logrotate
+
+[Service]
+Type=oneshot
+ExecStart=/usr/sbin/logrotate -s /var/lib/logrotate/logrotate.status /etc/logrotate.conf
