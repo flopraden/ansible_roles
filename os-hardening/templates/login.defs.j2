@@ -1,151 +1,47 @@
-#
-# /etc/login.defs - Configuration control definitions for the shadow package.
+# {{ ansible_managed }}
 
-#
-# Delay in seconds before being allowed another attempt after a login failure
-# Note: When PAM is used, some modules may enforce a minimum delay (e.g.
-#       pam_unix(8) enforces a 2s delay)
-#
 FAIL_DELAY              3
-
-#
-# Enable display of unknown usernames when login(1) failures are recorded.
-#
 LOG_UNKFAIL_ENAB        yes
-
-#
-# Enable logging of successful logins
-#
 LOG_OK_LOGINS           no
 
-#
-# Enable "syslog" logging of su(1) activity - in addition to sulog file logging.
-# SYSLOG_SG_ENAB does the same for newgrp(1) and sg(1).
-#
 SYSLOG_SU_ENAB          yes
 SYSLOG_SG_ENAB          yes
-
-#
-# If defined, either full pathname of a file containing device names or
-# a ":" delimited list of device names.  Root logins will be allowed only
-# from these devices.
-#
 CONSOLE         /etc/securetty
-#CONSOLE        console:tty01:tty02:tty03:tty04
 
-#
-# If defined, all su(1) activity is logged to this file.
-#
-#SULOG_FILE     /var/log/sulog
-
-#
-# If defined, ":" delimited list of "message of the day" files to
-# be displayed upon login.
-#
 MOTD_FILE       /etc/motd
-#MOTD_FILE      /etc/motd:/usr/lib/news/news-motd
-
-#
-# If defined, file which maps tty line to TERM environment parameter.
-# Each line of the file is in a format similar to "vt100  tty01".
-#
-#TTYTYPE_FILE   /etc/ttytype
-
-#
-# If defined, file which inhibits all the usual chatter during the login
-# sequence.  If a full pathname, then hushed mode will be enabled if the
-# user's name or shell are found in the file.  If not a full pathname, then
-# hushed mode will be enabled if the file exists in the user's home directory.
-#
-# HUSHLOGIN_FILE        .hushlogin
 HUSHLOGIN_FILE  /etc/hushlogins
 
-#
-# *REQUIRED*  The default PATH settings, for superuser and normal users.
-#
-# (they are minimal, add the rest in the shell startup files)
 ENV_SUPATH      PATH=/sbin:/bin:/usr/sbin:/usr/bin
 ENV_PATH        PATH=/usr/local/bin:/usr/bin:/bin
 
-#
-# The default PATH settings for root (used by login):
-#
 ENV_ROOTPATH            /sbin:/bin:/usr/sbin:/usr/bin
 
-#
-# Terminal permissions
-#
-#       TTYGROUP        Login tty will be assigned this group ownership.
-#       TTYPERM         Login tty will be set to this permission.
-#
-# If you have a write(1) program which is "setgid" to a special group
-# which owns the terminals, define TTYGROUP as the number of such group
-# and TTYPERM as 0620.  Otherwise leave TTYGROUP commented out and
-# set TTYPERM to either 622 or 600.
-#
 TTYGROUP        tty
 TTYPERM         0620
 
-#
-# Login configuration initializations:
-#
-#       ERASECHAR       Terminal ERASE character ('\010' = backspace).
-#       KILLCHAR        Terminal KILL character ('\025' = CTRL/U).
-#
-# The ERASECHAR and KILLCHAR are used only on System V machines.
-#
-# Prefix these values with "0" to get octal, "0x" to get hexadecimal.
-#
 ERASECHAR       0177
 KILLCHAR        025
 
-# Default initial "umask" value used by login(1) on non-PAM enabled systems.
-# Default "umask" value for pam_umask(8) on PAM enabled systems.
-# UMASK is also used by useradd(8) and newusers(8) to set the mode for new
-# home directories.
-# 022 is the default value, but 027, or even 077, could be considered
-# for increased privacy. There is no One True Answer here: each sysadmin
-# must make up his/her mind.
 UMASK           077
 
-#
-# Password aging controls:
-#
-#       PASS_MAX_DAYS   Maximum number of days a password may be used.
-#       PASS_MIN_DAYS   Minimum number of days allowed between password changes.
-#       PASS_WARN_AGE   Number of days warning given before a password expires.
-#
 PASS_MAX_DAYS   60
-PASS_MIN_DAYS   1
+PASS_MIN_DAYS   7
 PASS_WARN_AGE   7
 
-#
-# Min/max values for automatic uid selection in useradd(8)
-#
-# SYS_UID_MIN to SYS_UID_MAX inclusive is the range for
-# UIDs for dynamically allocated administrative and system accounts.
-# UID_MIN to UID_MAX inclusive is the range of UIDs of dynamically
-# allocated user accounts.
-#
+PASS_MIN_LEN    12
+
+# User accounts
 UID_MIN                  1000
 UID_MAX                 60000
 # System accounts
 SYS_UID_MIN               100
 SYS_UID_MAX               999
 
-# Extra per user uids
+
 SUB_UID_MIN                100000
 SUB_UID_MAX             600100000
 SUB_UID_COUNT               65536
 
-#
-# Min/max values for automatic gid selection in groupadd(8)
-#
-# SYS_GID_MIN to SYS_GID_MAX inclusive is the range for
-# GIDs for dynamically allocated administrative and system groups.
-# GID_MIN to GID_MAX inclusive is the range of GIDs of dynamically
-# allocated groups.
-#
 GID_MIN                  1000
 GID_MAX                 60000
 # System accounts
@@ -156,35 +52,11 @@ SUB_GID_MIN                100000
 SUB_GID_MAX             600100000
 SUB_GID_COUNT               65536
 
-#
-# Max number of login(1) retries if password is bad
-#
 LOGIN_RETRIES           3
-
-#
-# Max time in seconds for login(1)
-#
 LOGIN_TIMEOUT           60
 
-#
-# Which fields may be changed by regular users using chfn(1) - use
-# any combination of letters "frwh" (full name, room number, work
-# phone, home phone).  If not defined, no changes are allowed.
-# For backward compatibility, "yes" = "rwh" and "no" = "frwh".
-#
 CHFN_RESTRICT           rwh
 
-#
-# Only works if compiled with ENCRYPTMETHOD_SELECT defined:
-# If set to MD5, MD5-based algorithm will be used for encrypting password
-# If set to SHA256, SHA256-based algorithm will be used for encrypting password
-# If set to SHA512, SHA512-based algorithm will be used for encrypting password
-# If set to DES, DES-based algorithm will be used for encrypting password (default)
-# Overrides the MD5_CRYPT_ENAB option
-#
-# Note: If you use PAM, it is recommended to use a value consistent with
-# the PAM modules configuration.
-#
 ENCRYPT_METHOD SHA512
 ENCRYPT_METHOD_NIS DES
 
