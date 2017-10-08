@@ -25,6 +25,10 @@
     - os_hardening
     - limits
 
+- include: ctrl_alt_del.yml
+  tags:
+    - os_hardening
+    - ctrl-alt-del
 
 - include: system_users.yml
   tags:

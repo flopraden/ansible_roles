@@ -1,0 +1,10 @@
+---
+#
+
+- name: os hardening | ctrl-alt-del | disable ctrl-alt-del in multi-user
+  file:
+    src: /dev/null
+    dest: /etc/systemd/system/ctrl-alt-del.target
+    state: link
+    owner: root
+    group: root
