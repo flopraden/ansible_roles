@@ -1,0 +1,14 @@
+# {{ ansible_managed }}
+
+
+# Limit max concurrent sessions
+* hard maxlogins 10
+# Prevent core dumps
+* hard core 0
+
+# harden against fork-bombs
+*               hard    nproc           8192
+*               soft    nproc           128
+root            hard    nproc           16384
+root            soft    nproc           4096
+
