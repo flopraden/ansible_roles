@@ -1,2 +1,8 @@
 ---
 # tasks file for logrotate
+
+- name: logrotate | package | install
+  package:
+    name: logrotate
+    state: present
+
