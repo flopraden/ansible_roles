@@ -14,6 +14,11 @@
     - grub
     - bootloader
 
+- include: system_users.yml
+  tags:
+    - os_hardening
+    - system_users
+
 - include: securetty.yml
   tags:
     - os_hardening
