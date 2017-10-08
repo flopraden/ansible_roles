@@ -58,3 +58,4 @@ dependencies:
   - pam
   - ipsec
   - rsyslog
+  - logrotate
