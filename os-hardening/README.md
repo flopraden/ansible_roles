@@ -1,7 +1,18 @@
 Role Name
 =========
 
-A brief description of the role goes here.
+The os-hardening role primarily aims to provide compliance with security and auditing best practice.
+It also aims to provide compliance with standards such as PCI-DSS and RedHat Certified Cloud Provider openSCAP profiles.
+
+Currently, this role provides 90%+ compliance with:
+
+* PCI-DSS
+* RHT-CCP
+
+Compliance was measured for a centos 7 container to which the role was run with default settings.
+
+Where appropriate, defaults for this and related roles tend towards the more restrictive requirements.
+For example, password quality rules are in line with DISA/DoD standards, rather than 'only' PCI-DSS.
 
 Requirements
 ------------
