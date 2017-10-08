@@ -1,2 +1,29 @@
 ---
 # tasks file for firewalld
+
+- name: firewalld | package | install
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - firewalld
+    - python-firewall
+
+
+- name: firewalld | configuration | create firewalld.conf
+  template:
+    src: firewalld.conf.j2
+    dest: /etc/firewalld/firewalld.conf
+
+- name: firewalld | configuration | permit ssh
+  firewalld:
+    service: ssh
+    state: enabled
+    permanent: true
+
+- name: firewalld | service | enable and run
+  service:
+    name: firewalld
+    state: started
+    enabled: yes
+  when: firewalld_run_services
