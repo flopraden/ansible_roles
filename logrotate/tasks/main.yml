@@ -6,3 +6,34 @@
     name: logrotate
     state: present
 
+- name: logrotate | configuration | create logrotate.conf
+  template:
+    src: logrotate.conf.j2
+    dest: /etc/logrotate.conf
+    owner: root
+    group: root
+    mode: "0640"
+
+- name: logrotate | configuration | create service unit
+  template:
+    src: logrotate.service.j2
+    dest: /etc/systemd/system/logrotate.service
+    owner: root
+    group: root
+    mode: "0640"
+
+- name: logrotate | configuration | create timer unit
+  template:
+    src: logrotate.timer.j2
+    dest: /etc/systemd/system/logrotate.timer
+    owner: root
+    group: root
+    mode: "0640"
+
+
+- name: logrotate | timer | start and enable
+  service:
+    name: logrotate.timer
+    state: started
+    enabled: yes
+  when: "logrotate_run_services"
