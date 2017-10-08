@@ -25,5 +25,5 @@
     mode: "0644"
   with_fileglob:
     - "/etc/profile.d/*"
-    - "/etc/*shrc"    
-    - "etc/sysconfig/init"
+    - "/etc/*shrc"
+    - "/etc/sysconfig/init"

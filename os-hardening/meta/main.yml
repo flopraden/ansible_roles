@@ -60,3 +60,4 @@ dependencies:
   - rsyslog
   - logrotate
   - firewalld
+  - openssh

@@ -1,0 +1,25 @@
+---
+# Task for populating warning/login banners on system
+
+
+- name: os hardening | banner | create legal notification banners
+  copy:
+    dest: "{{ item }}"
+    content: "Authorised use only. All activity is monitored and reported."
+    owner: root
+    group: root
+    mode: "0644"
+  with_items:
+    - /etc/issue
+    - /etc/issue.net
+
+- name: os hardening | banner | create motd
+  copy:
+    dest: "{{ item }}"
+    content: "Welcome. Please note all activity is monitored and reported."
+    owner: root
+    group: root
+    mode: "0644"
+  with_items:
+    - /etc/motd
+
