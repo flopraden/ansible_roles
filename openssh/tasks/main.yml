@@ -1,0 +1,36 @@
+---
+# tasks file for openssh
+
+# Include OS-specific variable files
+- name: openssh | variables | OS specific variables
+  include_vars:
+    file: "{{ ansible_os_family | lower }}.yml"
+  ignore_errors: True
+  tags:
+    - ssh
+    - openssh
+
+# Ensure the config directory exists
+- name: openssh | general | create config directory
+  file:
+    name: "{{ openssh_config_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "1751"
+  tags:
+    - ssh_server
+
+- include: server.yml
+  when: "not openssh_skip_server"
+  tags:
+    - ssh
+    - openssh
+    - server
+    
+- include: client.yml
+  when: "not openssh_skip_client"
+  tags:
+    - ssh
+    - openssh
+    - client

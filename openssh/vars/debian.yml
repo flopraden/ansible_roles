@@ -1,0 +1,12 @@
+---
+
+# Defaults for Debian-like OSes:
+# * debian
+# * ubuntu
+
+openssh_server_packages:
+    - openssh-server
+    - openssh-sftp-server
+
+openssh_client_packages:
+    - openssh-clients

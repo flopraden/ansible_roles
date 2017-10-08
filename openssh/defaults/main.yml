@@ -1,0 +1,163 @@
+---
+# defaults file for openssh
+
+# ================
+# General defaults
+# ================
+
+# Root dir under which config files are kept
+openssh_config_dir: /etc/ssh
+
+# Flag to skip server install
+openssh_skip_server: false
+
+# Flag to skip client install
+# On some distributions (e.g. SUSE), the openssh package installs both
+#   server and client binaries.
+openssh_skip_client: false
+
+# ===============
+# Server defaults
+# ===============
+
+# Default group for accounts allowed to login via SSH.
+openssh_server_user_group: "ssh_allowed"
+
+# List of users permitted to log in via SSH.
+# If empty, all users are theoretically allowed to log in
+openssh_server_allow_users: []
+
+# List of groups permitted to log in via SSH.
+# If empty, all users are theoretically allowed to log in
+# If you override this, you need to manually add the $openssh_server_user_group to the list
+openssh_server_allow_groups: []
+
+# Wether to allow root logins
+openssh_server_allow_root: false
+
+# Wether to allow password logins (via PAM)
+openssh_server_allow_password: false
+
+# Port for SSH server to listen on
+openssh_server_port: 22
+
+# Match blocks, for customising the server per group/user.
+# By default, create a chrooted sftp only group.
+openssh_server_match_blocks:
+    - type: group
+      subject: sftp_only
+      rules:
+        - "ForceCommand internal-sftp"
+        - "ChrootDirectory %h"
+        - "AllowTCPForwarding no"
+        - "X11Forwarding no"
+
+# By default, listen on any, IPv4 and IPv6
+openssh_server_listen_address:
+    - 0.0.0.0
+    - "::"
+
+# Default package(s) to install for server
+# The default, openssh, will install server and client on:
+# * (open)SUSE
+# * archlinux
+# Other OSes are configured by including family-specific variables.
+openssh_server_packages:
+    - openssh
+
+# Name of the service that runs the SSH server
+openssh_server_service: "ssh"
+
+# These are the allowed auth methods, and can be used to enable multi-
+# factor authentication.
+# For example, the following would only allow login after a user
+# provided both a valid public key, and a valid password.
+#
+# ```
+# opensh_ssh_auth_methods:
+# - publickey, password
+# ```
+openssh_server_auth_methods:
+    - publickey
+    - password
+
+# Whether or not to enable and start the SSH server.
+# By default, this is done unless running in a container.
+openssh_server_run_service: "ansible_virtualization_role != 'guest' or ansible_virtualization_type != 'docker'"
+
+# Host keys to generate and use, in order of preference.
+# Paths are always relative to openssh_config_dir
+openssh_server_host_keys:
+    - ssh_host_ed25519_key
+    - ssh_host_rsa_key
+    - ssh_host_ecdsa_key
+
+# Whether or not to use privilege separation.
+# This is generally advisable where supported, but requires a modern
+#   openssh version.
+openssh_server_sandbox: true
+
+# SSH server key exchange algorithms
+openssh_server_kex:
+    - curve25519-sha256@libssh.org
+    - diffie-hellman-group-exchange-sha256
+
+# SSH server ciphers
+openssh_server_ciphers:
+    - chacha20-poly1305@openssh.com
+    - aes256-gcm@openssh.com
+    - aes128-gcm@openssh.com
+    - aes256-ctr
+    - aes192-ctr
+    - aes128-ctr
+
+# SSH server MAC algorithms
+openssh_server_mac:
+    - hmac-sha2-512-etm@openssh.com
+    - hmac-sha2-256-etm@openssh.com
+    - hmac-sha2-512
+    - hmac-sha2-256
+    - hmac-ripemd160
+
+
+# SFTP subsystem to use.
+openssh_server_sftp_subsystem: "sftp-internal"
+
+
+
+
+# ===============
+# Client defaults
+# ===============
+
+# Since the default server package installs the client binaries, there
+# is no need for a specific client package. OSes where this is not the
+# case are handled by using OS family specific variables.
+openssh_client_packages: []
+
+openssh_client_fingerprint_hash: "sha256"
+
+openssh_client_kex:
+    - curve25519-sha256@libssh.org
+    - diffie-hellman-group-exchange-sha256
+
+# SSH server ciphers
+openssh_client_ciphers:
+    - chacha20-poly1305@openssh.com
+    - aes256-gcm@openssh.com
+    - aes128-gcm@openssh.com
+    - aes256-ctr
+    - aes192-ctr
+    - aes128-ctr
+
+# SSH server MAC algorithms
+openssh_client_mac:
+    - hmac-sha2-512-etm@openssh.com
+    - hmac-sha2-256-etm@openssh.com
+    - hmac-sha2-512
+    - hmac-sha2-256
+    - hmac-ripemd160
+
+
+openssh_server_oath: False
+openssh_server_duo: False

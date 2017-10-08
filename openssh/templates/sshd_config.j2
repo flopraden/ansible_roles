@@ -1,0 +1,103 @@
+# {{ ansible_managed }}
+
+Port {{ openssh_server_port }}
+AddressFamily any
+{% for listen_address in openssh_server_listen_address %}
+ListenAddress {{ listen_address }}
+{% endfor %}
+
+Protocol 2
+
+{% for host_key in openssh_server_host_keys %}
+HostKey {{ openssh_config_dir }}/{{ host_key }}
+{% endfor %}
+
+KexAlgorithms {{ openssh_server_kex | join(",") }}
+Ciphers {{ openssh_server_ciphers | join(",") }}
+MACs {{ openssh_server_mac | join(",") }}
+
+{% if openssh_server_sandbox %}
+UsePrivilegeSeparation sandbox
+{% endif %}
+
+# Logging
+
+SyslogFacility AUTH
+LogLevel INFO
+
+# Authentication
+
+# Allowed auth methods
+AuthenticationMethods {{ openssh_server_auth_methods | join(" ") }}
+
+UseLogin no
+PermitRootLogin {{ "yes" if openssh_server_allow_root else "no" }}
+StrictModes yes
+
+LoginGraceTime 2m
+MaxAuthTries 3
+MaxSessions 5
+
+## Keyboard/password auth
+KbdInteractiveAuthentication yes
+PasswordAuthentication yes
+PermitEmptyPasswords no
+
+## Key-based auth
+RSAAuthentication yes
+PubkeyAuthentication yes
+
+### Authorised keys
+AuthorizedKeysFile      .ssh/authorized_keys
+
+RhostsRSAAuthentication no
+HostbasedAuthentication no
+IgnoreRhosts yes
+
+## Disable s/key passwords
+ChallengeResponseAuthentication no
+
+# Kerberos options
+KerberosAuthentication no
+
+## GSSAPI options
+GSSAPIAuthentication no
+
+## Use PAM for session handling
+UsePAM yes
+
+# Other settings
+
+AllowAgentForwarding no
+AllowTcpForwarding no
+GatewayPorts no
+X11Forwarding no
+
+PrintMotd yes
+PrintLastLog yes
+TCPKeepAlive yes
+
+PermitUserEnvironment no
+Compression delayed
+ClientAliveInterval 300
+ClientAliveCountMax 0
+UseDNS no
+PidFile /run/sshd.pid
+MaxStartups 10:30:100
+PermitTunnel no
+ChrootDirectory none
+
+# Login banner
+Banner /etc/issue
+
+Subsystem       sftp    {{ openssh_server_sftp_subsystem }}
+
+# If not empty, limit access to the listed users and groups.
+AllowGroups {{ " ".join(openssh_server_allow_groups) }}
+AllowUsers {{ " ".join(openssh_server_allow_users) }}
+
+{% for match_block in openssh_server_match_blocks %}
+
+Match {{ match_block.type }} {{ match_block.subject }}
+    {{ "\n    ".join(match_block.rules) }}
+{% endfor %}

@@ -1,0 +1,18 @@
+#%PAM-1.0
+auth       required     pam_sepermit.so
+
+{% if openssh_server_allow_password %}
+auth       include      password-auth
+{% endif %}
+
+{% if openssh_server_oath %}
+# Enable and require OATH
+auth       requisite     pam_oath.so {{ " ".join(openssh_server_oath_options) }}
+{% endif %}
+
+{% if openssh_server_duo %}
+# Enable DuoSecurity
+auth    sufficient      /lib64/security/pam_duo.so
+{% endif %}
+
+account    required     pam_nologin.so

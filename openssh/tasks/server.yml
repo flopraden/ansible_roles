@@ -1,0 +1,86 @@
+---
+
+# Install any server packages that may be required.
+- name: openssh | server | install packages
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ openssh_server_packages }}"
+  tags:
+    - ssh_server
+
+# Create the default group allowed ssh access.
+#
+
+# For sandboxing/privilege separation to work,
+#   a user and group called sshd must exist.
+#
+# See http://www.citi.umich.edu/u/provos/ssh/privsep-faq.html.
+
+- name: openssh | server | create sandbox group
+  group:
+    name: "sshd"
+    state: present
+    system: true
+  tags:
+    - ssh_server
+    - sandbox
+
+- name: openssh | server | create sandbox user home
+  file:
+    name: "{{ item }}"
+    state: "directory"
+    owner: "root"
+    group: "root"
+    mode: "1710"
+  with_items:
+    - /var/empty
+    - /var/empty/sshd
+  tags:
+    - ssh_server
+    - sandbox
+
+- name: openssh | server | create sandbox user
+  user:
+    name: "sshd"
+    state: present
+    group: "sshd"
+    shell: "/sbin/nologin"
+    system: true
+    home: "/var/empty/sshd"
+  tags:
+    - ssh_server
+    - sandbox
+
+# Generate server host keys
+- name: openssh | server | generate host keys
+  command: /usr/bin/ssh-keygen -A
+  args:
+    creates: "{{ openssh_config_dir }}/ssh_host_*_key"
+  become: root
+  tags:
+    - ssh_server
+    - key_generation
+
+
+# Manage SSH server config
+- name: openssh | server | create sshd_config
+  template:
+    dest: /etc/ssh/sshd_config
+    src: sshd_config.j2
+    owner: root
+    group: root
+    mode: "0600"
+    validate: /usr/sbin/sshd -t -f %s
+  tags:
+    - ssh_server
+
+# Enable and run the server as a service
+- name: openssh | server | enable and start service
+  service:
+    name: "{{ openssh_server_service }}"
+    state: started
+    enabled: yes
+  when: "openssh_server_run_service"
+  tags:
+    - ssh_server

@@ -1,0 +1,49 @@
+---
+
+- hosts: localhost
+  connection: local
+  roles:
+    - { role: openssh }
+  vars:
+    openssh_server_allow_password: true
+  tasks:
+    - name: openssh | server | test server config
+      command: /usr/sbin/sshd -t
+    - name: openssh | server | test server starts
+      command: /usr/sbin/sshd
+    - name: openssh | server | create group for sshers
+      group:
+        name: "{{ openssh_server_user_group }}"
+        state: present
+        system: true
+    - name: openssh | client | generate ssh keys
+      command: ssh-keygen -t ed25519 -f /root/.ssh/id_ed25519 -P ""
+    - name: openssh | server | create test user
+      user:
+        name: "ssher"
+        password: "$1$xyz$jAlmRpcFe.aiPOIXET9GG/"
+        group: "{{ openssh_server_user_group }}"
+        state: present
+    - name: openssh | client | populate authorized_keys
+      authorized_key:
+        user: "{{ item }}"
+        state: present
+        key: "{{ lookup('file','/root/.ssh/id_ed25519.pub') }}"
+      with_items:
+        - ssher
+        - root
+    - name: openssh | server | test server works
+      command: ssh -o StrictHostKeyChecking=no ssher@127.0.0.1 uptime
+    - name: openssh | server | test server denies root login
+      command: ssh -o StrictHostKeyChecking=no -o PreferredAuthentications=publickey 127.0.0.1 uptime
+      register: command_result
+      ignore_errors: True
+    - fail:
+        msg: "Root login allowed"
+      when: command_result.rc == 0
+    - name: openssh | install | sshpass
+      package:
+        name: sshpass
+        state: present
+    - name: openssh | server | test password login
+      command: sshpass -ptest ssh -oPreferredAuthentications=keyboard-interactive,password ssher@127.0.0.1 uptime

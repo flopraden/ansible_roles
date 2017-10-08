@@ -1,0 +1,21 @@
+# {{ ansible_managed }}
+
+# Minimum accepted size of the DH parameter p. By default this is set to 1024
+# to maintain compatibility with RFC4419, but should be set higher.
+# KexDHMin 2048
+
+HostKeyAlgorithms ssh-ed25519-cert-v01@openssh.com,ssh-rsa-cert-v01@openssh.com,ssh-ed25519,ssh-rsa
+
+# Ensure KnownHosts are unreadable if leaked - it is otherwise easier to know which hosts your keys have access to.
+HashKnownHosts yes
+
+KexAlgorithms {{ openssh_client_kex | join(",") }}
+Ciphers {{ openssh_client_ciphers | join(",") }}
+MACs {{ openssh_client_mac | join(",") }}
+
+# FingerprintHash {{ openssh_client_fingerprint_hash }}
+
+# Disable forwarding 
+Host *
+  ForwardAgent no
+  ForwardX11 no

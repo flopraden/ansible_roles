@@ -1,0 +1,14 @@
+---
+
+# Defaults for RedHat-like OSes:
+# * RHEL
+# * CentOS
+# * Fedora
+openssh_server_packages:
+    - openssh-server
+    - openssh
+
+openssh_client_packages:
+    - openssh-clients
+    
+openssh_server_service: "sshd"
