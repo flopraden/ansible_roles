@@ -20,6 +20,11 @@
     - banner
     - legal
 
+- include: limits.yml
+  tags:
+    - os_hardening
+    - limits
+
 
 - include: system_users.yml
   tags:
