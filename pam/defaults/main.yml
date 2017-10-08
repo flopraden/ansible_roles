@@ -18,7 +18,7 @@ pam_smartcard_required: no
 
 # Number of characters in the new password that must not be present in the
 # old password.
-pam_pwquality_difok: 4
+pam_pwquality_difok: 8
 
 # Minimum acceptable size for the new password (plus one if
 # credits are not disabled which is the default). (See pam_cracklib manual.)
@@ -53,7 +53,7 @@ pam_pwquality_minclass: 4
 
 # The maximum number of allowed consecutive same characters in the new password.
 # The check is disabled if the value is 0.
-pam_pwquality_maxrepeat: 3
+pam_pwquality_maxrepeat: 2
 
 
 # The maximum number of allowed consecutive characters of the same class in the
