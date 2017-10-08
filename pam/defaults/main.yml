@@ -5,8 +5,8 @@ pam_remember_passwords: 5
 
 pam_run_services: "ansible_virtualization_role != 'guest' or ansible_virtualization_type != 'docker'"
 
-pam_failed_password_attempts: 6
-pam_unlock_failed_after: 1800
+pam_failed_password_attempts: 5
+pam_unlock_failed_after: never
 pam_fail_interval: 900
 
 # Maximum number of days after a password expires before the account is disabled.
@@ -33,23 +33,23 @@ pam_pwquality_dcredit: -1
 # The maximum credit for having uppercase characters in the new password.
 # If less than 0 it is the minimum number of uppercase characters in the new
 # password.
-pam_pwquality_ucredit: -1
+pam_pwquality_ucredit: -2
 
 #
 # The maximum credit for having lowercase characters in the new password.
 # If less than 0 it is the minimum number of lowercase characters in the new
 # password.
-pam_pwquality_lcredit: -1
+pam_pwquality_lcredit: -2
 
 #
 # The maximum credit for having other characters in the new password.
 # If less than 0 it is the minimum number of other characters in the new
 # password.
-pam_pwquality_ocredit: -1
+pam_pwquality_ocredit: -2
 
 # The minimum number of required classes of characters for the new
 # password (digits, uppercase, lowercase, others).
-pam_pwquality_minclass: 3
+pam_pwquality_minclass: 4
 
 # The maximum number of allowed consecutive same characters in the new password.
 # The check is disabled if the value is 0.
