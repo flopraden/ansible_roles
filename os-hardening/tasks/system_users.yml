@@ -11,5 +11,6 @@
     name: "{{ item.split(':',2)[0] }}"
     state: present
     shell: /sbin/nologin
-  when: item.split(':')[2]|int < 1000 and item.split(':')[2]|int > 0
+    expires: -1
+  when: item.split(':')[2]|int < 1000 and item.split(':')[2]|int > 0 and not '/sbin/nologin' in item
   with_items: "{{ os_hardening_passwd_entries.stdout_lines }}"
