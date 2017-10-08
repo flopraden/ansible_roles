@@ -93,7 +93,7 @@ Banner /etc/issue
 Subsystem       sftp    {{ openssh_server_sftp_subsystem }}
 
 # If not empty, limit access to the listed users and groups.
-AllowGroups {{ " ".join(openssh_server_allow_groups) }}
+AllowGroups {{ " ".join(openssh_server_allow_groups + [openssh_server_user_group]) }}
 AllowUsers {{ " ".join(openssh_server_allow_users) }}
 
 {% for match_block in openssh_server_match_blocks %}
