@@ -30,7 +30,11 @@ openssh_server_allow_users: []
 # List of groups permitted to log in via SSH.
 # If empty, all users are theoretically allowed to log in
 # If you override this, you need to manually add the $openssh_server_user_group to the list
-openssh_server_allow_groups: []
+openssh_server_allow_groups:
+  - "{{ openssh_server_user_group }}"
+  - "sftp_only"
+  - "users"
+
 
 # Wether to allow root logins
 openssh_server_allow_root: false
