@@ -1,6 +1,22 @@
 ---
+
+# Test default docker install
 - hosts: localhost
   roles:
     - docker
   tasks:
     - command: dockerd --version
+    # Remove to allow testing docker CE
+    - package:
+        name: "{{ docker_package_name }}"
+        state: absent
+
+# Test docker-latest
+- hosts: localhost
+  roles:
+    - docker
+  vars:
+    docker_package_name: docker-latest
+    docker_service_name: docker-latest
+  tasks:
+    - command: docker-ce --version
