@@ -1,0 +1,9 @@
+---
+# tasks file for running fail2ban
+
+- name: fail2ban | service | run and enable
+  service:
+    name: "{{ fail2ban_service }}"
+    state: started
+    enabled: yes
+  when: fail2ban_run_services
