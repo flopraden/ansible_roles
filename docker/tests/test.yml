@@ -5,7 +5,9 @@
   roles:
     - docker
   tasks:
-    - command: dockerd --version
+    - command: docker version
+      register: docker_version_info
+    # TODO: Testing
     # Remove to allow testing docker CE
     - package:
         name: "{{ docker_package_name }}"
@@ -19,4 +21,6 @@
     docker_package_name: docker-latest
     docker_service_name: docker-latest
   tasks:
-    - command: docker-ce --version
+    - command: docker version
+      register: docker_version_info
+    # TODO: Testing
