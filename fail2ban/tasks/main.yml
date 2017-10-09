@@ -1,2 +1,8 @@
 ---
 # tasks file for fail2ban
+
+- include: install.yml
+
+- include: configure.yml
+
+- include: run.yml
