@@ -2,23 +2,23 @@
 # defaults file for docker
 
 # Package to install
-docker_package: "docker"
+docker_package_name: "docker-ce"
 
 # Name of docker service to run
-docker_service: "docker"
+docker_service_name: "docker"
 
 # Name of docker group, and owning group of the docker socket
 docker_group: "docker"
 
-# Path to docker config file
-docker_config_file: "/etc/docker/daemon.json"
+# Path to docker config dir
+docker_config_dir: "/etc/{{ docker_service_name }}/"
 
 # Path to docker env file (typically a sysconfig file on RH, default file on Debian)
 docker_environment_file: "/etc/sysconfig/docker"
 
 # Whether or not to enable and start the docker service.
 # By default, this is done unless running in a container.
-docker_run_service: "ansible_virtualization_role != 'guest' or ansible_virtualization_type != 'docker'"
+docker_run_services: ansible_virtualization_role != 'guest' or ansible_virtualization_type != 'docker'
 
 # Sockets to listen on.
 docker_config:
