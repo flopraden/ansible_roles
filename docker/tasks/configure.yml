@@ -3,15 +3,18 @@
 
 - name: docker | configuration | create directory
   file:
-    name: /etc/docker
+    name: "{{ item }}"
     state: directory
     owner: root
     group: root
-    mode: "01750"
-    
-- name: "docker | configuration | create {{ docker_config_file }}"
+    mode: "1750"
+  with_items:
+    - "{{ docker_config_dir }}"
+    - "{{ docker_config_dir }}/ssl"
+
+- name: "docker | configuration | create daemon.json"
   copy:
-    dest: "{{ docker_config_file }}"
+    dest: "{{ docker_config_dir }}/daemon.json"
     content: "{{ docker_config | to_json() }}"
     owner: root
     group: "{{ docker_group }}"
@@ -20,14 +23,14 @@
 - name: docker | configuration | create sysconfig file
   copy:
     dest: "{{ docker_environment_file }}"
-    content: "DOCKER_OPTS='--config-file {{ docker_config_file }} --group {{ docker_group }}'\n"
+    content: "DOCKER_OPTS='--config-file {{ docker_config_dir }}/daemon.json --group {{ docker_group }}'\n"
     owner: root
     group: root
     mode: "0640"
 
-- name: docker | configuration | create drop-in directory
+- name: docker | configuration | create system service drop-in directory
   file:
-    name: /etc/systemd/system/{{ docker_service }}.service.d/
+    name: /etc/systemd/system/{{ docker_service_name }}.service.d/
     state: directory
     owner: root
     group: root
