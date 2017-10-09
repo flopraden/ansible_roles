@@ -1,0 +1,26 @@
+---
+# tasks to configure fail2ban
+
+- name: fail2ban | configuration | create directories
+  file:
+    name: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "1750"
+  with_items:
+    - /etc/fail2ban
+    - /etc/fail2ban/jail.d
+    - /etc/fail2ban/filter.d
+    - /etc/fail2ban/action.d
+    - /etc/fail2ban/fail2ban.d
+
+
+- name: fail2ban | configuration | add default protection
+  template:
+    src: jail.10-default.conf.j2
+    dest: /etc/fail2ban/jail.d/10-default.conf
+    owner: root
+    group: root
+    mode: "0640"
+
