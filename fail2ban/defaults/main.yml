@@ -1,2 +1,10 @@
 ---
 # defaults file for fail2ban
+
+fail2ban_service: fail2ban
+
+fail2ban_run_services: ansible_virtualization_role != 'guest' or ansible_virtualization_type != 'docker'
+
+fail2ban_packages:
+  - fail2ban-systemd
+  - fail2ban-firewalld
