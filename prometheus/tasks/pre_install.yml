@@ -6,7 +6,6 @@
   group:
     name: prometheus
     state: present
-    local: yes
     system: yes
 
 - name: prometheus | user | create
@@ -14,11 +13,10 @@
     name: prometheus
     state: present
     group: prometheus
-    system: yes
     shell: /sbin/nologin
     home: /opt/prometheus
     expires: -1
-    local: yes
+    system: yes
 
 - name: prometheus | directories | create
   file:
