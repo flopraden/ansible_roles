@@ -1,0 +1,34 @@
+---
+
+# Tasks to setup environment for prometheus
+
+- name: prometheus | group | create
+  group:
+    name: prometheus
+    state: present
+    local: yes
+    system: yes
+
+- name: prometheus | user | create
+  user:
+    name: prometheus
+    state: present
+    group: prometheus
+    system: yes
+    shell: /sbin/nologin
+    home: /opt/prometheus
+    expires: -1
+    local: yes
+
+- name: prometheus | directories | create
+  file:
+    name: "{{ item }}"
+    state: directory
+    owner: prometheus
+    group: prometheus
+    mode: "01750"
+  with_items:
+    - /etc/prometheus
+    - /opt/prometheus/data
+    - /opt/prometheus/logs
+    - /opt/prometheus/releases
