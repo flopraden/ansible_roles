@@ -5,6 +5,7 @@
 - include: pre_install.yml
 
 - include: install.yml
+  when: not prometheus_run_dockerised
 
 - include: configure.yml
 
