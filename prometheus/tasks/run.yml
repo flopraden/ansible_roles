@@ -8,9 +8,27 @@
     owner: root
     group: root
     mode: "0640"
+  when: ansible_service_mgr == 'systemd'
 
 - name: prometheus | service | start and enable
   service:
     name: prometheus.service
     state: started
     enabled: yes
+  when: "prometheus_run_services and \
+          ansible_service_mgr == 'systemd' and \
+          not prometheus_run_dockerised"
+
+- name: prometheus | docker | run container
+  docker_container:
+    name: "prometheus_server"
+    state: started
+    image: "{{ prometheus_docker_image }}:{{ 'v{}'.format(prometheus_version | regex_replace('^(\\d+\\.\\d+\\.\\d+)$','v\\1') }}"
+    command: "-config.file /etc/prometheus/prometheus.yml -storage.local.path /data $OPTIONS"
+    env_file: /etc/sysconfig/prometheus
+    networks: "{{ prometheus_docker_networks }}"
+    devices: prometheus_devices
+    exposed_ports: prometheus_ports
+    published_ports: prometheus_docker_publish_ports else []
+    cleanup: yes
+  when: prometheus_run_dockerised
