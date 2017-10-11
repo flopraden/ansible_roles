@@ -1,0 +1,31 @@
+---
+
+# Tasks to setup environment for prometheus
+
+- name: prometheus_node_exporter | group | create
+  group:
+    name: prometheus
+    state: present
+    system: yes
+
+- name: prometheus_node_exporter | user | create
+  user:
+    name: prometheus_node_exporter
+    state: present
+    group: prometheus
+    shell: /sbin/nologin
+    home: /opt/prometheus_node_exporter
+    comment: User for prometheus_node_exporter server
+    expires: -1
+    system: yes
+
+- name: prometheus_node_exporter | directories | create
+  file:
+    name: "{{ item }}"
+    state: directory
+    owner: prometheus_node_exporter
+    group: prometheus
+    mode: "01750"
+  with_items:
+    - /etc/prometheus_node_exporter
+    - /opt/prometheus_node_exporter/releases
