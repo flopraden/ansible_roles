@@ -1,5 +1,14 @@
 ---
+
 - hosts: localhost
   remote_user: root
   roles:
     - prometheus
+
+
+- hosts: localhost
+  remote_user: root
+  roles:
+    - prometheus
+  vars:
+    prometheus_run_dockerised: yes
