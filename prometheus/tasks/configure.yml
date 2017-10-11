@@ -1,0 +1,20 @@
+---
+# tasks for configuring prometheus
+
+- name: prometheus | configuration | create prometheus.yml
+  template:
+    src: prometheus.yml.j2
+    dest: /etc/prometheus/prometheus.yml
+    owner: root
+    group: prometheus
+    mode: "0640"
+
+- name: prometheus | environment | create env file for systemd unit
+  copy:
+    dest: /etc/sysconfig/prometheus
+    content: OPTIONS="-storage.local.path=/opt/prometheus/data"
+    owner: root
+    group: prometheus
+    mode: "0640"
+    force: no
+
