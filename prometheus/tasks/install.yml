@@ -1,0 +1,21 @@
+---
+# tasks to install prometheus
+
+- name: prometheus | release | download and extract
+  unarchive:
+    src: "https://github.com/prometheus/prometheus/releases/download/v{{ prometheus_version }}/prometheus-{{ prometheus_version }}.linux-amd64.tar.gz"
+    dest: /opt/prometheus/releases/
+    owner: prometheus
+    group: prometheus
+    mode: "0750"
+    remote_src: yes
+    creates: "/opt/prometheus/releases/prometheus-{{ prometheus_version }}.linux-amd64"
+  become: prometheus
+
+- name: prometheus | release | create symlink to current
+  file:
+    src: "/opt/prometheus/releases/prometheus-{{ prometheus_version }}.linux-amd64"
+    dest: "/opt/prometheus/current"
+    state: link
+    owner: prometheus
+    group: prometheus
