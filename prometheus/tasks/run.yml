@@ -1,0 +1,16 @@
+---
+# Tasks for running prometheus
+
+- name: prometheus | systemd | create service unit
+  template:
+    src: prometheus.service.j2
+    dest: /etc/systemd/system/prometheus.service
+    owner: root
+    group: root
+    mode: "0640"
+
+- name: prometheus | service | start and enable
+  service:
+    name: prometheus.service
+    state: started
+    enabled: yes
