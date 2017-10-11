@@ -15,6 +15,7 @@
     group: prometheus
     shell: /sbin/nologin
     home: /opt/prometheus
+    comment: User for prometheus server
     expires: -1
     system: yes
 
@@ -27,6 +28,10 @@
     mode: "01750"
   with_items:
     - /etc/prometheus
+    # Folder for file_sd_config files for scrape_configs
+    - /etc/prometheus/targets.d
+    # Folder for rules
+    - /etc/prometheus/rules.d
     - /opt/prometheus/data
     - /opt/prometheus/logs
     - /opt/prometheus/releases
