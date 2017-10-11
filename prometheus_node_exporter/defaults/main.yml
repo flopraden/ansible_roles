@@ -1,2 +1,39 @@
 ---
-# defaults file for prometheus_node_exporter
+# defaults file for prometheus_node_exporter_node_exporter
+
+# Version of the prometheus binary or docker container to use.
+# For docker containers, if the version is \d+.\d+.\d+, a v will be prepended.
+prometheus_node_exporter_version: "0.15.0"
+
+# Port to have prometheus list for web requests on
+# If prometheus is dockerised, this is the port exposed by the container
+prometheus_node_exporter_ports:
+  - 9100
+
+# Whether to publish the prometheus ports.
+# If not falsy, it needs to be a suitable portspec.
+# In other words, to publish prometheus port, you would have:
+# prometheus_node_exporter_docker_publish_ports:
+#   - 9100:9100
+prometheus_node_exporter_docker_publish_ports: no
+
+# Whether to run prometheus as a system service.
+# Default is to do so, unless running in a docker container.
+# This will be ignored if run_dockerised is truthy.
+prometheus_node_exporter_run_services: not (ansible_virtualization_role == 'guest' and ansible_virtualization_type == 'docker')
+
+# Whether to run prometheus in a docker container
+prometheus_node_exporter_run_dockerised: no
+
+# Image to use to run prometheus.
+prometheus_node_exporter_docker_image: prom/node-exporter
+
+# Networks prometheus should be part of
+prometheus_node_exporter_docker_networks:
+  - name: bridge
+
+# Devices/volumes to expose to the container.
+prometheus_node_exporter_docker_devices: []
+
+# Platform to download binary for.
+prometheus_node_exporter_platform: "{{ 'darwin' if ansible_os_family == 'Darwin' else 'linux' }}"
