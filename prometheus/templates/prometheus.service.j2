@@ -1,0 +1,17 @@
+[Unit]
+Description=Prometheus Server
+After=network.target
+Documentation=https://prometheus.io/docs/introduction/overview/
+
+[Service]
+EnvironmentFile=-/etc/sysconfig/prometheus
+ExecStart=/opt/prometheus/current/prometheus -config.file /etc/prometheus/prometheus.yml $OPTIONS
+User=prometheus
+Group=prometheus
+ProtectSystem=strict
+UMask=0027
+ReadWritePaths=/opt/prometheus/data /opt/prometheus/logs
+PrivateTmp=yes
+
+[Install]
+WantedBy=multi-user.target
