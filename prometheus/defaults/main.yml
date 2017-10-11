@@ -1,2 +1,4 @@
 ---
 # defaults file for prometheus
+
+prometheus_version: "1.8.0"
