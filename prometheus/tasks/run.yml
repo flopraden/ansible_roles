@@ -24,10 +24,10 @@
     name: "prometheus_server"
     state: started
     image: "{{ prometheus_docker_image }}:{{ prometheus_version | regex_replace('^(\\d+\\.\\d+\\.\\d+)$','v\\1') }}"
-    command: "-config.file /etc/prometheus/prometheus.yml -storage.local.path /data $OPTIONS"
+    command: "-config.file /etc/prometheus/prometheus.yml -storage.local.path /data {{ lookup('file', '/etc/sysconfig/prometheus') | regex_replace('^[A-Z0-9]+=\\W(.*?)\\W$','\\1')}}"
     env_file: /etc/sysconfig/prometheus
     networks: "{{ prometheus_docker_networks }}"
-    devices: "{{ prometheus_docker_devices }}"
+    volumes: "{{ prometheus_docker_volumes }}"
     exposed_ports: "{{ prometheus_ports }}"
     published_ports: "{{ prometheus_docker_publish_ports | default([], true) }}"
     cleanup: yes

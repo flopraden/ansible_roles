@@ -33,7 +33,7 @@ prometheus_docker_networks:
   - name: bridge
 
 # Devices/volumes to expose to the container.
-prometheus_docker_devices:
+prometheus_docker_volumes:
   - /etc/prometheus:/etc/prometheus/:ro,Z
 
 # Platform to download binary for.
