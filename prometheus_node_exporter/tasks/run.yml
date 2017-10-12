@@ -1,0 +1,34 @@
+---
+# Tasks for running prometheus node-exporter
+
+- name: prometheus_node_exporter | systemd | create service unit
+  template:
+    src: prometheus_node_exporter.service.j2
+    dest: /etc/systemd/system/prometheus_node_exporter.service
+    owner: root
+    group: root
+    mode: "0640"
+  when: ansible_service_mgr == 'systemd'
+
+- name: prometheus_node_exporter | service | start and enable
+  service:
+    name: prometheus_node_exporter.service
+    state: started
+    enabled: yes
+  when: "prometheus_node_exporter_run_services and \
+          ansible_service_mgr == 'systemd' and \
+          not prometheus_node_exporter_run_dockerised"
+
+- name: prometheus_node_exporter | docker | run container
+  docker_container:
+    name: "prometheus_node_exporter"
+    state: started
+    image: "{{ prometheus_node_exporter_docker_image }}:{{ prometheus_node_exporter_version | regex_replace('^(\\d+\\.\\d+\\.\\d+)$','v\\1') }}"
+    command: "{{ lookup('file', '/etc/sysconfig/prometheus_node_exporter') | regex_replace('^[A-Z0-9]+=\\W(.*?)\\W$','\\1')}} --path.sysfs=/host/sys --path.procfs=/host/proc"
+    env_file: /etc/sysconfig/prometheus_node_exporter
+    networks: "{{ prometheus_node_exporter_docker_networks }}"
+    volumes: "{{ prometheus_node_exporter_docker_volumes }}"
+    exposed_ports: "{{ prometheus_node_exporter_ports }}"
+    published_ports: "{{ prometheus_node_exporter_docker_publish_ports | default([], true) }}"
+    cleanup: yes
+  when: prometheus_node_exporter_run_dockerised

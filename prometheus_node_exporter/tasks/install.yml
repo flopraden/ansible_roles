@@ -1,0 +1,21 @@
+---
+# tasks to install prometheus_node_exporter
+
+- name: prometheus_node_exporter | release | download and extract
+  unarchive:
+    src: "https://github.com/prometheus/node_exporter/releases/download/v{{ prometheus_node_exporter_version }}/node_exporter-{{ prometheus_node_exporter_version }}.{{ prometheus_node_exporter_platform }}-amd64.tar.gz"
+    dest: /opt/prometheus_node_exporter/releases/
+    owner: prometheus_node_exporter
+    group: prometheus
+    mode: "0750"
+    remote_src: yes
+    creates: "/opt/prometheus_node_exporter/releases/node_exporter-{{ prometheus_node_exporter_version }}.{{ prometheus_node_exporter_platform }}-amd64"
+  become: prometheus_node_exporter
+
+- name: prometheus_node_exporter | release | create symlink to current
+  file:
+    src: "/opt/prometheus_node_exporter/releases/node_exporter-{{ prometheus_node_exporter_version }}.{{ prometheus_node_exporter_platform }}-amd64"
+    dest: "/opt/prometheus_node_exporter/current"
+    state: link
+    owner: prometheus_node_exporter
+    group: prometheus

@@ -33,7 +33,9 @@ prometheus_node_exporter_docker_networks:
   - name: bridge
 
 # Devices/volumes to expose to the container.
-prometheus_node_exporter_docker_devices: []
-
+prometheus_node_exporter_docker_volumes:
+  - "/proc:/host/proc:ro,Z"
+  - "/sys:/host/sys:ro,Z"
+  - "/:/rootfs:ro,Z,slave"
 # Platform to download binary for.
 prometheus_node_exporter_platform: "{{ 'darwin' if ansible_os_family == 'Darwin' else 'linux' }}"

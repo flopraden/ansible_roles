@@ -3,3 +3,11 @@
   remote_user: root
   roles:
     - prometheus_node_exporter
+
+
+- hosts: localhost
+  remote_user: root
+  vars:
+    prometheus_node_exporter_run_dockerised: yes
+  roles:
+    - prometheus_node_exporter

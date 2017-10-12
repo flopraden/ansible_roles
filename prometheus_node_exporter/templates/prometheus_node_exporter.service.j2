@@ -1,0 +1,18 @@
+[Unit]
+Description=Prometheus node-exporter
+After=network.target
+Documentation=https://github.com/prometheus/node_exporter
+
+[Service]
+WorkingDirectory=/opt/prometheus_node_exporter
+EnvironmentFile=-/etc/sysconfig/prometheus_node_exporter
+ExecStart=/opt/prometheus_node_exporter/current/node_exporter $OPTIONS
+User=prometheus_node_exporter
+Group=prometheus
+ProtectSystem=strict
+UMask=0027
+ReadOnlyPaths=/ /proc /sys
+PrivateTmp=yes
+
+[Install]
+WantedBy=multi-user.target

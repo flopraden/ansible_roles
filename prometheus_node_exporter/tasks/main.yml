@@ -1,2 +1,11 @@
 ---
 # tasks file for prometheus_node_exporter
+
+- include: pre_install.yml
+
+- include: install.yml
+  when: not prometheus_node_exporter_run_dockerised
+
+- include: configure.yml
+
+- include: run.yml
