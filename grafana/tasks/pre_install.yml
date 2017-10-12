@@ -1,0 +1,16 @@
+---
+# pre install tasks for grafana
+
+
+- name: grafana | repository | add
+  yum_repository:
+    name: "grafana"
+    state: present
+    description: "Grafana repository"
+    baseurl: "{{ grafana_repository_url }}"
+    gpgkey: https://packagecloud.io/gpg.key https://grafanarel.s3.amazonaws.com/RPM-GPG-KEY-grafana
+    gpgcheck: yes
+    enabled: yes
+    sslverify: yes
+    includepkgs: "grafana grafana-server"
+  when: ansible_pkg_mgr == 'yum'
