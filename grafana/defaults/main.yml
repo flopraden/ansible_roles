@@ -1,2 +1,4 @@
 ---
 # defaults file for grafana
+
+grafana_repository_url: "https://packagecloud.io/grafana/stable/el/{{ ansible_distribution_major_version }}/$basearch"
