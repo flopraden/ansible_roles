@@ -1,0 +1,7 @@
+---
+# install tasks for grafana
+
+- name: grafana | package | install
+  package:
+    name: grafana
+    state: present
