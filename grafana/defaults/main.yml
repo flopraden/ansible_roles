@@ -15,12 +15,21 @@ grafana_ports:
 
 grafana_docker_publish_ports: no
 
+grafana_docker_name: "grafana"
 grafana_docker_image: "grafana/grafana"
 
 grafana_repository_url: "https://packagecloud.io/grafana/stable/el/{{ ansible_distribution_major_version }}/$basearch"
 grafana_binary_url: "https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana-4.5.2.linux-x64.tar.gz"
 
+grafana_docker_networks:
+  - name: bridge
+
 grafana_docker_volumes:
   - "/etc/grafana:/etc/grafana:ro,Z"
   - "/var/lib/grafana:/var/lib/grafana:Z"
-  - "/var/log/grafana:/var/log/grafana:Z"
+
+
+grafana_api_user: admin
+grafana_api_password: admin
+
+grafana_data_sources: []
