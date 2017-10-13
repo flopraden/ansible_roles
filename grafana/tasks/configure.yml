@@ -22,7 +22,7 @@
 - name: grafana | configuration | create grafana.ini
   template:
     src: grafana.ini.j2
-    dest: /etc/grafana/grafana.in
+    dest: /etc/grafana/grafana.ini
     owner: root
     group: grafana
     mode: "0640"
