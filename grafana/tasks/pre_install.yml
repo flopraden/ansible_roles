@@ -1,6 +1,33 @@
 ---
 # pre install tasks for grafana
 
+- name: grafana | group | create
+  group:
+    name: grafana
+    state: present
+    system: yes
+
+- name: grafana | user | create
+  user:
+    name: grafana
+    state: present
+    group: grafana
+    home: /usr/share/grafana
+    shell: /sbin/nologin
+    expires: -1
+    system: yes
+
+- name: grafana | directories | create
+  file:
+    name: "{{ item }}"
+    state: directory
+    owner: grafana
+    group: grafana
+    mode: "01750"
+  with_items:
+    - /etc/grafana
+    - /var/log/grafana
+    - /var/lib/grafana
 
 - name: grafana | repository | add
   yum_repository:
