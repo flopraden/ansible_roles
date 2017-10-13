@@ -9,6 +9,6 @@
 
 - name: grafana | docker image | pull
   docker_image:
-    name: "{{ grafana_docker_image }}:{{ grafana_version | regex_replace('^(\\d+\\.\\d+\\.\\d+)$','v\\1') }}"
+    name: "{{ grafana_docker_image }}:{{ grafana_version }}"
     state: present
   when: grafana_run_dockerised
