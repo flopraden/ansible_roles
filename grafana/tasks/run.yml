@@ -12,8 +12,9 @@
 - name: grafana | service | run via docker
   docker_container:
     name: "{{ grafana_docker_name }}"
+    image: "{{ grafana_docker_image }}:{{ grafana_version }}"
     state: started
-    env_file: /etc/sysconfig/grafana
+    env_file: /etc/sysconfig/grafana-server
     networks: "{{ grafana_docker_networks }}"
     volumes: "{{ grafana_docker_volumes }}"
     exposed_ports: "{{ grafana_ports }}"
