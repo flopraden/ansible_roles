@@ -3,7 +3,7 @@
 
 - name: grafana | data source | add
   uri:
-    url: "http://{{ ansible_hostname }}:{{ grafana_ports[0]['port'] }}/"
+    url: "http://{{ ansible_hostname }}:{{ grafana_ports[0]['port'] }}/api/datasources"
     body: "{{ item | to_json }}"
     body_format: "json"
     method: "POST"
@@ -13,5 +13,4 @@
     headers:
       Accept: "application/json"
       Content-Type: "application/json"
-
   with_items: "{{ grafana_data_sources }}"
