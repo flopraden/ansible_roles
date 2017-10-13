@@ -8,3 +8,6 @@
 - include: configure.yml
 
 - include: run.yml
+
+- include: api.yml
+  when: grafana_data_sources | length
