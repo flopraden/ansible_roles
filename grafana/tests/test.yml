@@ -3,3 +3,17 @@
   remote_user: root
   roles:
     - grafana
+
+# Test dockerised
+- hosts: localhost
+  remote_user: root
+  roles:
+    - grafana
+  vars:
+    grafana_run_dockerised: yes
+    grafana_data_sources:
+      - name: prometheus
+        type: prometheus
+        url: "http://localhost:9090"
+        access: "proxy"
+        basicAuth: false
