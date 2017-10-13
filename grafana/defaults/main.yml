@@ -1,4 +1,24 @@
 ---
 # defaults file for grafana
 
+grafana_version: "4.5.2"
+
+grafana_app_mode: "production"
+grafana_instance_name: "{{ ansible_hostname }}"
+
+grafana_run_services: not (ansible_virtualization_role == 'guest' and ansible_virtualization_type == 'docker')
+grafana_run_dockerised: no
+
+grafana_ports:
+  - name: "http"
+    port: 3000
+
+grafana_docker_publish_ports: no
+
 grafana_repository_url: "https://packagecloud.io/grafana/stable/el/{{ ansible_distribution_major_version }}/$basearch"
+grafana_binary_url: "https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana-4.5.2.linux-x64.tar.gz"
+
+grafana_docker_volumes:
+  - "/etc/grafana:/etc/grafana:ro,Z"
+  - "/var/lib/grafana:/var/lib/grafana:Z"
+  - "/var/log/grafana:/var/log/grafana:Z"
