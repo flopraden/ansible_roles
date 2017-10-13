@@ -1,0 +1,22 @@
+---
+# tasks to run grafana
+
+- name: grafana | service | run via service manager
+  service:
+    name: "grafana-server"
+    state: "started"
+    enabled: "yes"
+  when: grafana_run_services and not grafana_run_dockerised
+
+
+- name: grafana | service | run via docker
+  docker_container:
+    name: "{{ grafana_docker_name }}"
+    state: started
+    env_file: /etc/sysconfig/grafana
+    networks: "{{ grafana_docker_networks }}"
+    volumes: "{{ grafana_docker_volumes }}"
+    exposed_ports: "{{ grafana_ports }}"
+    published_ports: "{{ grafana_docker_publish_ports | default([], true) }}"
+    cleanup: yes
+  when: grafana_run_dockerised
