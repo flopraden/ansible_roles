@@ -1,0 +1,17 @@
+---
+# Tasks for interacting with the grafana API
+
+- name: grafana | data source | add
+  uri:
+    url: "http://{{ ansible_hostname }}:{{ grafana_ports[0]['port'] }}/"
+    body: "{{ item | to_json }}"
+    body_format: "json"
+    method: "POST"
+    user: "{{ grafana_api_user }}"
+    password: "{{ grafana_api_password }}"
+    force_basic_auth: yes
+    headers:
+      Accept: "application/json"
+      Content-Type: "application/json"
+
+  with_items: "{{ grafana_data_sources }}"
