@@ -23,6 +23,6 @@ docker_run_services: ansible_virtualization_role != 'guest' or ansible_virtualiz
 # Sockets to listen on.
 docker_config:
   host:
-    - fd:///var/run/docker.sock
+    - unix:///var/run/docker.sock
   "storage-driver": "overlay2"
   group: "{{ docker_group }}"
