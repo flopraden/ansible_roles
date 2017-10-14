@@ -8,18 +8,16 @@
   with_items:
     - firewalld
     - python-firewall
+  tags:
+    - firewalld
 
 
 - name: firewalld | configuration | create firewalld.conf
   template:
     src: firewalld.conf.j2
     dest: /etc/firewalld/firewalld.conf
-
-- name: firewalld | configuration | permit ssh
-  firewalld:
-    rich_rule: 'rule service name="ssh" audit limit value="5/m" accept'
-    state: enabled
-    permanent: true
+  tags:
+    - firewalld
 
 - name: firewalld | service | enable and run
   service:
@@ -27,3 +25,9 @@
     state: started
     enabled: yes
   when: firewalld_run_services
+  tags:
+    - firewalld
+
+- include: configure.yml
+  tags:
+    - firewalld
