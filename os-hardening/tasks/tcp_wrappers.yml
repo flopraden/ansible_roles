@@ -15,18 +15,18 @@
 - name: os hardening | tcp_wrappers | create hosts.allow
   copy:
     dest: /etc/hosts.allow
-    content: "{{ os_hardening_hosts_allow_rules | join('\n') }}"
+    content: "{{ os_hardening_hosts_allow_rules | join('\n') }}\n"
     owner: root
     group: root
     mode: "0644"
     force: yes
-    
+
 - name: os hardening | tcp_wrappers | create hosts.deny
   copy:
     dest: /etc/hosts.deny
-    content: "ALL: ALL"
+    content: "ALL: ALL\n"
     owner: root
     group: root
     mode: "0644"
     force: yes
-    
+
