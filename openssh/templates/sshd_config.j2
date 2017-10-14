@@ -30,7 +30,7 @@ LogLevel INFO
 # Allowed auth methods
 AuthenticationMethods {{ openssh_server_auth_methods | join(" ") }}
 
-UseLogin no
+#UseLogin no
 PermitRootLogin {{ "yes" if openssh_server_allow_root else "no" }}
 StrictModes yes
 
@@ -44,14 +44,14 @@ PasswordAuthentication yes
 PermitEmptyPasswords no
 
 ## Key-based auth
-RSAAuthentication yes
+#RSAAuthentication yes
 PubkeyAuthentication yes
 
 ### Authorised keys
 AuthorizedKeysFile      .ssh/authorized_keys
 
-RhostsRSAAuthentication no
-HostbasedAuthentication no
+#RhostsRSAAuthentication no
+#HostbasedAuthentication no
 IgnoreRhosts yes
 
 ## Disable s/key passwords
