@@ -82,7 +82,8 @@ openssh_server_service: "ssh"
 # ```
 openssh_server_auth_methods:
     - publickey
-    - password
+    - password:pam
+    - keyboard-interactive:pam
 
 # Whether or not to enable and start the SSH server.
 # By default, this is done unless running in a container.
