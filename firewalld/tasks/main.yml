@@ -17,7 +17,7 @@
 
 - name: firewalld | configuration | permit ssh
   firewalld:
-    service: ssh
+    rich_rule: 'rule service name="ssh" audit limit value="5/m" accept'
     state: enabled
     permanent: true
 
