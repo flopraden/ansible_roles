@@ -28,11 +28,12 @@
         -a always,exit -F path={{ path }} -F perm=x -F auid>=500 -F auid!=4294967295 -k privileged
         {% endfor %}
 
+
 - name: auditd | ruleset | create rule to make ruleset immutable
   copy:
     dest: "/etc/audit/rules.d/999-immutable.rules"
     force: yes
-    content: "-e 2"
+    content: "-e 2\n"
     owner: root
     group: root
     mode: "0600"
