@@ -41,3 +41,8 @@
     sslverify: yes
     includepkgs: "grafana grafana-server"
   when: ansible_pkg_mgr == 'yum'
+  register: grafana_add_repo
+
+- name: grafana | yum | download and accept gpg keys
+  command: yum makecache fast -y
+  when: grafana_add_repo.changed
