@@ -20,11 +20,11 @@
 - name: os hardening | grub | secure grub.cfg permissions
   file:
     name: /boot/grub2/grub.cfg
-    state: present
+    state: file
     owner: root
     group: root
     mode: "0000"
   when: "not (ansible_virtualization_role == 'guest' and ansible_virtualization_type == 'docker')"
-  
+
 
 
