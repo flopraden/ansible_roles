@@ -7,6 +7,7 @@
     state: present
     system: yes
 
+
 - name: docker | yum | add docker ce repo
   yum_repository:
     name: "docker-ce"
@@ -17,3 +18,9 @@
     enabled: yes
     gpgkey: "https://download.docker.com/linux/centos/gpg"
   when: ansible_distribution == 'CentOS' and docker_package_name == 'docker-ce'
+  register: docker_add_ce_repo
+
+- name: docker | yum | download and accept gpg keys
+  command: yum makecache fast -y
+  when: docker_add_ce_repo.changed
+  when: ansible_pkg_mgr == 'yum'
