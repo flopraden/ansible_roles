@@ -3,10 +3,18 @@
 
 
 - include: pre_install.yml
+  tags:
+    - prometheus
 
 - include: install.yml
+  tags:
+    - prometheus
   when: not prometheus_run_dockerised
 
 - include: configure.yml
+  tags:
+    - prometheus
 
 - include: run.yml
+  tags:
+    - prometheus
