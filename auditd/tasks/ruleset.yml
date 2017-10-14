@@ -4,8 +4,8 @@
 
 - name: auditd | ruleset | create standard rules
   template:
-    src: 10-standard.conf.j2
-    dest: /etc/audit/rules.d/10-standard.conf
+    src: 10-standard.rules.j2
+    dest: /etc/audit/rules.d/10-standard.rules
     owner: root
     group: root
     mode: "0600"
@@ -17,7 +17,7 @@
 
 - name: auditd | ruleset | audit use of SUID/SGID programmes
   copy:
-    dest: "/etc/audit/rules.d/20-suid.conf"
+    dest: "/etc/audit/rules.d/20-suid.rules"
     force: yes
     owner: root
     group: root
@@ -30,7 +30,7 @@
 
 - name: auditd | ruleset | create rule to make ruleset immutable
   copy:
-    dest: "/etc/audit/rules.d/999-immutable.conf"
+    dest: "/etc/audit/rules.d/999-immutable.rules"
     force: yes
     content: "-e 2"
     owner: root
