@@ -1,0 +1,29 @@
+---
+# tasks for adding sources to zones.
+
+# See main.yml for an explanation, tl;dr:
+# https://github.com/ansible/ansible/issues/13262
+
+- name: firewalld | configuration | add sources to {{ zone.name }}
+  firewalld:
+    zone: "{{ zone.name }}"
+    source: "{{ item }}"
+    state: enabled
+    permanent: true
+  with_items: "{{ zone.sources | default([]) }}"
+
+- name: firewalld | configuration | add ports to {{ zone.name }}
+  firewalld:
+    zone: "{{ zone.name }}"
+    port: "{{ item }}"
+    state: enabled
+    permanent: true
+  with_items: "{{ zone.ports | default([]) }}"
+
+- name: firewalld | configuration | add rules to {{ zone.name }}
+  firewalld:
+    zone: "{{ zone.name }}"
+    rich_rule: "{{ item }}"
+    state: enabled
+    permanent: true
+  with_items: "{{ zone.rules | default([]) }}"

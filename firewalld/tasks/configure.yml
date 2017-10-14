@@ -1,0 +1,27 @@
+---
+# Tasks for configuring firewalld - these assume it is running
+
+# Default target for most zones is REJECT - DROP is preferrable.
+# Three zones have their own explicit target, which remains unchanged:
+# * drop zone will DROP
+# * trusted zone will ACCEPT
+# * block zone will REJECT
+- name: firewalld | configuration | set default target to DROP
+  command: "firewall-cmd --set-target=DROP --zone={{ item }} --permanent"
+  vars:
+    creates: "/etc/firewalld/zones/{{ item }}.xml"
+  with_items:
+    - work
+    - internal
+    - external
+    - home
+    - dmz
+    - public
+
+# Due to a limitation in looping that means it can be done for blocks,
+# it is instead necessary(/easier) to include a task file repeatedly.
+# https://github.com/ansible/ansible/issues/13262
+- include: zone_configuration.yml
+  with_items: "{{ firewalld_zones }}"
+  loop_control:
+    loop_var: "zone"
