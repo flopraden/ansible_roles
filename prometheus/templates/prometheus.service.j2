@@ -9,9 +9,9 @@ EnvironmentFile=-/etc/sysconfig/prometheus
 ExecStart=/opt/prometheus/current/prometheus $OPTIONS
 User=prometheus
 Group=prometheus
-ProtectSystem=strict
+ProtectSystem=full
 UMask=0027
-ReadOnlyPaths=/etc/prometheus
+ReadOnlyPaths=/etc/prometheus /opt/prometheus
 ReadWritePaths=/opt/prometheus/data /opt/prometheus/logs
 PrivateTmp=yes
 
