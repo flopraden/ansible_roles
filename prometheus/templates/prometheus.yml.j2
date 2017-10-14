@@ -11,3 +11,8 @@ scrape_configs:
     file_sd_configs:
       - files:
         - /etc/prometheus/targets.d/node_exporter/*.json
+
+  - job_name: prometheus
+    file_sd_configs:
+      - files:
+        - /etc/prometheus/targets.d/prometheus/*.json
