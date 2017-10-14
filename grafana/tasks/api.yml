@@ -1,6 +1,12 @@
 ---
 # Tasks for interacting with the grafana API
 
+- name: grafana | service | ensure API service available
+  wait_for:
+    host: "{{ ansible_hostname }}"
+    port: "{{ grafana_ports[0]['port'] }}"
+    timeout: 60
+
 - name: grafana | data source | add
   uri:
     url: "http://{{ ansible_hostname }}:{{ grafana_ports[0]['port'] }}/api/datasources"
@@ -10,6 +16,7 @@
     user: "{{ grafana_api_user }}"
     password: "{{ grafana_api_password }}"
     force_basic_auth: yes
+    status_code: 200, 409
     headers:
       Accept: "application/json"
       Content-Type: "application/json"
