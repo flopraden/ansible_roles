@@ -12,11 +12,16 @@
     - /etc/audit
     - /etc/audit/rules.d
 
+- name: audit | package | install
+  package:
+    name: audit
+    state: present
+
 - include: ruleset.yml
 
 - name: audit | service | enable and start
   service:
-    name: audit
+    name: auditd
     state: started
     enabled: yes
   when: auditd_run_services
