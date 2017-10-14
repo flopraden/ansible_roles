@@ -2,7 +2,7 @@
 
 auth        required      pam_env.so
 auth        [success=1 default=ignore] pam_succeed_if.so service notin login:gdm:xdm:kdm:xscreensaver:gnome-screensaver:kscreensaver quiet use_uid
-auth        [success=done authinfo_unavail=ignore ignore=ignore default=die] pam_pkcs11.so nodebug wait_for_card
+auth        [success=done authinfo_unavail=ignore ignore=ignore default=die] pam_pkcs11.so nodebug
 auth        required      pam_faildelay.so delay=2000000
 auth        required      pam_faillock.so preauth silent deny={{ pam_failed_password_attempts }} unlock_time={{ pam_unlock_failed_after }} fail_interval={{ pam_fail_interval }}
 auth        sufficient    pam_unix.so try_first_pass
