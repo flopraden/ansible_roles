@@ -12,6 +12,14 @@
     - /etc/group
 
 
+- name: os hardening | permissions | find init and shell profiles
+  find:
+    file_type: file
+    paths: /etc
+    patterns: "/etc/profile.d/*, /etc/*shrc, /etc/sysconfig/init"
+  register: os_hardening_files_for_umask
+
+
 - name: os hardening | permissions | set default umask for init processes and shells
   lineinfile:
     path: "{{ item }}"
@@ -23,7 +31,4 @@
     owner: "root"
     group: "root"
     mode: "0644"
-  with_fileglob:
-    - "/etc/profile.d/*"
-    - "/etc/*shrc"
-    - "/etc/sysconfig/init"
+  with_items: "{{ os_hardening_files_for_umask.files | map(attribute='path') | list }}"
