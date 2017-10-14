@@ -23,4 +23,3 @@
 - name: docker | yum | download and accept gpg keys
   command: yum makecache fast -y
   when: docker_add_ce_repo.changed
-  when: ansible_pkg_mgr == 'yum'
