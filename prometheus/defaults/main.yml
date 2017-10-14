@@ -38,3 +38,16 @@ prometheus_docker_volumes:
 
 # Platform to download binary for.
 prometheus_platform: "{{ 'darwin' if ansible_os_family == 'Darwin' else 'linux' }}"
+
+
+prometheus_scrape_targets:
+  - name: prometheus_local
+    type: prometheus
+    port: 9090
+    targets:
+      - "{{ inventory_hostname }}:9090"
+  - name: ansible_node_exporters
+    type: node_exporter
+    port: 9100
+    groups:
+      - node_exporter
