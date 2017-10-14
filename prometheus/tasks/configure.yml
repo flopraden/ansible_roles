@@ -18,3 +18,20 @@
     mode: "0640"
     force: no
 
+- name: prometheus | scrape targets | create directories
+  file:
+    name: "/etc/prometheus/targets.d/{{ item }}"
+    state: directory
+    owner: root
+    group: prometheus
+    mode: "01750"
+  with_items: "{{ prometheus_scrape_targets | map(attribute='type') | list | unique }}"
+
+- name: prometheus | scrape targets | configure
+  template:
+    src: scrape_targets.json.j2
+    dest: "/etc/prometheus/targets.d/{{ item.type }}/{{ item.name }}.json"
+    owner: root
+    group: prometheus
+    mode: "0640"
+  with_items: "{{ prometheus_scrape_targets }}"
