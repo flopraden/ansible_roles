@@ -1,2 +1,11 @@
 ---
 # defaults file for prometheus_alertmanager
+
+prometheus_alertmanager_version: "0.9.1"
+
+# Platform to download binary for.
+prometheus_alertmanager_platform: "{{ 'darwin' if ansible_os_family == 'Darwin' else 'linux' }}"
+
+prometheus_alertmanager_run_dockerised: no
+
+prometheus_alertmanager_configuration_template: "minimal"
