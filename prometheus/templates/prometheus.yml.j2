@@ -16,3 +16,43 @@ scrape_configs:
     file_sd_configs:
       - files:
         - /etc/prometheus/targets.d/prometheus/*.json
+
+  - job_name: docker
+    file_sd_configs:
+      - files:
+        - /etc/prometheus/targets.d/docker/*.json
+
+  - job_name: haproxy
+    file_sd_configs:
+      - files:
+        - /etc/prometheus/targets.d/haproxy/*.json
+
+  - job_name: blackbox
+    file_sd_configs:
+      - files:
+        - /etc/prometheus/targets.d/blackbox/*.json
+
+  - job_name: mysqld
+    file_sd_configs:
+      - files:
+        - /etc/prometheus/targets.d/mysqld/*.json
+
+  - job_name: consul
+    file_sd_configs:
+      - files:
+        - /etc/prometheus/targets.d/consul/*.json
+
+  - job_name: graphite
+    file_sd_configs:
+      - files:
+        - /etc/prometheus/targets.d/graphite/*.json
+
+  - job_name: memcached
+    file_sd_configs:
+      - files:
+        - /etc/prometheus/targets.d/memcached/*.json
+
+  - job_name: statsd
+    file_sd_configs:
+      - files:
+        - /etc/prometheus/targets.d/statsd/*.json
