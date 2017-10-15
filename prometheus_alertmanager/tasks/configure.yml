@@ -1,0 +1,29 @@
+---
+# configuration tasks for alertmanager
+
+- name: prometheus alertmanager | configuration | create directories
+  file:
+    name: "{{ item }}"
+    state: directory
+    owner: root
+    group: prometheus
+    mode: "01750"
+  with_items:
+    - /etc/alertmanager
+    - /etc/alertmanager/templates/
+
+- name: prometheus alertmanager | configuration | create
+  template:
+    src: "{{ prometheus_alertmanager_configuration_template }}.yml.j2"
+    dest: "/etc/alertmanager/config.yml"
+    owner: root
+    group: prometheus
+    mode: "0640"
+
+- name: prometheus alertmanager | configuration | create sysconfig
+  copy:
+    dest: /etc/sysconfig/prometheus_alertmanager
+    content: 'OPTIONS="-config.file=/etc/alertmanager/config.yml"'
+    owner: root
+    group: prometheus
+    mode: "0640"
