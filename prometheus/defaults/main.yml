@@ -51,3 +51,14 @@ prometheus_scrape_targets:
     port: 9100
     groups:
       - node_exporter
+  - name: docker
+    type: docker
+    port: 9323
+    groups:
+      - docker
+  - name: haproxy
+    type: haproxy
+    port: 9101
+    groups:
+      - haproxy
+
