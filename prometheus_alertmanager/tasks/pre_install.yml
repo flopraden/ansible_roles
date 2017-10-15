@@ -1,0 +1,31 @@
+---
+# pre-install tasks for altermanager
+
+- name: prometheus alertmanager | group | create
+  group:
+    name: prometheus
+    state: present
+    system: yes
+
+- name: prometheus alertmanager | user | create
+  user:
+    name: prometheus_alertmanager
+    state: present
+    group: prometheus
+    comment: "User for prometheus alertmanager"
+    system: yes
+    shell: /sbin/nologin
+    home: /opt/prometheus_alertmanager
+    expires: "-1"
+
+- name: prometheus alertmanager | directories | create
+  file:
+    name: "{{ item }}"
+    state: directory
+    owner: prometheus_alertmanager
+    group: prometheus
+    mode: "01750"
+  with_items:
+    - /opt/prometheus_alertmanager/releases
+    - /opt/prometheus_alertmanager/logs
+    - /opt/prometheus_alertmanager/data
