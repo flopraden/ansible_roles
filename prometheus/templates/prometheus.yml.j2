@@ -3,7 +3,7 @@ global:
   evaluation_interval: 30s
 
 rule_files:
-  - /etc/prometheus/rules.d/*.json
+  - /etc/prometheus/rules.d/*.rule
 
 
 scrape_configs:
@@ -56,3 +56,8 @@ scrape_configs:
     file_sd_configs:
       - files:
         - /etc/prometheus/targets.d/statsd/*.json
+
+
+
+alerting:
+  alertmanagers: {{ ((groups.get('prometheus_alertmanager_group',[]) | map('format','http://%s:9093') | list) + prometheus_alertmanagers) | list | unique | to_yaml }}
