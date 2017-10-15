@@ -1,0 +1,20 @@
+[Unit]
+Description=Prometheus alertmanager
+After=network.target
+Before=prometheus.service
+Documentation=https://github.com/prometheus/alertmanager
+
+[Service]
+WorkingDirectory=/opt/prometheus_alertmanager
+EnvironmentFile=-/etc/sysconfig/prometheus_alertmanager
+ExecStart=/opt/prometheus_alertmanager/current/alertmanager $OPTIONS
+User=prometheus_alertmanager
+Group=prometheus
+ProtectSystem=strict
+UMask=0027
+ReadWritePaths=/opt/prometheus_alertmanager/logs /opt/prometheus_alertmanager/data /etc/alertmanager
+ReadOnlyPaths=/opt/prometheus_alertmanager /etc/prometheus_alertmanager
+PrivateTmp=yes
+
+[Install]
+WantedBy=multi-user.target
