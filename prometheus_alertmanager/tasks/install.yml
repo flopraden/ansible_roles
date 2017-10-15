@@ -1,0 +1,21 @@
+---
+# tasks to install prometheus_alertmanager
+
+- name: prometheus_alertmanager | release | download and extract
+  unarchive:
+    src: "https://github.com/prometheus/alertmanager/releases/download/v{{ prometheus_alertmanager_version }}/alertmanager-{{ prometheus_alertmanager_version }}.{{ prometheus_alertmanager_platform }}-amd64.tar.gz"
+    dest: /opt/prometheus_alertmanager/releases/
+    owner: prometheus_alertmanager
+    group: prometheus
+    mode: "0750"
+    remote_src: yes
+    creates: "/opt/prometheus_alertmanager/releases/alertmanager-{{ prometheus_alertmanager_version }}.{{ prometheus_alertmanager_platform }}-amd64"
+  become_user: prometheus_alertmanager
+
+- name: prometheus_alertmanager | release | create symlink to current
+  file:
+    src: "/opt/prometheus_alertmanager/releases/alertmanager-{{ prometheus_alertmanager_version }}.{{ prometheus_alertmanager_platform }}-amd64"
+    dest: "/opt/prometheus_alertmanager/current"
+    state: link
+    owner: prometheus_alertmanager
+    group: prometheus
