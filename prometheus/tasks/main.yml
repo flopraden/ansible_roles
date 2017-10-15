@@ -15,6 +15,12 @@
   tags:
     - prometheus
 
+- include: rules.yml
+  tags:
+    - prometheus
+    - alertmanager
+    - rules
+
 - include: run.yml
   tags:
     - prometheus
