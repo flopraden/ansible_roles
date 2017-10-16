@@ -11,53 +11,97 @@ scrape_configs:
     file_sd_configs:
       - files:
         - /etc/prometheus/targets.d/node_exporter/*.json
+    relabel_configs:
+      - source_labels: ['__address__']
+        regex: '^:\d+'
+        action: drop
 
   - job_name: prometheus
     file_sd_configs:
       - files:
         - /etc/prometheus/targets.d/prometheus/*.json
+    relabel_configs:
+      - source_labels: ['__address__']
+        regex: '^:\d+'
+        action: drop
 
   - job_name: docker
     file_sd_configs:
       - files:
         - /etc/prometheus/targets.d/docker/*.json
+    relabel_configs:
+      - source_labels: ['__address__']
+        regex: '^:\d+'
+        action: drop
 
   - job_name: haproxy
     file_sd_configs:
       - files:
         - /etc/prometheus/targets.d/haproxy/*.json
+    relabel_configs:
+      - source_labels: ['__address__']
+        regex: '^:\d+'
+        action: drop
 
   - job_name: blackbox
     file_sd_configs:
       - files:
         - /etc/prometheus/targets.d/blackbox/*.json
+    relabel_configs:
+      - source_labels: ['__address__']
+        regex: '^:\d+'
+        action: drop
 
   - job_name: mysqld
     file_sd_configs:
       - files:
         - /etc/prometheus/targets.d/mysqld/*.json
+    relabel_configs:
+      - source_labels: ['__address__']
+        regex: '^:\d+'
+        action: drop
 
   - job_name: consul
     file_sd_configs:
       - files:
         - /etc/prometheus/targets.d/consul/*.json
+    relabel_configs:
+      - source_labels: ['__address__']
+        regex: '^:\d+'
+        action: drop
 
   - job_name: graphite
     file_sd_configs:
       - files:
         - /etc/prometheus/targets.d/graphite/*.json
+    relabel_configs:
+      - source_labels: ['__address__']
+        regex: '^:\d+'
+        action: drop
 
   - job_name: memcached
     file_sd_configs:
       - files:
         - /etc/prometheus/targets.d/memcached/*.json
+    relabel_configs:
+      - source_labels: ['__address__']
+        regex: '^:\d+'
+        action: drop
 
   - job_name: statsd
     file_sd_configs:
       - files:
         - /etc/prometheus/targets.d/statsd/*.json
-
-
+    relabel_configs:
+      - source_labels: ['__address__']
+        regex: '^:\d+'
+        action: drop
 
 alerting:
-  alertmanagers: {{ ((groups.get('prometheus_alertmanager_group',[]) | map('format','http://%s:9093') | list) + prometheus_alertmanagers) | list | unique | to_yaml }}
+  alertmanagers:
+    - scheme: http
+      static_configs:
+        - targets:
+      {% for am in  ((groups.get(prometheus_alertmanager_group,[]) | map('regex_replace','^(.*)$','\\1:9093') | list) + prometheus_alertmanagers) | unique | list %}
+          - {{ am }}
+      {% endfor %}
