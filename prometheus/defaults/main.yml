@@ -42,6 +42,31 @@ prometheus_platform: "{{ 'darwin' if ansible_os_family == 'Darwin' else 'linux' 
 prometheus_alertmanagers: []
 prometheus_alertmanager_group: "prometheus_alertmanagers"
 
+# Blackbox exporter to use for default blackbox_exporter profile
+prometheus_blackbox_address: "127.0.0.1:9115"
+
+# Per type scrape configs, primarily used to configure the blackbox_exporter.
+# The types are whatever is used in prometheus_scrape_targets for the type value.
+prometheus_scrape_configs:
+  blackbox_exporter:
+    metrics_path: /probe
+    params:
+      module: [http_2xx]  # Look for a HTTP 200 response.
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: "{{ prometheus_blackbox_address }}"
+
+# Alert relabelling configuration
+prometheus_alert_relabeling: []
+
+
+# Define scrape targets.
+# Each target is used to populate scraped_targets.json.j2
+#
 prometheus_scrape_targets:
   - name: prometheus_local
     type: prometheus
@@ -58,9 +83,16 @@ prometheus_scrape_targets:
     port: 9323
     groups:
       - docker
+  - name: public_sites
+    type: blackbox_exporter
+    targets:
+      - https://google.com
+      - https://en.wikipedia.org
+      - https://cloudflare.com
   - name: haproxy
     type: haproxy
     port: 9101
     groups:
       - haproxy
+
 
