@@ -11,10 +11,9 @@ scrape_configs:
     file_sd_configs:
       - files:
         - /etc/prometheus/targets.d/{{ scrape_type }}/*.json
-    metric_relabel_configs:
-      - source_labels: [__address__]
-        regex: '^:\d+'
-        action: drop
+{% if prometheus_scrape_configs.get(scrape_type) %}
+    {{ prometheus_scrape_configs[scrape_type] | to_nice_yaml(indent=2) | indent(4) }}
+{% endif %}
 {% endfor %}
 
 alerting:
@@ -25,11 +24,7 @@ alerting:
 {% for am in  ((groups.get(prometheus_alertmanager_group,[]) | map('regex_replace','^(.*)$','\\1:9093') | list) + prometheus_alertmanagers) | unique | list %}
           - {{ am }}
 {% endfor %}
-
   alert_relabel_configs:
-    # Drop entries created by null entries in file_sd (and possibly others)
-    # The source label drops above don't work on e.g. up
-    # https://prometheus.io/docs/operating/configuration/#metric_relabel_configs
-    - source_labels: [__address__]
-      regex: '^:\d+'
-      action: drop
+{% for alert_relabel in prometheus_alert_relabeling %}
+    - {{ alert_relabel | to_yaml }}
+{% endfor %}
