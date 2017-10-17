@@ -6,95 +6,16 @@ rule_files:
   - /etc/prometheus/rules.d/*.rule
 
 scrape_configs:
-  - job_name: node_exporter
+{% for scrape_type in prometheus_scrape_targets|map(attribute='type')|sort %}
+  - job_name: {{ scrape_type }}
     file_sd_configs:
       - files:
-        - /etc/prometheus/targets.d/node_exporter/*.json
+        - /etc/prometheus/targets.d/{{ scrape_type }}/*.json
     metric_relabel_configs:
       - source_labels: [__address__]
         regex: '^:\d+'
         action: drop
-
-  - job_name: prometheus
-    file_sd_configs:
-      - files:
-        - /etc/prometheus/targets.d/prometheus/*.json
-    metric_relabel_configs:
-      - source_labels: [__address__]
-        regex: '^:\d+'
-        action: drop
-
-  - job_name: docker
-    file_sd_configs:
-      - files:
-        - /etc/prometheus/targets.d/docker/*.json
-    metric_relabel_configs:
-      - source_labels: [__address__]
-        regex: '^:\d+'
-        action: drop
-
-  - job_name: haproxy
-    file_sd_configs:
-      - files:
-        - /etc/prometheus/targets.d/haproxy/*.json
-    metric_relabel_configs:
-      - source_labels: [__address__]
-        regex: '^:\d+'
-        action: drop
-
-  - job_name: blackbox
-    file_sd_configs:
-      - files:
-        - /etc/prometheus/targets.d/blackbox/*.json
-    metric_relabel_configs:
-      - source_labels: [__address__]
-        regex: '^:\d+'
-        action: drop
-
-  - job_name: mysqld
-    file_sd_configs:
-      - files:
-        - /etc/prometheus/targets.d/mysqld/*.json
-    metric_relabel_configs:
-      - source_labels: [__address__]
-        regex: '^:\d+'
-        action: drop
-
-  - job_name: consul
-    file_sd_configs:
-      - files:
-        - /etc/prometheus/targets.d/consul/*.json
-    metric_relabel_configs:
-      - source_labels: [__address__]
-        regex: '^:\d+'
-        action: drop
-
-  - job_name: graphite
-    file_sd_configs:
-      - files:
-        - /etc/prometheus/targets.d/graphite/*.json
-    metric_relabel_configs:
-      - source_labels: [__address__]
-        regex: '^:\d+'
-        action: drop
-
-  - job_name: memcached
-    file_sd_configs:
-      - files:
-        - /etc/prometheus/targets.d/memcached/*.json
-    metric_relabel_configs:
-      - source_labels: [__address__]
-        regex: '^:\d+'
-        action: drop
-
-  - job_name: statsd
-    file_sd_configs:
-      - files:
-        - /etc/prometheus/targets.d/statsd/*.json
-    metric_relabel_configs:
-      - source_labels: [__address__]
-        regex: '^:\d+'
-        action: drop
+{% endfor %}
 
 alerting:
   alertmanagers:
