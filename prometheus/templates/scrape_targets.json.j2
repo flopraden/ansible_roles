@@ -1,18 +1,12 @@
 [
   {% for group in item.groups |default([])| sort %}
   {
-    "targets": [
-      {% for target in groups.get(group,[]) %}
-        "{{ target }}:{{ item.port }}",
-      {% endfor %}
-      null
-    ],
+    "targets": {{ groups.get(group,[]) | zip_longest([item.port]) | map('join',':') | list | to_json }},
     "labels": {
       "monitoring_group":  "{{ item.name }}"
     }
   },
   {% endfor %}
-
   {% if item.targets | default(false, true) %}
   {
     "targets": {{ item.targets | to_json }},
