@@ -1,2 +1,42 @@
 ---
 # defaults file for prometheus_blackbox_exporter
+
+# Version of the blackbox exporter blackbox exporter binary or docker container to use.
+# For docker containers, if the version is \d+.\d+.\d+, a v will be prepended.
+prometheus_blackbox_version: "0.10.0"
+
+# Platform to download binary for.
+prometheus_blackbox_platform: "{{ 'darwin' if ansible_os_family == 'Darwin' else 'linux' }}"
+
+# Port for blackbox exporter to listen on.
+# If it is dockerised, this is the port exposed by the container
+prometheus_blackbox_ports:
+  - listener: http
+    port: 9115
+
+# Whether to publish the blackbox exporter port(s).
+# If not falsy, it needs to be a suitable portspec.
+# In other words, to publish the port, you would have:
+# prometheus_blackbox_docker_publish_ports:
+#   - 9115:9115
+prometheus_blackbox_docker_publish_ports:
+  - "9115:9115"
+
+# Whether to run blackbox exporter as a system service.
+# Default is to not do so, but run in docker instead.
+# This will be ignored if run_dockerised is truthy.
+prometheus_blackbox_run_services: no
+
+# Whether to run blackbox exporter in a docker container
+prometheus_blackbox_run_dockerised: yes
+
+# Image to use to run prometheus.
+prometheus_blackbox_docker_image: prom/blackbox-exporter
+
+# Networks blackbox exporter should be part of
+prometheus_blackbox_docker_networks:
+  - name: bridge
+
+# Devices/volumes to expose to the container.
+prometheus_blackbox_docker_volumes:
+  - /etc/blackbox_exporter:/config:ro
