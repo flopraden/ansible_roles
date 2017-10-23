@@ -1,0 +1,18 @@
+[Unit]
+Description=Prometheus blackbox-exporter
+After=network.target
+Documentation=https://github.com/prometheus/blackbox_exporter
+
+[Service]
+WorkingDirectory=/opt/prometheus_blackbox_exporter
+EnvironmentFile=-/etc/sysconfig/prometheus_blackbox_exporter
+ExecStart=/opt/prometheus_blackbox_exporter/current/blackbox_exporter $OPTIONS
+User=prometheus_blackbox_exporter
+Group=prometheus
+ProtectSystem=strict
+UMask=0027
+ReadOnlyPaths=/opt/prometheus_blackbox_exporter /etc/prometheus_blackbox_exporter
+PrivateTmp=yes
+
+[Install]
+WantedBy=multi-user.target
