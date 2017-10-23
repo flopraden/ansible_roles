@@ -31,7 +31,7 @@ prometheus_blackbox_run_services: no
 prometheus_blackbox_run_dockerised: yes
 
 # Name for the container to run blackbox exporter in
-prometheus_blackbox_run_docker_name: "prometheus_blackbox"
+prometheus_blackbox_container_name: "prometheus_blackbox"
 
 # Image to use to run prometheus.
 prometheus_blackbox_docker_image: prom/blackbox-exporter
@@ -42,4 +42,4 @@ prometheus_blackbox_docker_networks:
 
 # Devices/volumes to expose to the container.
 prometheus_blackbox_docker_volumes:
-  - /etc/blackbox_exporter:/config:ro
+  - /etc/prometheus_blackbox_exporter/:/config/:ro
