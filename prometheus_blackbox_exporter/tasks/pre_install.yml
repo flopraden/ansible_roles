@@ -1,0 +1,30 @@
+---
+
+# Tasks to setup environment for prometheus blackbox exporter
+
+- name: prometheus_blackbox_exporter | group | create
+  group:
+    name: prometheus
+    state: present
+    system: yes
+
+- name: prometheus_blackbox_exporter | user | create
+  user:
+    name: prometheus_blackbox_exporter
+    state: present
+    group: prometheus
+    shell: /sbin/nologin
+    home: /opt/prometheus_blackbox_exporter
+    comment: User for prometheus_blackbox_exporter server
+    expires: -1
+    system: yes
+
+- name: prometheus_blackbox_exporter | directories | create
+  file:
+    name: "{{ item }}"
+    state: directory
+    owner: prometheus_blackbox_exporter
+    group: prometheus
+    mode: "01750"
+  with_items:
+    - /opt/prometheus_blackbox_exporter/releases
