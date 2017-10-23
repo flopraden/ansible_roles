@@ -1,0 +1,21 @@
+---
+# tasks to install prometheus_blackbox_exporter
+
+- name: prometheus_blackbox_exporter | release | download and extract
+  unarchive:
+    src: "https://github.com/prometheus/blackbox_exporter/releases/download/v{{ prometheus_blackbox_version }}/blackbox_exporter-{{ prometheus_blackbox_version }}.{{ prometheus_blackbox_platform }}-amd64.tar.gz"
+    dest: /opt/prometheus_blackbox_exporter/releases/
+    owner: prometheus_blackbox_exporter
+    group: prometheus
+    mode: "0750"
+    remote_src: yes
+    creates: "/opt/prometheus_blackbox_exporter/releases/blackbox_exporter-{{ prometheus_blackbox_version }}.{{ prometheus_blackbox_platform }}-amd64"
+  become_user: prometheus_blackbox_exporter
+
+- name: prometheus_blackbox_exporter | release | create symlink to current
+  file:
+    src: "/opt/prometheus_blackbox_exporter/releases/blackbox_exporter-{{ prometheus_blackbox_version }}.{{ prometheus_blackbox_platform }}-amd64"
+    dest: "/opt/prometheus_blackbox_exporter/current"
+    state: link
+    owner: prometheus_blackbox_exporter
+    group: prometheus
