@@ -6,10 +6,10 @@ Documentation=https://github.com/prometheus/blackbox_exporter
 [Service]
 WorkingDirectory=/opt/prometheus_blackbox_exporter
 EnvironmentFile=-/etc/sysconfig/prometheus_blackbox_exporter
-ExecStart=/opt/prometheus_blackbox_exporter/current/blackbox_exporter $OPTIONS
+ExecStart=/opt/prometheus_blackbox_exporter/current/blackbox_exporter --config.file /etc/prometheus_blackbox_exporter/blackbox.yml $OPTIONS
 User=prometheus_blackbox_exporter
 Group=prometheus
-ProtectSystem=strict
+ProtectSystem=full
 UMask=0027
 ReadOnlyPaths=/opt/prometheus_blackbox_exporter /etc/prometheus_blackbox_exporter
 PrivateTmp=yes
