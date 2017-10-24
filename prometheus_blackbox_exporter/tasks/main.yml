@@ -3,10 +3,22 @@
 
 - include: pre_install.yml
   when: not prometheus_blackbox_run_dockerised
+  tags:
+    - prometheus
+    - blackbox_exporter
 
 - include: install.yml
   when: not prometheus_blackbox_run_dockerised
+  tags:
+    - prometheus
+    - blackbox_exporter
 
 - include: configure.yml
+  tags:
+    - prometheus
+    - blackbox_exporter
 
 - include: run.yml
+  tags:
+    - prometheus
+    - blackbox_exporter

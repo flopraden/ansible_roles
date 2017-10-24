@@ -23,12 +23,11 @@
   docker_container:
     name: "{{prometheus_blackbox_container_name}}"
     state: started
-    image: "{{ prometheus_blackboxdocker_image }}:{{ prometheus_blackbox_version | regex_replace('^(\\d+\\.\\d+\\.\\d+)$','v\\1') }}"
-    command: "-config.file=/config/blackbox.yml"
-    env_file: /etc/sysconfig/prometheus_blackbox_exporter
+    image: "{{ prometheus_blackbox_docker_image }}:{{ prometheus_blackbox_version | regex_replace('^(\\d+\\.\\d+\\.\\d+)$','v\\1') }}"
+    command: "--config.file=/config/blackbox.yml"
     networks: "{{ prometheus_blackbox_docker_networks }}"
     volumes: "{{ prometheus_blackbox_docker_volumes }}"
-    exposed_ports: "{{ prometheus_blackbox_ports|map(attribute="port") }}"
+    exposed_ports: "{{ prometheus_blackbox_ports|map(attribute='port') }}"
     published_ports: "{{ prometheus_blackbox_docker_publish_ports | default([], true) }}"
     cleanup: yes
   when: prometheus_blackbox_run_dockerised
