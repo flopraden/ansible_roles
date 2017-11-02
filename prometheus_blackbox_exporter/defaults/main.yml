@@ -22,6 +22,13 @@ prometheus_blackbox_ports:
 prometheus_blackbox_docker_publish_ports:
   - "9115:9115"
 
+# Preferred protocol for probes.
+# The default for prometheus is ipv6.
+prometheus_blackbox_preferred_protocol: "ipv4"
+
+# Set the timeout for probes.
+prometheus_blackbox_prober_timeout: "5s"
+
 # Whether to run blackbox exporter as a system service.
 # Default is to not do so, but run in docker instead.
 # This will be ignored if run_dockerised is truthy.
