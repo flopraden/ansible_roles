@@ -1,16 +1,31 @@
 modules:
   http_2xx:
     prober: http
+    timeout: {{ prometheus_blackbox_prober_timeout }}
     http:
+      preferred_ip_protocol: "{{ prometheus_blackbox_preferred_protocol }}"
   http_post_2xx:
     prober: http
+    timeout: {{ prometheus_blackbox_prober_timeout }}
     http:
       method: POST
+      preferred_ip_protocol: "{{ prometheus_blackbox_preferred_protocol }}"
   tcp_connect:
     prober: tcp
+    timeout: {{ prometheus_blackbox_prober_timeout }}
+    tcp:
+      preferred_ip_protocol: "{{ prometheus_blackbox_preferred_protocol }}"
+  tls_connect:
+    prober: tcp
+    timeout: {{ prometheus_blackbox_prober_timeout }}
+    tcp:
+      tls: true
+      preferred_ip_protocol: "{{ prometheus_blackbox_preferred_protocol }}"
   pop3s_banner:
     prober: tcp
+    timeout: {{ prometheus_blackbox_prober_timeout }}
     tcp:
+      preferred_ip_protocol: "{{ prometheus_blackbox_preferred_protocol }}"
       query_response:
       - expect: "^+OK"
       tls: true
@@ -18,12 +33,16 @@ modules:
         insecure_skip_verify: false
   ssh_banner:
     prober: tcp
+    timeout: {{ prometheus_blackbox_prober_timeout }}
     tcp:
+      preferred_ip_protocol: "{{ prometheus_blackbox_preferred_protocol }}"
       query_response:
       - expect: "^SSH-2.0-"
   irc_banner:
     prober: tcp
+    timeout: {{ prometheus_blackbox_prober_timeout }}
     tcp:
+      preferred_ip_protocol: "{{ prometheus_blackbox_preferred_protocol }}"
       query_response:
       - send: "NICK prober"
       - send: "USER prober prober prober :prober"
@@ -32,3 +51,6 @@ modules:
       - expect: "^:[^ ]+ 001"
   icmp:
     prober: icmp
+    timeout: {{ prometheus_blackbox_prober_timeout }}
+    icmp:
+      preferred_ip_protocol: "{{ prometheus_blackbox_preferred_protocol }}"
