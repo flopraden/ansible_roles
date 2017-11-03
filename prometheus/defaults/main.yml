@@ -45,9 +45,7 @@ prometheus_alertmanager_group: "prometheus_alertmanagers"
 # Blackbox exporter to use for default blackbox_exporter profile
 prometheus_blackbox_address: "127.0.0.1:9115"
 
-# Per type scrape configs, primarily used to configure the blackbox_exporter.
-# The types are whatever is used in prometheus_scrape_targets for the type value.
-prometheus_scrape_configs:
+prometheus_default_scrape_configs:
   blackbox_exporter:
     metrics_path: /probe
     params:
@@ -60,14 +58,17 @@ prometheus_scrape_configs:
       - target_label: __address__
         replacement: "{{ prometheus_blackbox_address }}"
 
+# Per type scrape configs, primarily used to configure the blackbox_exporter.
+# The types are whatever is used in prometheus_scrape_targets for the type value.
+prometheus_scrape_configs: "{{ prometheus_default_scrape_configs }}"
+
 # Alert relabelling configuration
 prometheus_alert_relabeling: []
-
 
 # Define scrape targets.
 # Each target is used to populate scraped_targets.json.j2
 #
-prometheus_scrape_targets:
+prometheus_default_scrape_targets:
   - name: prometheus_local
     type: prometheus
     port: 9090
@@ -95,4 +96,4 @@ prometheus_scrape_targets:
     groups:
       - haproxy
 
-
+prometheus_scrape_targets: "{{ prometheus_default_scrape_targets }}"
