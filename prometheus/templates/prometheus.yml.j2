@@ -6,7 +6,7 @@ rule_files:
   - /etc/prometheus/rules.d/*.rule
 
 scrape_configs:
-{% for scrape_type in prometheus_scrape_targets|map(attribute='type')|sort %}
+{% for scrape_type in prometheus_scrape_targets|map(attribute='type')|sort|unique|list %}
   - job_name: {{ scrape_type }}
     file_sd_configs:
       - files:
