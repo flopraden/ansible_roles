@@ -3,18 +3,18 @@
 
 - name: prometheus_alertmanager | release | download and extract
   unarchive:
-    src: "https://github.com/prometheus/alertmanager/releases/download/v{{ prometheus_alertmanager_version }}/alertmanager-{{ prometheus_alertmanager_version }}.{{ prometheus_alertmanager_platform }}-amd64.tar.gz"
+    src: "https://github.com/prometheus/alertmanager/releases/download/v{{ prometheus_alertmanager_version }}/alertmanager-{{ prometheus_alertmanager_version }}.{{ prometheus_alertmanager_platform }}-{{ prometheus_alertmanager_architecture }}.tar.gz"
     dest: /opt/prometheus_alertmanager/releases/
     owner: prometheus_alertmanager
     group: prometheus
     mode: "0750"
     remote_src: yes
-    creates: "/opt/prometheus_alertmanager/releases/alertmanager-{{ prometheus_alertmanager_version }}.{{ prometheus_alertmanager_platform }}-amd64"
+    creates: "/opt/prometheus_alertmanager/releases/alertmanager-{{ prometheus_alertmanager_version }}.{{ prometheus_alertmanager_platform }}-{{ prometheus_alertmanager_architecture }}"
   become_user: prometheus_alertmanager
 
 - name: prometheus_alertmanager | release | create symlink to current
   file:
-    src: "/opt/prometheus_alertmanager/releases/alertmanager-{{ prometheus_alertmanager_version }}.{{ prometheus_alertmanager_platform }}-amd64"
+    src: "/opt/prometheus_alertmanager/releases/alertmanager-{{ prometheus_alertmanager_version }}.{{ prometheus_alertmanager_platform }}-{{ prometheus_alertmanager_architecture }}"
     dest: "/opt/prometheus_alertmanager/current"
     state: link
     owner: prometheus_alertmanager
