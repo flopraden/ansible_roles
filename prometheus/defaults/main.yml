@@ -3,7 +3,7 @@
 
 # Version of the prometheus binary or docker container to use.
 # For docker containers, if the version is \d+.\d+.\d+, a v will be prepended.
-prometheus_version: "1.8.0"
+prometheus_version: "1.8.2"
 
 # Port to have prometheus list for web requests on
 # If prometheus is dockerised, this is the port exposed by the container
@@ -38,6 +38,9 @@ prometheus_docker_volumes:
 
 # Platform to download binary for.
 prometheus_platform: "{{ 'darwin' if ansible_os_family == 'Darwin' else 'linux' }}"
+
+# Architecture to download binary for.
+prometheus_architecture: "{{ 'amd64' if ansible_architecture == 'x86_64' else ansible_architecture }}"
 
 prometheus_alertmanagers: []
 prometheus_alertmanager_group: "prometheus_alertmanagers"

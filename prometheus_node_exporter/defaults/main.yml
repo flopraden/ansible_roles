@@ -37,5 +37,9 @@ prometheus_node_exporter_docker_volumes:
   - "/proc:/host/proc:ro,Z"
   - "/sys:/host/sys:ro,Z"
   - "/:/rootfs:ro,Z,slave"
+
 # Platform to download binary for.
 prometheus_node_exporter_platform: "{{ 'darwin' if ansible_os_family == 'Darwin' else 'linux' }}"
+
+# Architecture to download binary for.
+prometheus_node_exporter_architecture: "{{ 'amd64' if ansible_architecture == 'x86_64' else ansible_architecture }}"

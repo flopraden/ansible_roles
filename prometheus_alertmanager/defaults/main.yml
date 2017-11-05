@@ -6,6 +6,10 @@ prometheus_alertmanager_version: "0.9.1"
 # Platform to download binary for.
 prometheus_alertmanager_platform: "{{ 'darwin' if ansible_os_family == 'Darwin' else 'linux' }}"
 
+# Architecture to download binary for.
+prometheus_alertmanager_architecture: "{{ 'amd64' if ansible_architecture == 'x86_64' else ansible_architecture }}"
+
+
 prometheus_alertmanager_run_dockerised: no
 
 prometheus_alertmanager_configuration_template: "minimal"
