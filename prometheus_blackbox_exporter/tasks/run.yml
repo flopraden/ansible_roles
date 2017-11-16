@@ -8,16 +8,15 @@
     owner: root
     group: root
     mode: "0640"
-  when: ansible_service_mgr == 'systemd'
+  when: ansible_service_mgr == 'systemd' and not prometheus_blackbox_run_dockerised
+
 
 - name: prometheus_blackbox_exporter | service | start and enable
   service:
     name: prometheus_blackbox_exporter.service
     state: started
     enabled: yes
-  when: "prometheus_blackbox_run_services and \
-          ansible_service_mgr == 'systemd' and \
-          not prometheus_blackbox_run_dockerised"
+  when: "prometheus_blackbox_run_services and not prometheus_blackbox_run_dockerised"
 
 - name: prometheus_blackbox_exporter | docker | run container
   docker_container:
