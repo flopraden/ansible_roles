@@ -25,3 +25,4 @@
     group: prometheus
     mode: "0640"
     force: no
+  when: not prometheus_blackbox_run_dockerised
