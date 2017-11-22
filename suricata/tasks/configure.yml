@@ -9,8 +9,6 @@
     group: root
     mode: "0600"
   tags:
-    - ids
-    - suricata
     - et-open-rules
 
 - name: suricata | rules | configure ET rules update timer
@@ -21,17 +19,14 @@
     group: root
     mode: "0600"
   tags:
-    - ids
-    - suricata
     - et-open-rules
 
 - name: suricata | config | create
   template:
-    src: suricata.yaml.j2
+    src: suricata.yml.j2
     dest: /etc/suricata/suricata.yaml
     owner: root
     group: root
     mode: "0600"
   tags:
-    - ids
-    - suricata
+    - config
