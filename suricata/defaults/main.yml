@@ -1,2 +1,21 @@
 ---
 # defaults file for suricata
+
+
+# HOME_NETWORK value(s) for suricata.
+# The home network defines the ranges where services to be protected are.
+# In general, attack traffic goes to HOME_NETWORK, and C2/exfiltration goes from it.
+# By default, assume the address with a default route is the one to monitor.
+suricata_home_net:
+  - "{{ ansible_default_ipv4.address }}/32"
+
+# Interfaces for suricata to listen on.
+# Using the default suricata.yml template for this role, this will:
+# * add any interfaces listed to af-packet processor
+# * add any interfaces listed to pf-ring processor
+# * add any interfaces listed to pcap processor
+# * add any interfaces listed to netmap processor
+# Cluster IDs are assigned where needed by substracting the 1-indexed position
+# of each entry from 100 (i.e. the first interface listed will have a cluster ID of 99).
+suricata_interfaces:
+  - "{{ ansible_default_ipv4.interface }}"
