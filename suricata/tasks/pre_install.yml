@@ -6,9 +6,6 @@
     name: suricata
     state: present
     system: true
-  tags:
-    - ids
-    - suricata
 
 - name: suricata | user | create
   user:
@@ -18,9 +15,6 @@
     group: suricata
     shell: /sbin/nologin
     home: /var/lib/suricata
-  tags:
-    - ids
-    - suricata
 
 - name: ids | suricata | create directories
   file:
@@ -33,9 +27,6 @@
     - /etc/suricata
     - /etc/suricata/rules
     - /var/log/suricata
-  tags:
-    - ids
-    - suricata
 
 - name: suricata |  sudo | allow suricata user to restart daemon
   template:
@@ -44,6 +35,3 @@
     owner: root
     group: root
     mode: "0600"
-  tags:
-    - ids
-    - suricata
