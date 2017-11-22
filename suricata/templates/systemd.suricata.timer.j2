@@ -1,0 +1,12 @@
+[Unit]
+Description=Update ET rules for suricata every 12 hours
+
+[Timer]
+# Wait 10 minutes after boot
+OnBootSec=10min
+OnUnitActiveSec=12h
+Persistent=true
+Unit=suricata-et-rules.service
+
+[Install]
+WantedBy=timers.target
