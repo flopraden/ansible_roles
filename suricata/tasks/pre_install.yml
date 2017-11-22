@@ -28,7 +28,7 @@
     state: directory
     owner: suricata
     group: suricata
-    mode: "1750"
+    mode: "01750"
   with_items:
     - /etc/suricata
     - /etc/suricata/rules
