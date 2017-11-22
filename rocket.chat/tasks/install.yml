@@ -1,0 +1,7 @@
+---
+# install task for rocket.chat
+
+- name: rocket.chat | image | pull
+  docker_image:
+    name: "{{ rocketchat_docker_image }}"
+    state: present
