@@ -1,0 +1,46 @@
+---
+# pre-install tasks for rocket.chat
+
+#
+- name: rocket.chat | group | create
+  group:
+    name: rocketchat
+    state: present
+    system: yes
+
+# The rocketchat user should own any data directories
+- name: rocket.chat | user | create
+  user:
+    name: rocketchat
+    state: present
+    group: rocketchat
+    comment: User for rocket.chat instances
+    home: "{{ rocketchat_data_root }}"
+    shell: /sbin/nologin
+    createhome: no
+    system: true
+    groups:
+      - docker
+
+- name: rocket.chat | directories | create
+  file:
+    name: "{{ item }}"
+    state: directory
+    owner: root
+    group: rocketchat
+    mode: "01750"
+  with_items:
+    - /etc/rocketchat
+    - /etc/rocketchat/environment
+    - /etc/rocketchat/config/
+    - "{{ rocketchat_data_root }}"
+
+- name: rocket.chat | directories | create data directory
+  file:
+    name: "{{ item }}"
+    state: directory
+    owner: rocketchat
+    group: rocketchat
+    mode: "01750"
+  with_items:
+    - "{{ rocketchat_data_root }}/{{ rocketchat_munged_url }}"
