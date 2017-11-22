@@ -9,3 +9,15 @@ rocketchat_docker_image: rocket.chat:latest
 # If serving from a specific route, then it should be
 # https://domain.tld/route/spec/
 rocketchat_root_url: http://example.com
+
+# Root directory where an instance specific directory for data will be created.
+# This is used for things like uploads.
+# Generally, this will be something like /data/rocketchat.
+rocketchat_data_root: /opt/rocketchat
+
+# Portspec to publish
+# Default is to simply expose 3000
+rocketchat_docker_publish: false
+
+# Network to run container on
+rocketchat_docker_network: bridge
