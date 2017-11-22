@@ -1,0 +1,17 @@
+---
+
+# tasks for running rocketchat.
+
+- name: rocket.chat | service | create base service unit
+  template:
+    src: rocketchat.service.j2
+    dest: /etc/systemd/system/rocketchat@.service
+    owner: root
+    group: root
+    mode: "0640"
+
+- name: rocket.chat | service | run {{ rocketchat_root_url }}
+  service:
+    name: "rocketchat@{{ rocketchat_munged_url }}.service"
+    state: started
+    enabled: yes
