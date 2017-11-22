@@ -1,0 +1,11 @@
+---
+# defaults file for rocket.chat
+
+# Image to use for docker based rocket.chat
+rocketchat_docker_image: rocket.chat:latest
+
+# Base URL for accessing rocketchat
+# This needs to be at least https://domain.tld.
+# If serving from a specific route, then it should be
+# https://domain.tld/route/spec/
+rocketchat_root_url: http://example.com
