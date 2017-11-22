@@ -1,0 +1,49 @@
+---
+# pre-install tasks for suricata
+
+- name: suricata | group | create
+  group:
+    name: suricata
+    state: present
+    system: true
+  tags:
+    - ids
+    - suricata
+
+- name: suricata | user | create
+  user:
+    name: suricata
+    state: present
+    system: true
+    group: suricata
+    shell: /sbin/nologin
+    home: /var/lib/suricata
+  tags:
+    - ids
+    - suricata
+
+- name: ids | suricata | create directories
+  file:
+    name: "{{ item }}"
+    state: directory
+    owner: suricata
+    group: suricata
+    mode: "1750"
+  with_items:
+    - /etc/suricata
+    - /etc/suricata/rules
+    - /var/log/suricata
+  tags:
+    - ids
+    - suricata
+
+- name: suricata |  sudo | allow suricata user to restart daemon
+  template:
+    src: sudo.suricata.j2
+    dest: /etc/sudoers.d/suricata
+    owner: root
+    group: root
+    mode: "0600"
+  tags:
+    - ids
+    - suricata
