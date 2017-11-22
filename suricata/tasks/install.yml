@@ -1,0 +1,10 @@
+---
+# install tasks for suricata
+
+- name: suricata | package | install
+  package:
+    name: "suricata"
+    state: present
+  tags:
+    - suricata
+    - ids
