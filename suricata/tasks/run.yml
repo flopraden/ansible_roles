@@ -2,10 +2,11 @@
 # run tasks for suricata
 
 - name: suricata | service | enable rule refresh units
-  service: name=suricata-et-rules state=stopped enabled=yes
+  service:
+    name: suricata-et-rules
+    state: stopped
+    enabled: yes
   tags:
-    - ids
-    - suricata
     - service
 
 - name: suricata | service | run
@@ -17,6 +18,4 @@
     - suricata
     - suricata-et-rules.timer
   tags:
-    - suricata
-    - ids
     - service
