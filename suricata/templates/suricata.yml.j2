@@ -3,6 +3,12 @@
 
 # {{ ansible_managed }}
 
+action-order:
+  - pass
+  - drop
+  - reject
+  - alert
+
 vars:
   address-groups:
     HOME_NET: "[{{ suricata_home_net | join(',') }}]"
@@ -484,7 +490,6 @@ detect:
   custom-values:
     toclient-groups: 3
     toserver-groups: 25
-  sgh-mpm-context: auto
   inspection-recursion-limit: 3000
 
   grouping:
@@ -495,11 +500,6 @@ detect:
       include-rules: false      # very verbose
       include-mpm-stats: false
 
-
-mpm-algo: auto
-
-
-spm-algo: auto
 
 threading:
   set-cpu-affinity: no
