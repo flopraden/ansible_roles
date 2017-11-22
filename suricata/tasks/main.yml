@@ -1,2 +1,12 @@
 ---
 # tasks file for suricata
+
+
+- block:
+    - include: pre_install.yml
+    - include: install.yml
+    - include: configure.yml
+    - include: run.yml
+  tags:
+    - suricata
+    - ids
