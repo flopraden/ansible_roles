@@ -4,7 +4,7 @@ Requires=docker.service
 After=docker.service
 
 [Service]
-Environment=-/etc/rocketchat/environments/%i.env
+EnvironmentFile=-/etc/rocketchat/environment/%i.env
 Restart=always
 User=rocketchat
 ExecStartPre=-/usr/bin/docker kill rocketchat.%i
@@ -13,9 +13,7 @@ ExecStartPre=-/usr/bin/docker pull {{ rocketchat_docker_image }}
 
 ExecStart=/usr/bin/docker run --rm --name rocketchat_{{ rocketchat_munged_url }} \
     --volume {{ rocketchat_data_root }}/{{ rocketchat_munged_url }}:/app/uploads:Z \
-    --env MONGO_OPLOG_URL=$MONGO_OPLOG_URL \
-    --env MONGO_URL=$MONGO_URL \
-    --env ROOT_URL=$ROOT_URL \
+    --env-file etc/rocketchat/environment/%i.env \
     --net {{ rocketchat_docker_network }} \
     --expose 3000 {% if rocketchat_docker_publish | default(false,true) %}--publish {{ rocketchat_docker_publish }} {%- endif %} \
     {{ rocketchat_docker_image }}
