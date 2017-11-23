@@ -1,0 +1,10 @@
+---
+# task for configuring rocketchat
+
+- name: rocket.chat | environment | create file
+  template:
+    src: rocketchat.env.j2
+    dest: /etc/rocketchat/environment/{{ rocketchat_munged_url }}.env
+    owner: root
+    group: rocketchat
+    mode: "0640"
