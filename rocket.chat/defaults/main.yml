@@ -21,3 +21,6 @@ rocketchat_docker_publish: false
 
 # Network to run container on
 rocketchat_docker_network: bridge
+
+# Base URL (protocol, host, port) for the mongo db to use.
+rocketchat_mongo_base_url: mongodb://localhost:2701
