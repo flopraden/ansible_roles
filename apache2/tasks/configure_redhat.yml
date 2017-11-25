@@ -1,0 +1,20 @@
+---
+# configuration tasks specific to RedHat-like system
+
+- name: apache2 | configuration | use sites-enabled for vhosts
+  copy:
+    dest: "/etc/{{ apache2_service_name }}/conf.d/sites-enabled.conf"
+    owner: root
+    group: "{{ apache2_group_name }}"
+    mode: "0640"
+    content: "IncludeOptional sites-enabled/*.conf\n"
+
+
+- name: apache2 | configuration | remove welcome.conf and userdir.conf
+  file:
+    name: "/etc/{{ apache2_service_name }}/conf.d/{{ item }}"
+    state: absent
+  with_items:
+    - welcome.conf
+    - userdir.conf
+
