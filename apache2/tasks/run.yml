@@ -1,0 +1,8 @@
+---
+# run tasks for apache2
+
+- name: apache2 | service | start and enable
+  service:
+    name: "{{ apache2_service_name }}"
+    state: started
+    enabled: yes

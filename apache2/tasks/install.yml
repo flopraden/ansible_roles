@@ -1,0 +1,7 @@
+---
+# install tasks for apache2
+
+- name: apache2 | package | install
+  package:
+    name: "{{ apache2_package_name }}"
+    state: present
