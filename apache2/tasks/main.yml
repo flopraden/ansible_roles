@@ -1,0 +1,10 @@
+---
+# tasks file for apache2
+
+
+- block:
+    - include_tasks: install.yml
+    - include_tasks: run.yml
+  tags:
+    - apache2
+    - web
