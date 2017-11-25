@@ -1,2 +1,13 @@
 ---
 # defaults file for apache2
+
+
+# Name of package to install.
+# If a specific version of httpd/apache2 needs to be installed, this can
+# be overridden to include a version number.
+apache2_package_name: "httpd"
+
+
+# Name of service to run
+apache2_service_name: "httpd"
+
