@@ -41,6 +41,7 @@
   with_items:
     - ssl_crypto
     - server_identification
+    - security_headers
   notify:
     - apache2 | service | restart
 
@@ -54,7 +55,7 @@
     content: |
             # This configuration will simply ensure a 403 is returned for any unhandled requests.
             <VirtualHost *:80>
-              DocumentRoot /dev/null
+              DocumentRoot  /dev/null
             </VirtualHost>
 
 - name: apache2 | configuration | enable fallthrough vhost
