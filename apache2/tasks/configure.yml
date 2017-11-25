@@ -1,0 +1,58 @@
+---
+# configuration tasks for apache2 role
+
+- name: apache2 | configuration | create directories
+  file:
+    name: "{{ item }}"
+    state: directory
+    owner: root
+    group: "{{ apache2_group_name }}"
+    mode: "01750"
+  with_items:
+    - "{{ apache2_config_root }}"
+    - "{{ apache2_config_root }}/conf"
+    - "{{ apache2_config_root }}/conf.d"
+    - "{{ apache2_config_root }}/modules.conf.d"
+    # Although not the standard on RedHat-likes, sites-{enabled,avaiable}
+    # makes for cleaner, simpler management of vhosts, and is therefore used
+    # here.
+    - "{{ apache2_config_root }}/sites-available"
+    - "{{ apache2_config_root }}/sites-enabled"
+
+- name: apache2 | configuration | create default ssl directory
+  file:
+    name: "{{ apache2_ssl_root }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "01750"
+
+# On RedHat-likes, there are some additional config tasks.
+- include_tasks: configure_redhat.yml
+  when: ansible_os_family == "RedHat"
+
+- name: apache2 | configuration | create fallthrough vhost
+  copy:
+    dest: "/etc/{{ apache2_service_name }}/sites-available/000_default.conf"
+    owner: root
+    group: "{{ apache2_group_name }}"
+    mode: "0640"
+    content: |
+            # This configuration will simply ensure a 403 is returned for any unhandled requests.
+            <VirtualHost *:80>
+              DocumentRoot /dev/null
+            </VirtualHost>
+
+- name: apache2 | configuration | enable fallthrough vhost
+  file:
+    src: "/etc/{{ apache2_service_name }}/sites-available/000_default.conf"
+    dest: "/etc/{{ apache2_service_name }}/sites-enabled/000_default.conf"
+    state: link
+    owner: root
+    group: "{{ apache2_group_name }}"
+  notify:
+    - apache2 | service | restart
+
+
+- include_tasks: vhost.yml
+  with_items: "{{ apache2_vhosts }}"
