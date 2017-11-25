@@ -21,20 +21,3 @@
     home: "{{ apache2_user_home }}"
 
 
-- name: apache2 | config | create directories
-  file:
-    name: "{{ item }}"
-    state: directory
-    owner: root
-    group: "{{ apache2_group_name }}"
-    mode: "01750"
-  with_items:
-    - "/etc/{{ apache2_service_name }}"
-    - "/etc/{{ apache2_service_name }}/conf"
-    - "/etc/{{ apache2_service_name }}/conf.d"
-    - "/etc/{{ apache2_service_name }}/modules.conf.d"
-    # Although not the standard on RedHat-likes, sites-{enabled,avaiable}
-    # makes for cleaner, simpler management of vhosts, and is therefore used
-    # here.
-    - "/etc/{{ apache2_service_name }}/sites-available"
-    - "/etc/{{ apache2_service_name }}/sites-enabled"
