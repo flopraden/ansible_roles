@@ -7,7 +7,14 @@
 # be overridden to include a version number.
 apache2_package_name: "httpd"
 
-
 # Name of service to run
 apache2_service_name: "httpd"
 
+# Name of group to be used for unprivileged operations
+apache2_group_name: "apache"
+
+# Name of user to be used for unprivileged operations
+apache2_user_name: "apache"
+
+# Home directory for the apache2 unprivileged user.
+apache2_user_home: "/usr/share/httpd"
