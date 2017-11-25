@@ -1,0 +1,35 @@
+# {{ ansible_managed }}
+
+
+<VirtualHost *:{{ item.insecure_port | default(80) }}>
+  ServerAdmin {{ item.admin | default("webmaster@" + item.domain | default(item.name)) }}
+  ServerName {{ item.domain | default(item.name) }}
+  {% for server_alias in item.server_aliases | default([]) %}
+  ServerAlias {{ server_alias }}
+  {% endfor %}
+  UseCanonicalName off
+
+  Redirect / https://{{ item.domain | default(item.name) }}
+</VirtualHost>
+
+<VirtualHost *:{{ item.secure_port | default(443) }}>
+  ServerAdmin {{ item.admin | default("webmaster@" + item.domain | default(item.name)) }}
+  ServerName {{ item.domain | default(item.name) }}
+  {% for server_alias in item.server_aliases | default([]) %}
+  ServerAlias {{ server_alias }}
+  {% endfor %}
+  UseCanonicalName off
+
+  SSLEngine on
+  SSLCertificateFile      {{ item.ssl_cert | default([apache2_ssl_root, item.domain | default(item.name), "chain.pem"] | join("/"))  }}
+  SSLCertificateKeyFile   {{ item.ssl_cert | default([apache2_ssl_root, item.domain | default(item.name), "key.pem"] | join("/"))  }}
+
+  {% if item.client_ca_file | default(false) %}
+  SSLCACertificateFile    {{ item.client_ca_file }}
+  {% endif %}
+
+  Header always set Strict-Transport-Security "max-age={{ item.hsts_max_age | default(apache2_hsts_max_age) }}"
+
+  DocumentRoot {{ item.document_root | default([apache2_content_root, item.domain | default(item.name)] | join('/')) }}
+
+</VirtualHost>
