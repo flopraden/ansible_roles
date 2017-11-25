@@ -1,0 +1,40 @@
+---
+# pre install tasks for apache2 role
+
+
+# Create unpriv user/group to own apache worker threads.
+
+- name: apache2 | group | create
+  group:
+    name: "{{ apache2_group_name }}"
+    state: present
+    system: true
+
+- name: apache2 | user | create
+  user:
+    name: "{{ apache2_user_name }}"
+    state: present
+    system: true
+    comment: Unprivileged user for apache2/httpd server
+    group: "{{ apache2_group_name }}"
+    shell: /sbin/nologin
+    home: "{{ apache2_user_home }}"
+
+
+- name: apache2 | config | create directories
+  file:
+    name: "{{ item }}"
+    state: directory
+    owner: root
+    group: "{{ apache2_group_name }}"
+    mode: "01750"
+  with_items:
+    - "/etc/{{ apache2_service_name }}"
+    - "/etc/{{ apache2_service_name }}/conf"
+    - "/etc/{{ apache2_service_name }}/conf.d"
+    - "/etc/{{ apache2_service_name }}/modules.conf.d"
+    # Although not the standard on RedHat-likes, sites-{enabled,avaiable}
+    # makes for cleaner, simpler management of vhosts, and is therefore used
+    # here.
+    - "/etc/{{ apache2_service_name }}/sites-available"
+    - "/etc/{{ apache2_service_name }}/sites-enabled"
