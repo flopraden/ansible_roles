@@ -7,6 +7,9 @@
 # be overridden to include a version number.
 apache2_package_name: "httpd"
 
+apache2_module_packages:
+  - mod_ssl
+
 # Name of service to run
 apache2_service_name: "httpd"
 
@@ -18,3 +21,29 @@ apache2_user_name: "apache"
 
 # Home directory for the apache2 unprivileged user.
 apache2_user_home: "/usr/share/httpd"
+
+apache2_config_root: "/etc/{{ apache2_service_name }}"
+apache2_ssl_root: "/etc/{{ apache2_service_name }}/ssl"
+
+apache2_content_root: "/var/www"
+
+
+# Default max age for HSTS header.
+# SSL vhosts defined in apache2_vhost can override this by specifying a
+# value for hsts_max_age.
+apache2_hsts_max_age: 15768000
+
+# An array of vhost objects to create on the target server(s).
+# The simple_vhost.conf.j2 template provides an overivew of supported keys.
+# The required ones are:
+# * name: this is used by default as the server name, so should be a hostname (unless domain is set)
+# Useful ones are:
+# * domain: used in preference to name as the server name, and to create the server admin email. The domain for the vhost.
+# * server_aliases: an array of alternatives names (or ServerAlias lines, in fact) for the vhost.
+# * cert: location of a full cert + chain file for the https site to use
+# * key: location of the private key matching the specified cert.
+# * document_root: value provided to the vhost DocumentRoot.
+# * hsts_max_age
+apache2_vhosts: []
+
+apache2_ciphers: "ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS"
