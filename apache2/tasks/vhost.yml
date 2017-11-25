@@ -9,6 +9,23 @@
     group: "{{ apache2_group_name }}"
     mode: "01750"
 
+
+- name: apache2 | vhost | create ssl directory
+  file:
+    name: "{{ apache2_ssl_root }}/{{ item.domain | default(item.name) }}/"
+    state: directory
+    owner: root
+    group: root
+    mode: "01710"
+  when: not item.cert | default(false, true)
+
+- name: apache2 | vhost | create self-signed certificate
+  command: "/usr/bin/openssl req -x509 -newkey rsa:2048 -nodes -keyout key.pem -subj '/CN={{ item.domain | default(item.name) }}' -out chain.pem"
+  args:
+    creates: "{{ apache2_ssl_root }}/{{ item.domain | default(item.name) }}/key.pem"
+    chdir: "{{ apache2_ssl_root }}/{{ item.domain | default(item.name) }}/"
+  when: not item.cert | default(false, true)
+
 - name: apache2 | vhost | create log directory
   file:
     name: "{{ apache2_log_root }}/{{ item.name }}/"
