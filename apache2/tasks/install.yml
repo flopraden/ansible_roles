@@ -5,3 +5,10 @@
   package:
     name: "{{ apache2_package_name }}"
     state: present
+
+
+- name: apache2 | package | install modules
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ apache2_module_packages }}"
