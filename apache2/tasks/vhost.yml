@@ -9,6 +9,17 @@
     group: "{{ apache2_group_name }}"
     mode: "01750"
 
+- name: apache2 | vhost | create log directory
+  file:
+    name: "{{ apache2_log_root }}/{{ item.name }}/"
+    state: directory
+    owner: root
+    group: "{{ apache2_group_name }}"
+    # Allow apache group wx, but not reading.
+    # It may be preferrable to have the apache user own the dir (mode 350),
+    # and have a group able to read logs...
+    mode: "01730"
+
 - name: apache2 | vhost | create {{ item.name }} configuration
   template:
     src: "{{ item.source_template | default('simple_vhost.conf.j2') }}"

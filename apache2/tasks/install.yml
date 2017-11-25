@@ -6,7 +6,6 @@
     name: "{{ apache2_package_name }}"
     state: present
 
-
 - name: apache2 | package | install modules
   package:
     name: "{{ item }}"

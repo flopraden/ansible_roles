@@ -1,7 +1,6 @@
 ---
 # pre install tasks for apache2 role
 
-
 # Create unpriv user/group to own apache worker threads.
 
 - name: apache2 | group | create

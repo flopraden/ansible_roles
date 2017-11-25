@@ -31,6 +31,20 @@
 - include_tasks: configure_redhat.yml
   when: ansible_os_family == "RedHat"
 
+- name: apache2 | configuration | tighten server settings
+  template:
+    src: "{{ item }}.conf.j2"
+    dest: "{{ apache2_config_root }}/conf.d/{{ item }}.conf"
+    owner: root
+    group: "{{ apache2_group_name }}"
+    mode: "0640"
+  with_items:
+    - ssl_crypto
+    - server_identification
+  notify:
+    - apache2 | service | restart
+
+
 - name: apache2 | configuration | create fallthrough vhost
   copy:
     dest: "/etc/{{ apache2_service_name }}/sites-available/000_default.conf"
