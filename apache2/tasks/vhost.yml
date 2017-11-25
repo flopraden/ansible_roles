@@ -1,0 +1,28 @@
+---
+# tasks for creating and enabling vhosts for apache2
+
+- name: apache2 | vhost | create document root
+  file:
+    name: "{{ item.document_root | default([apache2_content_root, item.domain | default(item.name)] | join('/')) }}"
+    state: directory
+    owner: root
+    group: "{{ apache2_group_name }}"
+    mode: "01750"
+
+- name: apache2 | vhost | create {{ item.name }} configuration
+  template:
+    src: "{{ item.source_template | default('simple_vhost.conf.j2') }}"
+    dest: "/etc/{{ apache2_service_name }}/sites-available/{{ item.name }}.conf"
+    owner: root
+    group: "{{ apache2_group_name }}"
+    mode: "0640"
+
+- name: apache2 | configuration | enable vhost {{ item.name }}
+  file:
+    src: "/etc/{{ apache2_service_name }}/sites-available/{{ item.name }}.conf"
+    dest: "/etc/{{ apache2_service_name }}/sites-enabled/{{ item.name }}.conf"
+    state: link
+    owner: root
+    group: "{{ apache2_group_name }}"
+  when: item.enabled | default(true)
+  notify: apache2 | service | restart
