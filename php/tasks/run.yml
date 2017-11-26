@@ -4,6 +4,6 @@
 
 - name: php | service | enable and start php-fpm
   service:
-    name: "{{php_prefix }}-php-fpm.service"
+    name: "{{ php_prefix }}-php-fpm.service"
     state: started
     enabled: yes
