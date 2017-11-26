@@ -1,3 +1,5 @@
-SSLProtocol             all -SSLv2 -SSLv3
+# {{ ansible_managed }}
+
+SSLProtocol             -ALL +TLSv1
 SSLCipherSuite          {{ apache2_ciphers }}
 SSLHonorCipherOrder     on
