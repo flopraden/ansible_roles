@@ -9,6 +9,7 @@ apache2_package_name: "httpd"
 
 apache2_module_packages:
   - mod_ssl
+  - mod_fcgid
 
 # Name of service to run
 apache2_service_name: "httpd"
