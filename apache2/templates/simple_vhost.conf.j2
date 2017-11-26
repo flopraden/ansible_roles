@@ -1,6 +1,5 @@
 # {{ ansible_managed }}
 
-
 <VirtualHost *:{{ item.insecure_port | default(80) }}>
   ServerAdmin {{ item.admin | default("webmaster@" + item.domain | default(item.name)) }}
   ServerName {{ item.domain | default(item.name) }}
@@ -34,5 +33,7 @@
 
   CustomLog {{ apache2_log_root }}/{{ item.name }}/access.log combined
   ErrorLog {{ apache2_log_root }}/{{ item.name }}/error.log
+
+  {{ item.config | default("") | indent(2) }}
 
 </VirtualHost>
