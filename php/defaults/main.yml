@@ -10,3 +10,7 @@ php_repository_key: "https://raw.githubusercontent.com/sclorg-distgit/centos-rel
 
 php_prefix: rh-php71
 
+php_packages:
+  - php-fpm
+  - php-mysqlnd
+
