@@ -1,0 +1,15 @@
+---
+# pre install tasks for php
+
+- name: php | repository | add
+  yum_repository:
+    name: "php"
+    state: present
+    description: "PHP repository"
+    baseurl: "{{ php_repository_baseurl }}"
+    gpgkey: "{{ php_repository_key }}"
+    gpgcheck: yes
+    enabled: yes
+    sslverify: yes
+    includepkgs: "{{ php_prefix }} {{ php_prefix }}-* "
+  when: ansible_pkg_mgr == 'yum'
