@@ -1,2 +1,12 @@
 ---
 # defaults file for php
+
+# Repository from which to install php.
+# For PHP7 on CentOS 7.x, using Software Collections seems the preferred approach.
+# See https://wiki.centos.org/HowTos/php7
+php_repository_baseurl: "http://mirror.centos.org/centos/7/sclo/$basearch/rh/"
+
+php_repository_key: "https://raw.githubusercontent.com/sclorg-distgit/centos-release-sclo/master/RPM-GPG-KEY-CentOS-SIG-SCLo"
+
+php_prefix: rh-php71
+
