@@ -44,6 +44,7 @@
     owner: root
     group: "{{ apache2_group_name }}"
     mode: "0640"
+  notify: apache2 | service | restart
 
 - name: apache2 | configuration | enable vhost {{ item.name }}
   file:
