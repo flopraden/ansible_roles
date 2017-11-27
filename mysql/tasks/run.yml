@@ -1,0 +1,8 @@
+---
+# tasks for running mysql
+
+- name: mysql | service | enable and run
+  service:
+    name: "{{ mysql_service_name }}"
+    state: started
+    enabled: yes
