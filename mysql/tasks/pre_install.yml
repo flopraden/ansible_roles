@@ -1,0 +1,39 @@
+---
+# pre-install tasks for mysql
+
+- name: mysql | group | create
+  group:
+    name: "{{ mysql_group_name }}"
+    state: present
+    system: true
+
+- name: mysql | user | create
+  user:
+    name: "{{ mysql_user_name }}"
+    state: present
+    group: "{{ mysql_group_name }}"
+    shell: /sbin/nologin
+    home: /var/lib/mysql
+    createhome: false
+
+- name: mysql | homedir | create
+  file:
+    name: /var/lib/mysql
+    state: directory
+    owner: "{{ mysql_user_name }}"
+    group: "{{ mysql_group_name }}"
+    mode: "01750"
+
+
+- name: mysql | datadir | create
+  file:
+    name: "{{ mysql_data_dir }}"
+    state: directory
+    owner: "{{ mysql_user_name }}"
+    group: "{{ mysql_group_name }}"
+    mode: "01750"
+    recurse: true
+    serole: object_r
+    seuser: system_u
+    setype: mysqld_db_t
+    selevel: s0
