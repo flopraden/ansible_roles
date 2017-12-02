@@ -1,0 +1,7 @@
+<!-- {{ ansible_managed }} -->
+<ossec_config>
+    <client>
+      <server-hostname>{{ ossec_agent_server }}</server-hostname>
+      <config-profile>{{ ossec_agent_profiles | join(",") }}</config-profile>
+    </client>
+</ossec_config>
