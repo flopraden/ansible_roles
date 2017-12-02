@@ -1,0 +1,8 @@
+---
+# install tasks for ossec-server
+
+- name: ossec | packages | install server packages
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ ossec_server_packages }}"
