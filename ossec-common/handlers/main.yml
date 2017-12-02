@@ -1,2 +1,7 @@
 ---
 # handlers file for ossec-common
+
+- name: ossec | service | restart
+  service:
+    name: "{{ ossec_service_name }}"
+    state: restarted
