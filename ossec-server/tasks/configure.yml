@@ -1,0 +1,12 @@
+---
+# configuration tasks for ossec-server
+
+- name: ossec | configuration | create ossec-server.conf
+  template:
+    src: ossec.conf.j2
+    dest: "{{ ossec_home_dir }}/etc/ossec-server.conf"
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - "ossec | service | restart"
