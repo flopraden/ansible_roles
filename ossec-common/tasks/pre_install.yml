@@ -28,11 +28,16 @@
     name: ossec-atomic
     state: present
     description: CentOS / Red Hat Enterprise Linux $releasever - atomic/ossec
-    baseurl: "{{ ossec_repository_url }}"
-    gpgkey: "{{ ossec_repository_keY_url }}"
-    gpgcheck: yes
-    enabled: yes
-    sslverify: yes
-    includepkgs: "ossec*"
+    mirrorlist: "{{ ossec_repository_mirrorlist }}"
+    gpgkey: "{{ ossec_repository_key_url }}"
+    gpgcheck: true
+    repo_gpgcheck: false
+    enabled: true
+    sslverify: true
+    includepkgs: "ossec* inotify-tools"
   when: ansible_pkg_mgr == 'yum'
+  register: ossec_repo
 
+- name: ossec | repository | accept key
+  command: yum -q makecache -y --disablerepo=* --enablerepo=ossec-atomic
+  when: ossec_repo.changed | default(false)
