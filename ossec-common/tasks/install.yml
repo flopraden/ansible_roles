@@ -1,0 +1,8 @@
+---
+# install task for ossec-common
+
+
+- name: ossec | package | install ossec-hids
+  package:
+    name: ossec-hids
+    state: present
