@@ -1,0 +1,8 @@
+---
+# run tasks for ossec-server
+
+- name: ossec | service | enable and run
+  service:
+    name: "{{ ossec_server_service_name }}"
+    state: started
+    enabled: true
