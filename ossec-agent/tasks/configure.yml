@@ -1,0 +1,12 @@
+---
+# configuration tasks for ossec-agent
+
+- name: ossec | configuration | create agent ossec.conf
+  template:
+    src: ossec.conf.j2
+    dest: "{{ ossec_home_dir }}/etc/ossec.conf"
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - "ossec | service | restart"
