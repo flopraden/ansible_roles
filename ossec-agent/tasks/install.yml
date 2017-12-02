@@ -1,0 +1,9 @@
+---
+# install tasks for ossec-agent
+
+
+- name: ossec | packages | install agent
+  package:
+    name: "{{item}}"
+    state: present
+  with_items: "{{ ossec_agent_packages }}"
