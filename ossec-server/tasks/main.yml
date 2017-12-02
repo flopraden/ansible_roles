@@ -1,2 +1,11 @@
 ---
 # tasks file for ossec-server
+
+
+- block:
+    - include_tasks: install.yml
+      tags:
+        - install
+  tags:
+    - ossec
+    - ossec-server
