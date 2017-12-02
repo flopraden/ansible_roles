@@ -1,0 +1,8 @@
+---
+# run tasks for ossec-agent
+
+- name: ossec | service | enable and run agent
+  service:
+    name: "{{ ossec_agent_service_name }}"
+    state: started
+    enabled: yes
