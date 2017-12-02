@@ -1,0 +1,38 @@
+---
+# pre-install tasks for ossec common
+
+- name: ossec | groups | create
+  group:
+    name: "{{ item }}"
+    state: present
+    system: true
+  with_items:
+    - ossec
+    - ossecr
+
+- name: ossec | users | create
+  user:
+    name: "{{ item }}"
+    state: present
+    system: true
+    group: "{{ item }}"
+    shell: /sbin/nologin
+    home: "{{ ossec_home_dir }}"
+    createhome: false
+  with_items:
+    - ossec
+    - ossecr
+
+- name: ossec | repository | add
+  yum_repository:
+    name: ossec-atomic
+    state: present
+    description: CentOS / Red Hat Enterprise Linux $releasever - atomic/ossec
+    baseurl: "{{ ossec_repository_url }}"
+    gpgkey: "{{ ossec_repository_keY_url }}"
+    gpgcheck: yes
+    enabled: yes
+    sslverify: yes
+    includepkgs: "ossec*"
+  when: ansible_pkg_mgr == 'yum'
+
