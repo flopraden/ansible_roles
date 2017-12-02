@@ -1,0 +1,41 @@
+---
+# directory creation for ossec common
+
+
+- name: ossec | directory | create read-only directories
+  file:
+    name: "{{ item }}"
+    state: directory
+    owner: root
+    group: ossec
+    mode: "01750"
+  with_items:
+    - "{{ ossec_home_dir }}"
+    - "{{ ossec_home_dir }}/active-response"
+    - "{{ ossec_home_dir }}/agentless"
+    - "{{ ossec_home_dir }}/bin"
+    - "{{ ossec_home_dir }}/etc"
+    - "{{ ossec_home_dir }}/queue"
+    - "{{ ossec_home_dir }}/rules"
+    - "{{ ossec_home_dir }}/tmp"
+    - "{{ ossec_home_dir }}/var"
+
+- name: ossec | directory | create lua directory
+  file:
+    name: "{{ ossec_home_dir }}/lua"
+    state: directory
+    owner: root
+    group: root
+    mode: "01755"
+
+
+- name: ossec | directory | create writable directories
+  file:
+    name: "{{ item }}"
+    state: directory
+    owner: ossec
+    group: ossec
+    mode: "01750"
+  with_items:
+    - "{{ ossec_home_dir }}/logs"
+    - "{{ ossec_home_dir }}/stats"
