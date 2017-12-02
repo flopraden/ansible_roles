@@ -7,3 +7,6 @@ ossec_repository_key_url: https://www.atomicorp.com/RPM-GPG-KEY.art.txt https://
 
 
 ossec_home_dir: /var/ossec
+
+# The main agent and server share a service name on CentOS/RH-likes.
+ossec_service_name: ossec-hids
