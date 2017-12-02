@@ -1,2 +1,5 @@
 ---
 # defaults file for ossec-server
+
+ossec_server_packages:
+  - ossec-hids-server
