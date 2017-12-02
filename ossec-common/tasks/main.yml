@@ -1,2 +1,13 @@
 ---
 # tasks file for ossec-common
+
+
+- block:
+    - include_tasks: pre_install.yml
+    - include_tasks: directories.yml
+    - include_tasks: install.yml
+      tags:
+        - install
+  tags:
+    - ossec
+    - ossec-common
