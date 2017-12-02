@@ -2,8 +2,8 @@
 # defaults file for ossec-common
 
 
-ossec_repository_url: http://updates.atomicorp.com/channels/mirrorlist/atomic/centos-$releasever-$basearch
-ossec_repository_key_url: https://www.atomicorp.com/RPM-GPG-KEY.art.txt
+ossec_repository_mirrorlist: http://updates.atomicorp.com/channels/mirrorlist/atomic/centos-$releasever-$basearch
+ossec_repository_key_url: https://www.atomicorp.com/RPM-GPG-KEY.art.txt https://www.atomicorp.com/RPM-GPG-KEY.atomicorp.txt
 
 
 ossec_home_dir: /var/ossec
