@@ -1,2 +1,11 @@
 ---
 # defaults file for ossec-agent
+
+ossec_agent_packages:
+  - ossec-hids-agent
+
+ossec_agent_service_name: "{{ ossec_service_name }}"
+
+ossec_agent_profiles: "{{ group_names }}"
+
+ossec_agent_server: localhost
