@@ -4,9 +4,22 @@
 - name: ossec | configuration | create ossec-server.conf
   template:
     src: ossec.conf.j2
-    dest: "{{ ossec_home_dir }}/etc/ossec-server.conf"
+    dest: "{{ ossec_home_dir }}/etc/ossec.conf"
     owner: root
     group: root
     mode: "0644"
   notify:
     - "ossec | service | restart"
+
+
+- name: ossec | configuration | create central agent.conf
+  template:
+    src: agent.conf.j2
+    dest: "{{ ossec_home_dir }}/etc/shared/agent.conf"
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - "ossec | service | restart"
+
+
