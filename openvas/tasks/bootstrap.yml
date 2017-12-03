@@ -57,14 +57,14 @@
   args:
     creates: /var/lib/openvas/scap-data/scap.db
   ignore_errors: true
-  when: "{{ openvas_skip_rsync }}"
+  when: openvas_skip_rsync
 
 # Pull in the certdata for openvas.
 # This task uses rsync exclusively, and so may fail if outbound
 # rsync access is not allowed.
 - name: openvas | feed | sync cerdata
   command: "greenbone-certdata-sync"
-  ignore_errors: true
+  ignore_errors: "{{ openvas_skip_rsync }}"
 
 # In cases where outbound rsync is not allowed or fails, this task ensures
 # cert.db is created, even when the previous task fails.
@@ -73,6 +73,7 @@
   args:
     creates: /var/lib/openvas/cert-data/cert.db
   ignore_errors: true
+  when: openvas_skip_rsync
 
 - name: openvas | certs | generate
   command: openvas-manage-certs -a
