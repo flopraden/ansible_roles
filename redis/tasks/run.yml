@@ -1,0 +1,8 @@
+---
+# tasks for running redis
+
+- name: redis | service | start and enable
+  service:
+    name: "{{ redis_service_name }}"
+    state: started
+    enabled: true
