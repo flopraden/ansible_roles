@@ -1,2 +1,19 @@
 ---
 # defaults file for openvas
+
+openvas_repository_mirrorlist: http://updates.atomicorp.com/channels/mirrorlist/atomic/centos-$releasever-$basearch
+openvas_repository_key_url: https://www.atomicorp.com/RPM-GPG-KEY.art.txt https://www.atomicorp.com/RPM-GPG-KEY.atomicorp.txt
+
+
+openvas_packages:
+  - openvas
+
+
+openvas_admin_user: admin
+openvas_admin_password: admin
+
+# Some tasks will run rsync to pull in various sets of content.
+# On systems that cannot reach remote/public rsync servers,
+# set this to true.
+# This causes tasks that _require_ rsync to be allowed to fail.
+openvas_skip_rsync: true
