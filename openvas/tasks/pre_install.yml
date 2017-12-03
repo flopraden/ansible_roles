@@ -1,0 +1,21 @@
+---
+# pre-install tasks for openvas
+
+- name: openvas | repository | add
+  yum_repository:
+    name: openvas-atomic
+    state: present
+    description: CentOS / Red Hat Enterprise Linux $releasever - atomic/openvas
+    mirrorlist: "{{ openvas_repository_mirrorlist }}"
+    gpgkey: "{{ openvas_repository_key_url }}"
+    gpgcheck: true
+    repo_gpgcheck: false
+    enabled: true
+    sslverify: true
+    includepkgs: "openvas* OSPd* wapiti* dirb pnscan greenbone* atomic-sqlite* libopenvas*"
+  when: ansible_pkg_mgr == 'yum'
+  register: openvas_repo
+
+- name: openvas | repository | accept key
+  command: yum -q makecache -y --disablerepo=* --enablerepo=openvas-atomic
+  when: openvas_repo.changed | default(false)
