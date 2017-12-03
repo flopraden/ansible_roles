@@ -1,2 +1,10 @@
 ---
 # vars file for common
+
+epel_repo_mirrorlist: https://mirrors.fedoraproject.org/metalink?repo=epel-7&arch=$basearch
+
+# This is the EPEL GPG key for EPEL7
+# See https://getfedora.org/keys/ for others
+epel_repo_key_url: https://getfedora.org/static/352C64E5.txt
+
+epel_enabled: false
