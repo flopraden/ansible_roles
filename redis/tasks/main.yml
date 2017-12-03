@@ -1,2 +1,18 @@
 ---
 # tasks file for redis
+
+- block:
+    - include_tasks: pre_install.yml
+      tags:
+        - pre_install
+    - include_tasks: install.yml
+      tags:
+        - install
+    - include_tasks: configure.yml
+      tags:
+        - configure
+    - include_tasks: run.yml
+      tags:
+        - run
+  tags:
+    - redis
