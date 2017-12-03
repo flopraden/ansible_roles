@@ -1,0 +1,79 @@
+---
+
+# bootstrap tasks for openvas
+
+# On virtual (and possibly headless/unattended) systems, rebuilding
+# the manager DB hangs on insufficient entropy, and generating certs is slow.
+# haveged helps with that.
+# TODO: This should be moved to something more global.
+- name: openvas | service | start haveged
+  service:
+    name: haveged
+    state: started
+
+# Sync the Network Vulnerability Tests database.
+- name: openvas | feed | sync NVT
+  command: /sbin/greenbone-nvt-sync --curl
+  args:
+    creates: /var/lib/openvas/plugins/2017
+  register: openvas_first_run
+
+# Starting the openvas scanner is necessary here. I think.
+- name: openvas | service | start for bootstrap
+  service:
+    name: openvas-scanner
+    state: started
+  when: openvas_first_run.changed | default(false)
+
+# For bootstrapping purposes, rebuild the DB.
+- name: openvas | manager | rebuild task database
+  command: /sbin/openvasmd --rebuild
+  args:
+    creates: /var/lib/openvas/mgr/tasks.db
+
+# Creating the admin user assigns a random password.
+- name: openvas | manager | create admin user
+  command: "openvasmd --create-user={{ openvas_admin_user }} --role=Admin"
+  when: openvas_first_run.changed | default(false)
+
+# Ensure admin user has the expected password.
+- name: openvas | manager | set admin user password
+  command: "openvasmd --user={{ openvas_admin_user }} --new-password={{ openvas_admin_password }}"
+  when: openvas_first_run.changed | default(false)
+
+# Pull in the scapdata for openvas.
+# This task uses rsync exclusively, and so may fail if outbound
+# rsync access is not allowed.
+- name: openvas | feed | refresh scapdata
+  command: "greenbone-scapdata-sync"
+  args:
+    creates: /var/lib/openvas/scap-data/scap.db
+  ignore_errors: "{{ openvas_skip_rsync }}"
+
+# In cases where outbound rsync is not allowed or fails, this task ensures
+# scap.db is created, even when the previous task fails.
+- name: openvas | feed | refresh scapdata
+  command: "greenbone-scapdata-sync --refresh"
+  args:
+    creates: /var/lib/openvas/scap-data/scap.db
+  ignore_errors: true
+  when: "{{ openvas_skip_rsync }}"
+
+# Pull in the certdata for openvas.
+# This task uses rsync exclusively, and so may fail if outbound
+# rsync access is not allowed.
+- name: openvas | feed | sync cerdata
+  command: "greenbone-certdata-sync"
+  ignore_errors: true
+
+# In cases where outbound rsync is not allowed or fails, this task ensures
+# cert.db is created, even when the previous task fails.
+- name: openvas | feed | refresh cerdata
+  command: "greenbone-certdata-sync --refresh"
+  args:
+    creates: /var/lib/openvas/cert-data/cert.db
+  ignore_errors: true
+
+- name: openvas | certs | generate
+  command: openvas-manage-certs -a
+  when: openvas_first_run.changed | default(false)
