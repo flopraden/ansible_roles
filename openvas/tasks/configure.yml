@@ -1,0 +1,19 @@
+---
+# configuration tasks for openvas
+
+- name: openvas | configuration | create openvassd.conf
+  template:
+    src: openvassd.conf.j2
+    dest: /etc/openvas/openvassd.conf
+    owner: root
+    group: root
+    mode: "0640"
+
+
+- name: openvas | configuration | create openvas-scanner sysconfig
+  template:
+    src: openvas-scanner.sysconfig.j2
+    dest: /etc/sysconfig/openvas-scanner
+    owner: root
+    group: root
+    mode: "0640"
