@@ -1,0 +1,18 @@
+---
+# pre-install task for redis
+
+- name: redis | group | create
+  group:
+    name: redis
+    state: present
+    system: true
+
+- name: redis | user | create
+  user:
+    name: redis
+    state: present
+    group: redis
+    system: true
+    shell: /sbin/nologin
+    home: /var/lib/redis
+
