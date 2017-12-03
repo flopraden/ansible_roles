@@ -1,2 +1,16 @@
 ---
 # defaults file for redis
+
+redis_packages:
+  - redis
+
+redis_service_name: redis
+
+# Default is normally 6379.
+# The default for this role is currently to deploy a local instance
+# listening on a unix socket.
+redis_bind_port: 0
+redis_bind_address: 0.0.0.0
+
+redis_bind_socket: "/run/redis/redis.sock"
+redis_bind_socket_mode: "0700"
