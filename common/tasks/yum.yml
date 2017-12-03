@@ -1,0 +1,20 @@
+---
+# yum related tasks
+
+- name: common | yum | add epel repo
+  yum_repository:
+    name: epel
+    state: present
+    description: EPEL $releasever
+    mirrorlist: "{{ epel_repo_mirrorlist }}"
+    gpgkey: "{{ epel_repo_key_url }}"
+    gpgcheck: true
+    # The canonical EPEL doesn't sign its repo manifests
+    repo_gpgcheck: false
+    enabled: true
+    sslverify: true
+  when: epel_enabled
+
+- name: common | yum | makecache and accept new repo keys
+  command: yum makecache -y fast
+  when: epel_enabled
