@@ -1,0 +1,20 @@
+---
+# run tasks for openvas
+
+- name: openvas | service | run scanner
+  service:
+    name: openvas-scanner
+    state: started
+    enabled: yes
+
+- name: openvas | service | run manager
+  service:
+    name: openvas-manager
+    state: started
+    enabled: yes
+
+- name: openvas | service | run gsa web interface
+  service:
+    name: gsad
+    state: started
+    enabled: yes
