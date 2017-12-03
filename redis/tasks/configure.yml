@@ -1,0 +1,12 @@
+---
+# configuration tasks for redis
+
+- name: redis | configuration | create redis.conf
+  template:
+    src: redis.conf.j2
+    dest: /etc/redis.conf
+    owner: root
+    group: redis
+    mode: "0640"
+  notify:
+    - redis | service | restart
