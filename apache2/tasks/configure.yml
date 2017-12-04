@@ -50,7 +50,6 @@
   args:
     creates: "{{ apache2_ssl_root }}/default_key.pem"
     chdir: "{{ apache2_ssl_root }}/"
-  when: not item.cert | default(false, true)
 
 - name: apache2 | configuration | create fallthrough vhost
   copy:
