@@ -45,6 +45,12 @@
   notify:
     - apache2 | service | restart
 
+- name: apache2 | vhost | create default/fallthrough self-signed certificate
+  command: "/usr/bin/openssl req -x509 -newkey rsa:2048 -nodes -keyout default_key.pem -subj '/CN=localhost' -out default_chain.pem"
+  args:
+    creates: "{{ apache2_ssl_root }}/default_key.pem"
+    chdir: "{{ apache2_ssl_root }}/"
+  when: not item.cert | default(false, true)
 
 - name: apache2 | configuration | create fallthrough vhost
   copy:
@@ -53,10 +59,17 @@
     group: "{{ apache2_group_name }}"
     mode: "0640"
     content: |
-            # This configuration will simply ensure a 403 is returned for any unhandled requests.
-            <VirtualHost *:80>
-              DocumentRoot  /dev/null
-            </VirtualHost>
+              # This configuration will simply ensure a 403 is returned for any unhandled requests.
+              <VirtualHost *:80>
+                DocumentRoot  /dev/null
+              </VirtualHost>
+              <VirtualHost *:443>
+                DocumentRoot  /dev/null
+                SSLEngine on
+                SSLCertificateFile  {{ apache2_ssl_root }}/default_chain.pem
+                SSLCertificateKeyFile {{ apache2_ssl_root }}/default_chain.pem
+              </VirtualHost>
+
 
 - name: apache2 | configuration | enable fallthrough vhost
   file:
