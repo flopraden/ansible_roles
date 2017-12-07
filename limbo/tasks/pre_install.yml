@@ -1,11 +1,6 @@
 ---
 # pre install tasks for limbo
 
-- name: Install EPEL repository
-  package:
-    name:  epel-release
-    state: present
-
 - name: Install python pip
   package:
     name:  python-pip
