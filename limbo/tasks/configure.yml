@@ -1,0 +1,18 @@
+---
+# configure tasks for limbo
+
+- name: Install limbo symtemd template
+  template:
+    src: limbo.service.j2
+    dest: /etc/systemd/system/limbo.service
+    owner: root
+    group: root
+    mode: "0640"
+
+- name: Install limbo slack token
+  template:
+    src: limbo.service.10-envvars.j2
+    dest: /etc/systemd/system/limbo.service.d/10-envvars.conf
+    owner: root
+    group: root
+    mode: "0640"

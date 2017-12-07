@@ -1,0 +1,4 @@
+---
+# defaults file for limbo
+
+limbo_slack_token: "xxxx..."

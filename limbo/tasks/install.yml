@@ -1,0 +1,18 @@
+---
+# install tasks for limbo
+
+- name: Install limbo python dependencies
+  pip:
+    name:
+      - beautifulsoup4
+      - bs4
+      - certifi
+      - flake8
+      - html5lib
+      - pyfiglet
+      - requests[security]
+      - tox
+      - vcrpy
+      - websocket-client
+      - limbo
+    state: present

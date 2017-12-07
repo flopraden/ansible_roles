@@ -1,0 +1,8 @@
+---
+# run tasks for limbo
+
+- name: Start and enable limbo slackbot service
+  service:
+    name: limbo
+    state: started
+    enabled: true

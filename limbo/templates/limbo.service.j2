@@ -1,0 +1,11 @@
+[Unit]
+Description=limbo Service
+After=network.target
+[Service]
+Type=simple
+#Type=forking
+User=limbo
+ExecStart=/bin/limbo --database /opt/limbo/limbo.sqlite --pluginpath /usr/lib/python2.7/site-packages/limbo/plugins
+Restart=on-failure
+[Install]
+WantedBy=multi-user.target

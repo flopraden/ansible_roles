@@ -1,0 +1,47 @@
+---
+# pre install tasks for limbo
+
+- name: Install EPEL repository
+  package:
+    name:  epel-release
+    state: present
+
+- name: Install python pip
+  package:
+    name:  python-pip
+    state: present
+
+- name: Upgrade pip
+  pip:
+    name: pip
+    extra_args: --upgrade
+
+- name: Create limbo group
+  group:
+    name: limbo
+    state: present
+    system: yes
+
+- name: Create limbo user
+  user:
+    name: limbo
+    state: present
+    group: limbo
+    shell: /sbin/nologin
+    home: /opt/limbo
+    comment: User for limbo slackbot
+    expires: -1
+    system: yes
+
+- name: Create limbo directories
+  file:
+    name: "{{ item.path }}"
+    state: directory
+    owner: "{{ item.usergroup }}"
+    group: "{{ item.usergroup }}"
+    mode: "01750"
+  with_items:
+    - path: /opt/limbo
+      usergroup: limbo
+    - path: /etc/systemd/system/limbo.service.d
+      usergroup: root
