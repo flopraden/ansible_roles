@@ -1,6 +1,11 @@
 ---
 # defaults file for apache2
 
+# Controls the address the default/fallthrough vhost will listen on.
+# Generally, * is appropriate.
+# In cases where a specific site should be the catch-call, this can be
+# set to e.g. 127.0.0.1 or ::1.
+apache2_default_vhost_address: "*"
 
 # Name of package to install.
 # If a specific version of httpd/apache2 needs to be installed, this can
