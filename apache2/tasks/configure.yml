@@ -59,10 +59,10 @@
     mode: "0640"
     content: |
               # This configuration will simply ensure a 403 is returned for any unhandled requests.
-              <VirtualHost *:80>
+              <VirtualHost {{ apache2_default_vhost_address }}:80>
                 DocumentRoot  /dev/null
               </VirtualHost>
-              <VirtualHost *:443>
+              <VirtualHost {{ apache2_default_vhost_address }}:443>
                 DocumentRoot  /dev/null
                 SSLEngine on
                 SSLCertificateFile  {{ apache2_ssl_root }}/default_chain.pem
