@@ -3,7 +3,7 @@
 
 # Version of the prometheus binary or docker container to use.
 # For docker containers, if the version is \d+.\d+.\d+, a v will be prepended.
-prometheus_version: "1.8.2"
+prometheus_version: "2.0.0"
 
 # Port to have prometheus list for web requests on
 # If prometheus is dockerised, this is the port exposed by the container

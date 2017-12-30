@@ -3,7 +3,7 @@
 
 # Version of the blackbox exporter blackbox exporter binary or docker container to use.
 # For docker containers, if the version is \d+.\d+.\d+, a v will be prepended.
-prometheus_blackbox_version: "0.10.0"
+prometheus_blackbox_version: "0.11.0"
 
 # Platform to download binary for.
 prometheus_blackbox_platform: "{{ 'darwin' if ansible_os_family == 'Darwin' else 'linux' }}"
