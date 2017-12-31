@@ -3,7 +3,7 @@
 
 # Version of the prometheus binary or docker container to use.
 # For docker containers, if the version is \d+.\d+.\d+, a v will be prepended.
-prometheus_node_exporter_version: "0.15.0"
+prometheus_node_exporter_version: "0.15.2"
 
 # Port to have prometheus list for web requests on
 # If prometheus is dockerised, this is the port exposed by the container
