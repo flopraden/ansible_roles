@@ -13,7 +13,7 @@
 - name: prometheus | environment | create env file for systemd unit
   copy:
     dest: /etc/sysconfig/prometheus
-    content: OPTIONS="-web.listen-address=':{{ (prometheus_ports[0]|string).split(':')[0] }}' -config.file=/etc/prometheus/prometheus.yml"
+    content: OPTIONS="--web.listen-address=':{{ (prometheus_ports[0]|string).split(':')[0] }}' --config.file=/etc/prometheus/prometheus.yml"
     owner: root
     group: prometheus
     mode: "0640"
