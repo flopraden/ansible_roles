@@ -1,0 +1,10 @@
+galaxy_info:
+  author: iwaseatenbyagrue
+  description: Install, configure and manage nginx and its vhosts.
+  license: GPLv3
+  min_ansible_version: 1.2
+  galaxy_tags: []
+
+dependencies:
+  - role: common
+    epel_enabled: true

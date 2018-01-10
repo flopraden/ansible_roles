@@ -1,0 +1,10 @@
+---
+# install tasks for nginx role
+
+- name: nginx | packages | install
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ nginx_packages }}"
+
+

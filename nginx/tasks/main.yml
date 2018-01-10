@@ -1,0 +1,16 @@
+---
+# tasks file for nginx
+
+
+- import_tasks: pre_install.yml
+  tags:
+    - nginx
+
+- import_tasks: install.yml
+  tags:
+    - nginx
+    - install
+
+- import_tasks: run.yml
+  tags:
+    - nginx
