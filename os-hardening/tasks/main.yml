@@ -1,92 +1,77 @@
 ---
 # tasks file for os-hardening
 
-# Try and ensure the package manager installs sane things before starting.
-- include: yum.yml
-  when: "ansible_pkg_mgr == 'yum'"
+- block:
+  # Try and ensure the package manager installs sane things before starting.
+  - import_tasks: yum.yml
+    when: "ansible_pkg_mgr == 'yum'"
+    tags:
+      - selinux
+
+  - import_tasks: grub.yml
+    tags:
+      - grub
+      - bootloader
+
+  - import_tasks: banner.yml
+    tags:
+      - banner
+      - legal
+
+  - import_tasks: limits.yml
+    tags:
+      - limits
+
+  - import_tasks: ctrl_alt_del.yml
+    tags:
+      - ctrl-alt-del
+
+  - import_tasks: system_users.yml
+    tags:
+      - system_users
+
+  - import_tasks: securetty.yml
+    tags:
+      - securetty
+
+  - import_tasks: shadow.yml
+    tags:
+      - shadow
+
+  - import_tasks: permissions.yml
+    tags:
+      - permissions
+
+  - import_tasks: selinux.yml
+    when: "os_hardening_mac == 'selinux'"
+    tags:
+      - selinux
+
+  - import_tasks: tcp_wrappers.yml
+    tags:
+      - network
+      - tcp_wrappers
+
+  - import_tasks: prelink.yml
+    tags:
+      - prelink
+
+  - import_tasks: modprobe.yml
+    tags:
+      - modprobe
+
+  - import_tasks: sysctl.yml
+    tags:
+      - sysctl
+
+  - import_tasks: removal.yml
+    tags:
+      - removal
+
+  - import_tasks: aide.yml
+    when: "os_hardening_integrity == 'aide'"
+    tags:
+      - integrity
+      - aide
   tags:
     - os_hardening
-    - selinux
-
-- include: grub.yml
-  tags:
-    - os_hardening
-    - grub
-    - bootloader
-
-- include: banner.yml
-  tags:
-    - os_hardening
-    - banner
-    - legal
-
-- include: limits.yml
-  tags:
-    - os_hardening
-    - limits
-
-- include: ctrl_alt_del.yml
-  tags:
-    - os_hardening
-    - ctrl-alt-del
-
-- include: system_users.yml
-  tags:
-    - os_hardening
-    - system_users
-
-- include: securetty.yml
-  tags:
-    - os_hardening
-    - securetty
-
-- include: shadow.yml
-  tags:
-    - os_hardening
-    - shadow
-
-
-- include: permissions.yml
-  tags:
-    - os_hardening
-    - permissions
-
-- include: selinux.yml
-  when: "os_hardening_mac == 'selinux'"
-  tags:
-    - os_hardening
-    - selinux
-
-- include: tcp_wrappers.yml
-  tags:
-    - os_hardening
-    - network
-    - tcp_wrappers
-
-- include: prelink.yml
-  tags:
-    - os_hardening
-    - prelink
-
-- include: modprobe.yml
-  tags:
-    - os_hardening
-    - modprobe
-
-- include: sysctl.yml
-  tags:
-    - os_hardening
-    - sysctl
-
-- include: removal.yml
-  tags:
-    - os_hardening
-    - removal
-
-- include: aide.yml
-  when: "os_hardening_integrity == 'aide'"
-  tags:
-    - os_hardening
-    - integrity
-    - aide
-
