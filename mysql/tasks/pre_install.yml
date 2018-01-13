@@ -31,7 +31,8 @@
     state: directory
     owner: "{{ mysql_user_name }}"
     group: "{{ mysql_group_name }}"
-    mode: "01750"
+    # Provide o+x to allow connection to socket
+    mode: "01751"
     recurse: true
     serole: object_r
     seuser: system_u
