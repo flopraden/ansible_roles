@@ -16,14 +16,6 @@
     home: /var/lib/mysql
     createhome: false
 
-- name: mysql | homedir | create
-  file:
-    name: /var/lib/mysql
-    state: directory
-    owner: "{{ mysql_user_name }}"
-    group: "{{ mysql_group_name }}"
-    mode: "01750"
-
 
 - name: mysql | datadir | create
   file:
@@ -32,9 +24,18 @@
     owner: "{{ mysql_user_name }}"
     group: "{{ mysql_group_name }}"
     # Provide o+x to allow connection to socket
-    mode: "01751"
+    mode: "01750"
     recurse: true
     serole: object_r
     seuser: system_u
     setype: mysqld_db_t
     selevel: s0
+
+
+- name: mysql | homedir | create
+  file:
+    name: /var/lib/mysql
+    state: directory
+    owner: "{{ mysql_user_name }}"
+    group: "{{ mysql_group_name }}"
+    mode: "01751"
