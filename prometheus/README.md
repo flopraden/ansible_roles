@@ -93,37 +93,38 @@ Example Playbook
 ```
 - hosts: prometheus_servers
   roles:
-	- prometheus
+    - prometheus
   vars:
     prometheus_scrape_configs:
-	  authenticated_blackbox:
-	    metrics_path: /probe
-	    params:
-	      module: [http_2xx]  # Look for a HTTP 200 response.
-	    relabel_configs:
-	      - source_labels: [__address__]
-		    target_label: __param_target
-	      - source_labels: [__param_target]
-		    target_label: instance
-	      - target_label: __address__
-		    replacement: "somehost:9100"
+      authenticated_blackbox:
+      metrics_path: /probe
+      params:
+        module: [http_2xx]  # Look for a HTTP 200 response.
+      relabel_configs:
+        - source_labels: [__address__]
+          target_label: __param_target
+        - source_labels: [__param_target]
+          target_label: instance
+        - target_label: __address__
+          replacement: "somehost:9100"
     prometheus_scrape_targets:
-	  - name: grafana
-		type: grafana
-		port: 3000
-		groups:
-		  - grafana
-	  - name: web_servers
-		type: node_exporter
-		port: 9091
-		groups:
-		  - grafana
-	  - name: internal_sites
-		type: authenticated_blackbox
-		targets:
-		  - https://my.site.tld
-		  - https://my.site.tld/users/
-		  - https://the.site.tld
+      - name: grafana
+        type: grafana
+        port: 3000
+        groups:
+          - grafana
+      - name: web_servers
+        type: node_exporter
+        port: 9091
+        groups:
+          - grafana
+      - name: internal_sites
+        type: authenticated_blackbox
+        targets:
+          - https://my.site.tld
+          - https://my.site.tld/users/
+          - https://the.site.tld
+
 
 ```
 
