@@ -8,7 +8,7 @@
     owner: root
     group: prometheus
     mode: "0640"
-    validate: /opt/prometheus/current/promtool check-config %s
+    validate: /opt/prometheus/current/promtool check config %s
 
 - name: prometheus | environment | create env file
   copy:
