@@ -1,24 +1,24 @@
 ---
 # tasks file for prometheus_blackbox_exporter
 
-- include: pre_install.yml
+- import_tasks: pre_install.yml
   when: not prometheus_blackbox_run_dockerised
   tags:
     - prometheus
     - blackbox_exporter
 
-- include: install.yml
+- import_tasks: install.yml
   when: not prometheus_blackbox_run_dockerised
   tags:
     - prometheus
     - blackbox_exporter
 
-- include: configure.yml
+- import_tasks: configure.yml
   tags:
     - prometheus
     - blackbox_exporter
 
-- include: run.yml
+- import_tasks: run.yml
   tags:
     - prometheus
     - blackbox_exporter
