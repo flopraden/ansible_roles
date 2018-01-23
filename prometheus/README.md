@@ -97,16 +97,16 @@ Example Playbook
   vars:
     prometheus_scrape_configs:
       authenticated_blackbox:
-      metrics_path: /probe
-      params:
-        module: [http_2xx]  # Look for a HTTP 200 response.
-      relabel_configs:
-        - source_labels: [__address__]
-          target_label: __param_target
-        - source_labels: [__param_target]
-          target_label: instance
-        - target_label: __address__
-          replacement: "somehost:9100"
+        metrics_path: /probe
+        params:
+          module: [http_2xx]  # Look for a HTTP 200 response.
+        relabel_configs:
+          - source_labels: [__address__]
+            target_label: __param_target
+          - source_labels: [__param_target]
+            target_label: instance
+          - target_label: __address__
+            replacement: "somehost:9100"
     prometheus_scrape_targets:
       - name: grafana
         type: grafana
