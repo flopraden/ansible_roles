@@ -10,9 +10,9 @@
     mode: "0640"
     validate: /opt/prometheus/current/promtool check-config %s
 
-- name: prometheus | environment | create env file for systemd unit
+- name: prometheus | environment | create env file
   copy:
-    dest: /etc/sysconfig/prometheus
+    dest: /etc/prometheus/prometheus.env
     content: OPTIONS="--web.listen-address=':{{ (prometheus_ports[0]|string).split(':')[0] }}' --config.file=/etc/prometheus/prometheus.yml"
     owner: root
     group: prometheus

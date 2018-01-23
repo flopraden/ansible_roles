@@ -34,7 +34,7 @@ prometheus_docker_networks:
 
 # Devices/volumes to expose to the container.
 prometheus_docker_volumes:
-  - /etc/prometheus:/etc/prometheus/:ro,Z
+  - /etc/prometheus/:/config/:ro,Z
 
 # Platform to download binary for.
 prometheus_platform: "{{ 'darwin' if ansible_os_family == 'Darwin' else 'linux' }}"

@@ -5,7 +5,7 @@ Documentation=https://prometheus.io/docs/introduction/overview/
 
 [Service]
 WorkingDirectory=/opt/prometheus
-EnvironmentFile=-/etc/sysconfig/prometheus
+EnvironmentFile=-/etc/prometheus/prometheus.env
 ExecStart=/opt/prometheus/current/prometheus $OPTIONS
 User=prometheus
 Group=prometheus
