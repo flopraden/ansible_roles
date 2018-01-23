@@ -24,8 +24,8 @@
     name: "prometheus_node_exporter"
     state: started
     image: "{{ prometheus_node_exporter_docker_image }}:{{ prometheus_node_exporter_version | regex_replace('^(\\d+\\.\\d+\\.\\d+)$','v\\1') }}"
-    command: "{{ lookup('file', '/etc/sysconfig/prometheus_node_exporter') | regex_replace('^[A-Z0-9]+=\\W(.*?)\\W$','\\1')}} --path.sysfs=/host/sys --path.procfs=/host/proc"
-    env_file: /etc/sysconfig/prometheus_node_exporter
+    env_file: /etc/prometheus_node_exporter/node_exporter.env
+    command: "$OPTIONS --path.sysfs=/host/sys --path.procfs=/host/proc"
     networks: "{{ prometheus_node_exporter_docker_networks }}"
     volumes: "{{ prometheus_node_exporter_docker_volumes }}"
     exposed_ports: "{{ prometheus_node_exporter_ports }}"

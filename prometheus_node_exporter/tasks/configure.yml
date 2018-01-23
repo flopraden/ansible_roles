@@ -1,9 +1,9 @@
 ---
 # tasks for configuring prometheus node_exporter
 
-- name: prometheus | environment | create env file for systemd unit
+- name: prometheus | environment | create env file
   copy:
-    dest: /etc/sysconfig/prometheus_node_exporter
+    dest: /etc/prometheus_node_exporter/node_exporter.env
     content: OPTIONS="--web.listen-address=':{{ (prometheus_node_exporter_ports[0]|string).split(':')[0] }}' {{'--collector.systemd' if ansible_service_mgr == 'systemd' else '' }} --collector.filesystem.ignored-mount-points '^/(sys|proc|dev|host|etc)($|/)' "
     owner: root
     group: prometheus
