@@ -2,25 +2,25 @@
 # tasks file for prometheus
 
 
-- include: pre_install.yml
+- import_tasks: pre_install.yml
   tags:
     - prometheus
 
-- include: install.yml
+- import_tasks: install.yml
   tags:
     - prometheus
   when: not prometheus_run_dockerised
 
-- include: configure.yml
+- import_tasks: configure.yml
   tags:
     - prometheus
 
-- include: rules.yml
-  tags:
-    - prometheus
-    - alertmanager
-    - rules
+#- import_tasks: rules.yml
+#  tags:
+#    - prometheus
+#    - alertmanager
+#    - rules
 
-- include: run.yml
+- import_tasks: run.yml
   tags:
     - prometheus
