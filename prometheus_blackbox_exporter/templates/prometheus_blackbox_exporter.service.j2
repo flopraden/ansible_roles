@@ -5,7 +5,7 @@ Documentation=https://github.com/prometheus/blackbox_exporter
 
 [Service]
 WorkingDirectory=/opt/prometheus_blackbox_exporter
-EnvironmentFile=-/etc/sysconfig/prometheus_blackbox_exporter
+EnvironmentFile=-/etc/prometheus_blackbox_exporter/blackbox_exporter.env
 ExecStart=/opt/prometheus_blackbox_exporter/current/blackbox_exporter --config.file /etc/prometheus_blackbox_exporter/blackbox.yml $OPTIONS
 User=prometheus_blackbox_exporter
 Group=prometheus

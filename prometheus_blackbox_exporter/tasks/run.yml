@@ -26,6 +26,7 @@
     command: "--config.file=/config/blackbox.yml"
     networks: "{{ prometheus_blackbox_docker_networks }}"
     volumes: "{{ prometheus_blackbox_docker_volumes }}"
+    env_file: /etc/prometheus_blackbox_exporter/blackbox_exporter.env
     exposed_ports: "{{ prometheus_blackbox_ports|map(attribute='port') }}"
     published_ports: "{{ prometheus_blackbox_docker_publish_ports | default([], true) }}"
     cleanup: yes

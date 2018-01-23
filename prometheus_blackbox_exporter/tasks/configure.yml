@@ -19,8 +19,8 @@
 
 - name: prometheus | environment | create env file for systemd unit
   copy:
-    dest: /etc/sysconfig/prometheus_node_exporter
-    content: OPTIONS="-config.file /etc/prometheus_blackbox_exporter"
+    dest: /etc/prometheus_blackbox_exporter/blackbox_exporter.env
+    content: OPTIONS=""
     owner: root
     group: prometheus
     mode: "0640"
