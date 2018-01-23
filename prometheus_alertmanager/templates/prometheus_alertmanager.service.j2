@@ -6,8 +6,8 @@ Documentation=https://github.com/prometheus/alertmanager
 
 [Service]
 WorkingDirectory=/opt/prometheus_alertmanager
-EnvironmentFile=-/etc/sysconfig/prometheus_alertmanager
-ExecStart=/opt/prometheus_alertmanager/current/alertmanager $OPTIONS
+EnvironmentFile=-/etc/prometheus_alertmanager/alertmanager.env
+ExecStart=/opt/prometheus_alertmanager/current/alertmanager --config.file=/etc/prometheus_alertmanager/p $OPTIONS
 User=prometheus_alertmanager
 Group=prometheus
 ProtectSystem=strict

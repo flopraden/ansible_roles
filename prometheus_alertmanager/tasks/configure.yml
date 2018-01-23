@@ -9,21 +9,21 @@
     group: prometheus
     mode: "01750"
   with_items:
-    - /etc/alertmanager
-    - /etc/alertmanager/templates/
+    - /etc/prometheus_alertmanager
+    - /etc/prometheus_alertmanager/templates/
 
 - name: prometheus alertmanager | configuration | create
   template:
     src: "{{ prometheus_alertmanager_configuration_template }}.yml.j2"
-    dest: "/etc/alertmanager/config.yml"
+    dest: "/etc/prometheus_alertmanager/config.yml"
     owner: root
     group: prometheus
     mode: "0640"
 
 - name: prometheus alertmanager | configuration | create sysconfig
   copy:
-    dest: /etc/sysconfig/prometheus_alertmanager
-    content: 'OPTIONS="-config.file=/etc/alertmanager/config.yml"'
+    dest: /etc/prometheus_alertmanager/alertmanager.env
+    content: 'OPTIONS=""'
     owner: root
     group: prometheus
     mode: "0640"

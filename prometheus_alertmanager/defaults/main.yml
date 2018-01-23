@@ -11,5 +11,4 @@ prometheus_alertmanager_architecture: "{{ 'amd64' if ansible_architecture == 'x8
 
 
 prometheus_alertmanager_run_dockerised: no
-
 prometheus_alertmanager_configuration_template: "minimal"
