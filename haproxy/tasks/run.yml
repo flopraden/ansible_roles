@@ -7,3 +7,11 @@
     state: started
     enabled: yes
 
+
+- name: haproxy | run | tcp load balancers
+  service:
+    name: "{{ haproxy_service_name }}@{{ item.name }}"
+    state: started
+    enabled: yes
+  with_items: "{{ haproxy_tcp_proxies }}"
+
