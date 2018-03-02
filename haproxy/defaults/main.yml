@@ -1,2 +1,9 @@
 ---
 # defaults file for haproxy
+
+haproxy_packages:
+  - haproxy
+
+haproxy_service_name: haproxy
+
+haproxy_log_host: 127.0.0.1
