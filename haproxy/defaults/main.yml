@@ -1,9 +1,18 @@
 ---
 # defaults file for haproxy
 
+# Packages required to run haproxy
 haproxy_packages:
   - haproxy
 
+# Name of the (base) service name to run haproxy under.
 haproxy_service_name: haproxy
 
-haproxy_log_host: 127.0.0.1
+haproxy_default_bind_address: "*"
+
+# Global log host or socket to which haproxy should write logs.
+# If set to false, skip global logging
+haproxy_log_sink: /dev/log local2
+
+haproxy_default_backend_balance_algo: leastconn
+haproxy_tcp_proxies: []
