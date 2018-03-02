@@ -6,3 +6,10 @@
    name: "{{ item }}"
    state: present
   with_items: "{{ haproxy_packages }}"
+
+- name: haproxy | install | connect any boolean for selinux
+  seboolean:
+    name: haproxy_connect_any
+    state: true
+    persistent: true
+  ignore_errors: true
