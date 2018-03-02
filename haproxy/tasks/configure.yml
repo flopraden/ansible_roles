@@ -1,0 +1,27 @@
+---
+# configuration tasks for haproxy
+
+- name: haproxy | configure | parametrised service unit
+  template:
+    src: haproxy@.service.j2
+    dest: /etc/systemd/system/haproxy@.service
+    owner: root
+    group: root
+    mode: "0640"
+
+- name: haproxy | configure | global defaults
+  template:
+    src: haproxy.cfg.j2
+    dest: "/etc/haproxy/haproxy.cfg"
+    owner: root
+    group: haproxy
+    mode: "0640"
+
+- name: haproxy | configure | tcp load balancers
+  template:
+    src: tcp_lb.cfg.j2
+    dest: "/etc/haproxy/conf.d/{{ item.name }}.cfg"
+    owner: root
+    group: haproxy
+    mode: "0640"
+  with_items: "{{ haproxy_tcp_proxies }}"
