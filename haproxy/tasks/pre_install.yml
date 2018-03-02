@@ -1,0 +1,29 @@
+---
+# pre-install tasks for haproxy
+
+- name: haproxy | group | create
+  group:
+    name: haproxy
+    state: present
+    system: true
+
+- name: haproxy | user | create
+  user:
+    name: haproxy
+    state: present
+    group: haproxy
+    system: true
+    shell: /sbin/nologin
+    home: /var/lib/haproxy
+
+- name: haproxy | directories | create
+  file:
+    name: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "1750"
+  with_items:
+    - /etc/haproxy
+    - /etc/haproxy/ssl
+    - /etc/haproxy/conf.d
