@@ -1,0 +1,9 @@
+---
+# run tasks for haproxy
+
+- name: haproxy | run | service
+  service:
+    name: "{{ haproxy_service_name }}"
+    state: started
+    enabled: yes
+
