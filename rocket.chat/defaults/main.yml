@@ -35,7 +35,7 @@ rocketchat_hubot_docker_image: rocketchat/hubot-rocketchat:latest
 rocketchat_hubot_docker_publish: false
 
 # host:port for hubot to connect to rocketchat
-rocketchat_hubot_url: 127.0.0.1:3000
+rocketchat_hubot_url: "{{ rocketchat_root_url }}"
 
 rocketchat_hubot_name: "bot"
 rocketchat_hubot_user: "hubot_rocketchat"
@@ -58,4 +58,5 @@ rocketchat_hubot_external_scripts:
   - hubot-bookmark
   - hubot-shipit
   - hubot-maps
+  - hubot-gif
   - hubot-emergencykitten
