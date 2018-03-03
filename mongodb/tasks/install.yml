@@ -1,0 +1,17 @@
+---
+# install tasks for mongodb
+
+- name: mongodb | install | repo
+  yum_repository:
+    name: "mongodb-{{mongodb_version}}"
+    description: "Mongodb {{mongodb_version}}"
+    baseurl: "{{ mongodb_repo_url }}"
+    gpgcheck: no
+    gpgkey: "{{ mongodb_repo_gpg_key }}"
+    repo_gpgcheck: false
+
+- name: mongodb | install | packages
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ mongodb_packages }}"
