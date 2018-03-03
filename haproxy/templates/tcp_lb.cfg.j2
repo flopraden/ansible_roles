@@ -7,15 +7,17 @@ frontend {{ item.name }}-frontend
     default_backend {{ item.name }}-backend
 
 backend {{ item.name }}-backend
+    mode tcp
     balance     {{ item.get("balance", haproxy_default_backend_balance_algo) }}
-    {% for options in item.get("options", []) %}
+    option      tcplog
+{% for option in item.get("options", []) %}
     {{ option }}
-    {% endfor %}
-    {% for group in item.get("backend_groups", []) | unique %}
-    {% for backend_server in groups.get(group, []) | unique %}
-    server {{backend_server}} {{backend_server}}:{{ item.backend_port | default(item.port) }} {{ item.get("backend", "") }}
-    {% endfor %}
-    {% endfor %}
-    {% for backend_server in item.get("backend_servers", []) | unique %}
-    server {{backend_server}} {{backend_server}}:{{ item.backend_port | default(item.port) }} {{ item.get("backend", "") }}
-    {% endfor %}
+{% endfor %}
+{% for group in item.get("backend_groups", []) | unique %}
+{% for backend_server in groups.get(group, []) | unique %}
+    server {{backend_server}} {{backend_server}}:{{ item.backend_port | default(item.port) }} {{ item.get("backend_config", "") }}
+{% endfor %}
+{% endfor %}
+{% for backend_server in item.get("backend_servers", []) | unique %}
+    server {{backend_server}} {{backend_server}}:{{ item.backend_port | default(item.port) }} {{ item.get("backend_config", "") }}
+{% endfor %}
