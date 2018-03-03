@@ -2,9 +2,15 @@
 # tasks file for rocket.chat
 
 - block:
-    - include_tasks: pre_install.yml
-    - include_tasks: install.yml
-    - include_tasks: configure.yml
-    - include_tasks: run.yml
+    - import_tasks: pre_install.yml
+    - import_tasks: install.yml
+    - import_tasks: configure.yml
+    - import_tasks: run.yml
   tags:
     - rocketchat
+
+- import_tasks: bot.yml
+  when: rocketchat_install_bot
+  tags:
+    - rocketchat
+    - hubot
