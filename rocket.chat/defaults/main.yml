@@ -33,8 +33,17 @@ rocketchat_mongo_base_url: mongodb://localhost:2701
 rocketchat_admin_user: false
 rocketchat_admin_password: false
 rocketchat_admin_email: "{{rocketchat_admin_user}}@{{ rocketchat_munged_url }}"
+
+# A list of dicts representing user accounts to create.
+# The required fields and default values are documented here:
+# https://rocket.chat/docs/developer-guides/rest-api/users/create/
+rocketchat_users: []
+
 # Whether or not to add an external hubot instance.
 rocketchat_install_bot: true
+
+# Whether or not to run API tasks (requires rocketchat_admin user and password)
+rocketchat_run_api_tasks: true
 
 rocketchat_hubot_docker_image: rocketchat/hubot-rocketchat:latest
 
