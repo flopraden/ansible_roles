@@ -1,17 +1,21 @@
 ---
-
 # api interaction tasks for rocketchat
+
+- name: rocket.chat | api | wait for API to respond
+  wait_for:
+    host: "{{ rocketchat_root_url | urlsplit('hostname') }}"
+    port: "{{ rocketchat_root_url | urlsplit('port') | default(443 if rocketchat_root_url | urlsplit('scheme') == 'https' else 80, true) | int }}"
+    timeout: 90
+    state: started
 
 - name: rocket.chat | api | get token
   uri:
     url: "{{ rocketchat_root_url }}/api/v1/login"
     method: POST
     body_format: json
-    body: |
-        {
-            "username": "{{ rocketchat_admin_user }}",
-            "password": "{{ rocketchat_admin_password }}"
-        }
+    body:
+      username: "{{ rocketchat_admin_user }}"
+      password: "{{ rocketchat_admin_password }}"
     return_content: true
   register: rocketchat_token
 
