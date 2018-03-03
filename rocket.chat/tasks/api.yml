@@ -1,0 +1,27 @@
+---
+
+# api interaction tasks for rocketchat
+
+- name: rocket.chat | api | get token
+  uri:
+    url: "{{ rocketchat_root_url }}/api/v1/login"
+    method: POST
+    body_format: json
+    body: |
+        {
+            "username": "{{ rocketchat_admin_user }}",
+            "password": "{{ rocketchat_admin_password }}"
+        }
+    return_content: yes
+  register: rocketchat_token
+
+- name: rocket.chat | api | create users
+  uri:
+    url: "{{ rocketchat_root_url }}/api/v1/users.create"
+    method: POST
+    body_format: json
+    body: "{{ item | to_json }}"
+    headers:
+      X-Auth-Token: "{{ rocketchat_token.json.data.authToken }}"
+      X-User-Id: "{{ rocketchat_token.json.data.userId }}"
+  with_items: "{{ rocketchat_users }}"
