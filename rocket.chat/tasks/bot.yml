@@ -2,7 +2,13 @@
 
 # tasks for running rocketchat's hubot
 
-- name: rocketchat | bot | create systemd unit
+- name: rocket.chat | image | pull hubot
+  docker_image:
+    name: "{{ rocketchat_hubot_docker_image }}"
+    state: present
+
+
+- name: rocket.chat | bot | create systemd unit
   template:
     src: rocketchat_hubot.service.j2
     dest: "/etc/systemd/system/rocketchat_hubot@.service"
@@ -10,7 +16,7 @@
     group: root
     mode: "0640"
 
-- name: rocketchat | bot | create environment file
+- name: rocket.chat | bot | create environment file
   template:
     src: rocketchat_hubot.env.j2
     dest: "/etc/rocketchat/environment/hubot_{{ rocketchat_munged_url }}.env"
@@ -20,7 +26,7 @@
   notify:
     - rocketchat | bot | restart
 
-- name: rocketchat | bot | run
+- name: rocket.chat | bot | run
   service:
     name: "rocketchat_hubot@{{ rocketchat_munged_url }}"
     state: started
