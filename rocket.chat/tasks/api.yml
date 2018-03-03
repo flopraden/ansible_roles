@@ -12,16 +12,15 @@
             "username": "{{ rocketchat_admin_user }}",
             "password": "{{ rocketchat_admin_password }}"
         }
-    return_content: yes
+    return_content: true
   register: rocketchat_token
 
-- name: rocket.chat | api | create users
-  uri:
-    url: "{{ rocketchat_root_url }}/api/v1/users.create"
-    method: POST
-    body_format: json
-    body: "{{ item | to_json }}"
-    headers:
-      X-Auth-Token: "{{ rocketchat_token.json.data.authToken }}"
-      X-User-Id: "{{ rocketchat_token.json.data.userId }}"
+- include_tasks: users.yml
   with_items: "{{ rocketchat_users }}"
+  loop_control:
+    loop_var: user
+
+- include_tasks: channels.yml
+  with_items: "{{ rocketchat_channels }}"
+  loop_control:
+    loop_var: channel
