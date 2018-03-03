@@ -8,3 +8,5 @@
     owner: root
     group: rocketchat
     mode: "0640"
+  notify:
+    - rocketchat | server | restart
