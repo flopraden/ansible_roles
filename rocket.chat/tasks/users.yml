@@ -1,0 +1,14 @@
+---
+# Tasks for managing rocket.chat users
+
+- name: rocket.chat | api | create user for {{ user.name }}
+  uri:
+    url: "{{ rocketchat_root_url }}/api/v1/users.create"
+    method: POST
+    body_format: json
+    body: "{{ user | to_json }}"
+    headers:
+      X-Auth-Token: "{{ rocketchat_token.json.data.authToken }}"
+      X-User-Id: "{{ rocketchat_token.json.data.userId }}"
+  register: user_info
+  failed_when: not user_info.json.success and not "already in use" in user_info.json.error
