@@ -1,0 +1,28 @@
+---
+
+# tasks for running rocketchat's hubot
+
+- name: rocketchat | bot | create systemd unit
+  template:
+    src: rocketchat_hubot.service.j2
+    dest: "/etc/systemd/system/rocketchat_hubot@.service"
+    owner: root
+    group: root
+    mode: "0640"
+
+- name: rocketchat | bot | create environment file
+  template:
+    src: rocketchat_hubot.env.j2
+    dest: "/etc/rocketchat/environment/hubot_{{ rocketchat_munged_url }}.env"
+    owner: root
+    group: root
+    mode: "0640"
+  notify:
+    - rocketchat | bot | restart
+
+- name: rocketchat | bot | run
+  service:
+    name: "rocketchat_hubot@{{ rocketchat_munged_url }}"
+    state: started
+    enabled: yes
+
