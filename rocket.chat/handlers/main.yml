@@ -1,2 +1,12 @@
 ---
 # handlers file for rocket.chat
+
+- name: rocketchat | server | restart
+  service:
+    name: "rocketchat@{{ rocketchat_munged_url }}"
+    state: restarted
+
+- name: rocketchat | bot | restart
+  service:
+    name: "rocketchat_hubot@{{ rocketchat_munged_url }}"
+    state: restarted
