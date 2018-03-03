@@ -39,6 +39,13 @@ rocketchat_admin_email: "{{rocketchat_admin_user}}@{{ rocketchat_munged_url }}"
 # https://rocket.chat/docs/developer-guides/rest-api/users/create/
 rocketchat_users: []
 
+# A list of dicts representing channels to create or clear.
+# These must have at least a name and action key to be useful.
+# For example, to clear all history from the general channel:
+# - name: general
+#   action: clear
+rocketchat_channels: []
+
 # Whether or not to add an external hubot instance.
 rocketchat_install_bot: true
 
@@ -75,5 +82,4 @@ rocketchat_hubot_external_scripts:
   - hubot-bookmark
   - hubot-shipit
   - hubot-maps
-  - hubot-gif
-  - hubot-emergencykitten
+  - hubot-business-cat
