@@ -1,7 +1,7 @@
 ---
 # run tasks for mongodb
 
-- name: mongodb | run | service
+- name: mongodb | service | run
   service:
     name: "{{ mongodb_service_name }}"
     state: started
