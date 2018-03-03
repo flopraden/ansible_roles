@@ -25,6 +25,14 @@ rocketchat_docker_network: bridge
 # Base URL (protocol, host, port) for the mongo db to use.
 rocketchat_mongo_base_url: mongodb://localhost:2701
 
+# Username for first admin account
+# If set to something other than false, this will add ADMIN_* variables
+# to the rocketchat server's environment.
+# This requires to rocketchat_admin_password and rocketchat_admin_email
+# also be set
+rocketchat_admin_user: false
+rocketchat_admin_password: false
+rocketchat_admin_email: "{{rocketchat_admin_user}}@{{ rocketchat_munged_url }}"
 # Whether or not to add an external hubot instance.
 rocketchat_install_bot: true
 
