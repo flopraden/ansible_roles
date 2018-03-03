@@ -31,6 +31,11 @@ mongodb_ssl_config: {}
 # part of.
 mongodb_replicaset_name: defaultReplicaSet
 
+# Whether or not to run rs.initiate in mongo shell.
+# This is only useful in cases where you are running a standalone mongod
+# instance, or installing the master of a cluster.
+mongodb_replicaset_initialise: false
+
 # Repo and repo key details for RedHat-likes.
 mongodb_repo_url: "https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/{{ mongodb_version }}/x86_64/"
 mongodb_repo_gpg_key: "https://www.mongodb.org/static/pgp/server-{{mongodb_version}}.asc"
