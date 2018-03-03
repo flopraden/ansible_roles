@@ -1,16 +1,36 @@
 ---
 # defaults file for mongodb
 
-#
+# List of packages to install for mongodb.
 mongodb_packages:
   - mongodb-org
 
-#
+# Name of the mongod service
 mongodb_service_name: mongod
 
-#
+# Version of mongod to install and run.
 mongodb_version: 3.6
 
-#
+# Address for mongod instance to bind to.
+# This will typically be 127.0.0.1 or 0.0.0.0.
+mongodb_listen_address: 127.0.0.1
+
+# Port for mongod instance to bind to
+mongodb_listen_port: 27017
+
+# Dictionary of net.ssl key/values.
+# If empty, no SSL configuration is added to the network section.
+# If set, this is passed as is into the net.ssl section, using to_nice_yaml.
+mongodb_ssl_config: {}
+
+# Name of replicaset instance is part of.
+# If set to false, no replication configuration is created.
+# If set to a string, enable replication and use the value for replSetName.
+# This does not cause rs.initiate (or similar commands) to be run - it
+# simply configures the name of the replicaset the instance will be
+# part of.
+mongodb_replicaset_name: defaultReplicaSet
+
+# Repo and repo key details for RedHat-likes.
 mongodb_repo_url: "https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/{{ mongodb_version }}/x86_64/"
 mongodb_repo_gpg_key: "https://www.mongodb.org/static/pgp/server-{{mongodb_version}}.asc"
