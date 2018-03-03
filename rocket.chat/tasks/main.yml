@@ -9,6 +9,13 @@
   tags:
     - rocketchat
 
+# A common API task is create the bot user - so it goes first.
+- import_tasks: api.yml
+  when: rocketchat_run_api_tasks and rocketchat_admin_user and rocketchat_admin_password
+  tags:
+    - rocketchat
+    - api
+
 - import_tasks: bot.yml
   when: rocketchat_install_bot
   tags:
