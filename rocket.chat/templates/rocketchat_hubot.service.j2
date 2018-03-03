@@ -1,0 +1,19 @@
+[Unit]
+Description=rocketchat hubot for %i
+Requires=docker.service
+After=docker.service
+
+[Service]
+EnvironmentFile=-/etc/rocketchat/environment/hubot_%i.env
+Restart=always
+ExecStartPre=-/usr/bin/docker kill rocketchat_hubot_%i
+ExecStartPre=-/usr/bin/docker rm rocketchat_hubot_%i
+ExecStartPre=-/usr/bin/docker pull {{ rocketchat_hubot_docker_image }}
+ExecStart=/usr/bin/docker run --rm --name rocketchat_hubot_%i \
+    --env-file etc/rocketchat/environment/hubot_%i.env \
+    --net {{ rocketchat_docker_network }} \
+    --expose 8080 {% if rocketchat_hubot_docker_publish | default(false,true) %}--publish {{ rocketchat_hubot_docker_publish }} {%- endif %} \
+    {{ rocketchat_hubot_docker_image }}
+
+ExecStop=-/usr/bin/docker kill rocketchat_hubot_%i
+ExecStop=-/usr/bin/docker rm rocketchat_hubot_%i
