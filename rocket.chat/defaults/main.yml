@@ -24,3 +24,38 @@ rocketchat_docker_network: bridge
 
 # Base URL (protocol, host, port) for the mongo db to use.
 rocketchat_mongo_base_url: mongodb://localhost:2701
+
+# Whether or not to add an external hubot instance.
+rocketchat_install_bot: true
+
+rocketchat_hubot_docker_image: rocketchat/hubot-rocketchat:latest
+
+# Portspec to publish for hubot
+# Default is to simply expose 8080.
+rocketchat_hubot_docker_publish: false
+
+# host:port for hubot to connect to rocketchat
+rocketchat_hubot_url: 127.0.0.1:3000
+
+rocketchat_hubot_name: "bot"
+rocketchat_hubot_user: "hubot_rocketchat"
+rocketchat_hubot_password: "iamadefaultpassword"
+
+# Whether to have hubot listen on all public channels.
+rocketchat_hubot_all_public: true
+
+rocketchat_hubot_room: !!str
+
+# A list of external hubot scripts to run
+rocketchat_hubot_external_scripts:
+  - hubot-help
+  - hubot-seen
+  - hubot-links
+  - hubot-diagnostics
+  - hubot-google
+  - hubot-reddit
+  - hubot-bofh
+  - hubot-bookmark
+  - hubot-shipit
+  - hubot-maps
+  - hubot-emergencykitten
