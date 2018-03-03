@@ -1,0 +1,13 @@
+---
+
+# configuration tasks for mongodb
+
+- name: mongodb | configure | mongod.conf
+  template:
+    src: mongod.conf.j2
+    dest: /etc/mongod.conf
+    owner: root
+    group: mongod
+    mode: "0640"
+  notify:
+    - mongodb | service | restart
