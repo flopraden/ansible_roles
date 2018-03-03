@@ -1,21 +1,23 @@
+---
+# Channel management tasks for rocket.chat
+
 - name: rocket.chat | api | create {{ channel.name }} channel
   uri:
     url: "{{ rocketchat_root_url }}/api/v1/channels.create"
     method: POST
     body_format: json
     return_content: true
-    body: |
-        {
-            "name": "{{ channel.name }}",
-            "members": {{ channel.members | default([]) | to_json }},
-            "readOnly": {{ channel.readOnly | default(false, true) | lower }}
-        }
+    body:
+      name: "{{ channel.name }}"
+      members: "{{ channel.members | default([]) }}"
+      readOnly: "{{ channel.readOnly | default(false, true) | lower }}"
     headers:
       X-Auth-Token: "{{ rocketchat_token.json.data.authToken }}"
       X-User-Id: "{{ rocketchat_token.json.data.userId }}"
   when: channel.action | default("none") == "create"
   register: channel_info
-  failed_when: not channel_info.json.success and not channel_info.json.errorType == "error-duplicate-channel-name"
+  failed_when: not channel_info.json.success and not channel_info.json.get("errorType") == "error-duplicate-channel-name"
+
 - name: rocket.chat | api | get channel info for {{ channel.name }}
   uri:
     url: '{{ rocketchat_root_url }}/api/v1/channels.list?query={"name":"{{ channel.name }}"}'
