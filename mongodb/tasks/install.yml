@@ -9,6 +9,7 @@
     gpgcheck: no
     gpgkey: "{{ mongodb_repo_gpg_key }}"
     repo_gpgcheck: false
+  when: ansible_os_family == "RedHat"
 
 - name: mongodb | install | packages
   package:
