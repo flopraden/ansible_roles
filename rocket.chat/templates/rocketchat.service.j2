@@ -11,7 +11,7 @@ ExecStartPre=-/usr/bin/docker kill rocketchat_%i
 ExecStartPre=-/usr/bin/docker rm rocketchat_%i
 ExecStartPre=-/usr/bin/docker pull {{ rocketchat_docker_image }}
 
-ExecStart=/usr/bin/docker run --rm --name rocketchat_%i \
+ExecStart=/usr/bin/docker run --name rocketchat_%i \
     --cap-drop ALL \
     --volume {{ rocketchat_data_root }}/{{ rocketchat_munged_url }}:/app/uploads:Z \
     --env-file etc/rocketchat/environment/%i.env \
@@ -20,4 +20,3 @@ ExecStart=/usr/bin/docker run --rm --name rocketchat_%i \
     {{ rocketchat_docker_image }}
 
 ExecStop=-/usr/bin/docker kill rocketchat_%i
-ExecStop=-/usr/bin/docker rm rocketchat_%i
