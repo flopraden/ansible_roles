@@ -1,0 +1,28 @@
+# {{ ansible_managed }}
+
+systemLog:
+  destination: file
+  logAppend: true
+  path: /var/log/mongodb/mongod.log
+
+storage:
+  dbPath: /var/lib/mongo
+  journal:
+    enabled: true
+
+processManagement:
+  fork: true  # fork and run in background
+  pidFilePath: /var/run/mongodb/mongod.pid  # location of pidfile
+  timeZoneInfo: /usr/share/zoneinfo
+
+net:
+  port: {{ mongodb_listen_port }}
+  bindIp: {{ mongodb_listen_address }}
+{% if mongodb_ssl_config | default(false, true) %}
+  ssl:
+    {{ mongodb_ssl_config | to_nice_yaml | indent(4, True) }}
+{% endif %}
+{% if mongodb_replicaset_name | default(false, true) %}
+replication:
+    replSetName: {{ mongodb_replicaset_name }}
+{% endif %}
