@@ -7,16 +7,16 @@ After=docker.service
 EnvironmentFile=-/etc/rocketchat/environment/%i.env
 Restart=always
 User=rocketchat
-ExecStartPre=-/usr/bin/docker kill rocketchat.%i
-ExecStartPre=-/usr/bin/docker rm rocketchat.%i
+ExecStartPre=-/usr/bin/docker kill rocketchat_%i
+ExecStartPre=-/usr/bin/docker rm rocketchat_%i
 ExecStartPre=-/usr/bin/docker pull {{ rocketchat_docker_image }}
 
-ExecStart=/usr/bin/docker run --rm --name rocketchat_{{ rocketchat_munged_url }} \
+ExecStart=/usr/bin/docker run --rm --name rocketchat_%i \
     --volume {{ rocketchat_data_root }}/{{ rocketchat_munged_url }}:/app/uploads:Z \
     --env-file etc/rocketchat/environment/%i.env \
     --net {{ rocketchat_docker_network }} \
     --expose 3000 {% if rocketchat_docker_publish | default(false,true) %}--publish {{ rocketchat_docker_publish }} {%- endif %} \
     {{ rocketchat_docker_image }}
 
-ExecStop=-/usr/bin/docker kill rocketchat.%i
-ExecStop=-/usr/bin/docker rm rocketchat.%i
+ExecStop=-/usr/bin/docker kill rocketchat_%i
+ExecStop=-/usr/bin/docker rm rocketchat_%i
