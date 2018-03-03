@@ -1,0 +1,7 @@
+---
+
+# replication tasks for mongodb
+
+- name: mongodb | replication | initialise replicaset
+  command: mongo --eval 'rs.initiate()'
+  when: mongodb_replicaset_initialise
