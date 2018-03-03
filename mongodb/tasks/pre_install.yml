@@ -1,0 +1,17 @@
+---
+# pre-install tasks for mongodb
+
+- name: mongodb | group | create
+  group:
+    name: mongod
+    state: present
+    system: true
+
+- name: mongodb | user | create
+  user:
+    name: mongod
+    state: present
+    group: mongod
+    system: true
+    shell: /sbin/nologin
+    home: /var/lib/mongo
