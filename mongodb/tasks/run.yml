@@ -1,0 +1,8 @@
+---
+# run tasks for mongodb
+
+- name: mongodb | run | service
+  service:
+    name: "{{ mongodb_service_name }}"
+    state: started
+    enabled: yes
