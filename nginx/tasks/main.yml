@@ -11,6 +11,10 @@
     - nginx
     - install
 
+- import_tasks: configure.yml
+  tags:
+    - nginx
+
 - import_tasks: run.yml
   tags:
     - nginx
