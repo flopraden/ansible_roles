@@ -1,0 +1,67 @@
+# Upstreams
+upstream {{vhost.name}}_backend {
+{% for host in vhost.backend_groups | map('extract',groups) | sum(start=[]) | unique %}
+    server {{ host }}:{{ vhost.backend_port }};
+{% endfor %}
+{% for option in vhost.backend_options | default([]) %}
+    {{ option }};
+{% endfor %}
+}
+
+{% if vhost.redirect_to_https | default('ssl' in vhost.port | string, true) %}
+server {
+    listen 80;
+    server_name server_name {{ vhost.hostname | default(vhost.name) + (vhost.additional_hostnames | default([]) | join(" ")) }};
+    {% if vhost.use_letsencrypt %}
+    location /.well-known/acme-challenge/ {
+        root /var/www/html/{{ vhost.name }}/;
+    }
+    {% endif %}
+    # Redirect all HTTP requests to HTTPS with a 301 Moved Permanently response.
+    return 301 https://{{ vhost.hostname | default(vhost.name) }}$request_uri;
+}
+{% endif %}
+
+# Main Server
+server {
+    listen {{ vhost.port | default(80) }};
+    server_name {{ vhost.hostname | default(vhost.name) + (vhost.additional_hostnames | default([]) | join(" ")) }};
+    access_log /var/log/nginx/{{ vhost.name }}.access.log;
+    error_log /var/log/nginx/{{ vhost.name }}.error.log;
+
+    {% if 'ssl' in vhost.port | string  %}
+    ssl_certificate /etc/pki/{{ vhost.name }}/chain.pem;
+    ssl_certificate_key /path/to/private_key;
+    ssl_session_timeout 1d;
+    ssl_session_cache shared:SSL:50m;
+    ssl_session_tickets off;
+
+    ssl_protocols TLSv1.2;
+    ssl_ciphers 'ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256';
+    ssl_prefer_server_ciphers on;
+
+    add_header Strict-Transport-Security "max-age=15768000; includeSubdomains";
+    ssl_stapling on;
+    ssl_stapling_verify on;
+    {% endif %}
+
+    add_header X-Frame-Options "DENY";
+    add_header X-XSS-Protection "1;mode=block";
+    add_header X-Content-Type-Options "nosniff";
+    add_header X-Permitted-Cross-Domain-Policies "none";
+
+    # add_header Content-Security-Policy "script-src 'self'; object-src 'self'";
+
+    location / {
+        proxy_pass {{ vhost.forward_proto | default("http") }}://{{ vhost.name }}_backend/;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $http_host;
+
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forward-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forward-Proto {{ vhost.forward_proto | default("http") }};
+        proxy_redirect off;
+    }
+}
