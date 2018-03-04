@@ -1,0 +1,22 @@
+---
+
+# vhost tasks for nginx
+
+- name: nginx | vhost | create configuration for {{ vhost.name }}
+  template:
+    src: vhost.conf.j2
+    dest: "/etc/nginx/sites-available/{{ vhost.name }}.conf"
+    owner: root
+    group: nginx
+    mode: "0640"
+
+- name: nginx | vhost | enable {{ vhost.name }}
+  file:
+    src: "/etc/nginx/sites-available/{{ vhost.name }}.conf"
+    dest: "/etc/nginx/sites-enabled/{{ vhost.name }}.conf"
+    state: link
+  notify:
+    - nginx | service | reload
+
+
+
