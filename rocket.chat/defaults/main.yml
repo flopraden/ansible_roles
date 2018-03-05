@@ -46,6 +46,12 @@ rocketchat_users: []
 #   action: clear
 rocketchat_channels: []
 
+# Default action to apply to channels.
+# This is intended to allow leaving the action unspecified for entries in
+# rocketchat_channels, which can be created or cleaned based on the value
+# of this variable.
+rocketchat_channel_default_action: "none"
+
 # Whether or not to add an external hubot instance.
 rocketchat_install_bot: true
 
