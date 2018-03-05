@@ -1,8 +1,7 @@
 [
-  {% for group in item.groups |default([])| sort %}
   {
     "targets": [
-{% for host in groups.get(group,[])|sort|unique|list%}
+{% for host in item.groups |default([]) | map('extract',groups) | sum(start=[]) | unique | list | sort %}
         "{{host}}:{{item.port}}"{{"" if loop.last else ","}}
 {% endfor %}
     ],
@@ -10,7 +9,6 @@
       "monitoring_group":  "{{ item.name }}"
     }
   },
-  {% endfor %}
   {% if item.targets | default(false, true) %}
   {
     "targets": {{ item.targets | to_json }},
