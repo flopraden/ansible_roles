@@ -1,2 +1,9 @@
 ---
 # defaults file for certbot
+
+# The default admin email to use.
+# Must be a valid email address, or false.
+certbot_admin_email: false
+
+certbot_packages:
+    - certbot
