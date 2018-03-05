@@ -4,7 +4,7 @@
 # This is the rocketchat_root_url formatted so it can be used to create
 # filesystem paths sensibly.
 # This shouldn't be overriden unless absolutely necessary.
-rocketchat_munged_url: "{{ rocketchat_root_url | regex_replace('(?:^\\s*https?://|[?#].*$)','') | regex_replace('/+','_') | regex_replace('_$','')  }}"
+rocketchat_munged_url: "{{ rocketchat_root_url | regex_replace('(?:^\\s*https?://|[?#].*$)','') | regex_replace('[/:]+','_') | regex_replace('_$','')  }}"
 
 rocketchat_mongo_url: "{{ [rocketchat_mongo_base_url | regex_replace('/$',''), 'rockechat_' + rocketchat_munged_url | regex_replace('\\.','_')] | join('/') }}"
 rocketchat_oplogmongo_url: "{{ [rocketchat_mongo_base_url | regex_replace('/$',''), 'local'] | join('/') }}"
