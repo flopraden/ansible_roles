@@ -3,6 +3,12 @@ upstream {{vhost.name}}_backend {
 {% for host in vhost.backend_groups | map('extract',groups) | sum(start=[]) | unique %}
     server {{ host }}:{{ vhost.backend_port }};
 {% endfor %}
+{% for host in vhost.backend_hosts | default([]) | unique %}
+    server {{ host }}:{{ vhost.backend_port }};
+{% endfor %}
+{% for host in vhost.backends | default([]) | unique %}
+    server {{ host }};
+{% endfor %}
 {% for option in vhost.backend_options | default([]) %}
     {{ option }};
 {% endfor %}
@@ -12,11 +18,13 @@ upstream {{vhost.name}}_backend {
 server {
     listen 80;
     server_name server_name {{ vhost.hostname | default(vhost.name) + (vhost.additional_hostnames | default([]) | join(" ")) }};
-    {% if vhost.use_letsencrypt %}
+
+{% if vhost.use_letsencrypt | default(false, true) %}
     location /.well-known/acme-challenge/ {
-        root /var/www/html/{{ vhost.name }}/;
+        root /var/www/letsencrypt/{{ vhost.name }}/;
     }
-    {% endif %}
+{% endif %}
+
     # Redirect all HTTP requests to HTTPS with a 301 Moved Permanently response.
     return 301 https://{{ vhost.hostname | default(vhost.name) }}$request_uri;
 }
@@ -29,7 +37,13 @@ server {
     access_log /var/log/nginx/{{ vhost.name }}.access.log;
     error_log /var/log/nginx/{{ vhost.name }}.error.log;
 
-    {% if 'ssl' in vhost.port | string  %}
+{% if vhost.use_letsencrypt | default(false, true) %}
+    location /.well-known/acme-challenge/ {
+        root /var/www/letsencrypt/{{ vhost.name }}/;
+    }
+{% endif %}
+
+{% if 'ssl' in vhost.port | string  %}
     ssl_certificate /etc/pki/{{ vhost.name }}/chain.pem;
     ssl_certificate_key /path/to/private_key;
     ssl_session_timeout 1d;
@@ -43,7 +57,7 @@ server {
     add_header Strict-Transport-Security "max-age=15768000; includeSubdomains";
     ssl_stapling on;
     ssl_stapling_verify on;
-    {% endif %}
+{% endif %}
 
     add_header X-Frame-Options "DENY";
     add_header X-XSS-Protection "1;mode=block";
@@ -51,7 +65,9 @@ server {
     add_header X-Permitted-Cross-Domain-Policies "none";
 
     # add_header Content-Security-Policy "script-src 'self'; object-src 'self'";
+    {{ vhost.config | default([]) | join("\n") | indent(4) }}
 
+{% if vhost.backend_groups | default(false, true) or vhost.backend_hosts | default(false, true) or vhost.backends | default(false, true) %}
     location / {
         proxy_pass {{ vhost.forward_proto | default("http") }}://{{ vhost.name }}_backend/;
         proxy_http_version 1.1;
@@ -64,4 +80,5 @@ server {
         proxy_set_header X-Forward-Proto {{ vhost.forward_proto | default("http") }};
         proxy_redirect off;
     }
+{% endif %}
 }
