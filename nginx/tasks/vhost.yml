@@ -10,6 +10,33 @@
     group: nginx
     mode: "0640"
 
+- name: nginx | vhost | create letsencrypt directory for {{ vhost.name }}
+  file:
+    name: "{{ item }}"
+    state: directory
+    owner: certbot
+    group: nginx
+    mode: "01750"
+  with_items:
+    - /usr/share/nginx/letsencrypt
+    - "/usr/share/nginx/letsencrypt/{{ vhost.name }}"
+  when: vhost.use_letsencrypt | default(false, true)
+
+- name: nginx | vhost | create letsencrypt configuration
+  copy:
+    dest: "/etc/letsencrypt/env/{{ vhost.name }}"
+    owner: root
+    group: certbot
+    mode: "01750"
+    force: true
+    content: |
+        MAIL={{ "--email" + vhost.email | default(certbot_admin_email) if vhost.email | default(certbot_admin_email) else "" }}
+        DOMAIN={{ ([vhost.hostname | default(vhost.name)] + vhost.additional_hostnames | default([])) | join(",") }}
+        OPTIONS={{ vhost.certbot_options | default('') }} --webroot --webroot-path /usr/share/nginx/letsencrypt/{{ vhost.name }}
+
+  when: vhost.use_letsencrypt | default(false, true)
+
+
 - name: nginx | vhost | enable {{ vhost.name }}
   file:
     src: "/etc/nginx/sites-available/{{ vhost.name }}.conf"
@@ -17,6 +44,3 @@
     state: link
   notify:
     - nginx | service | reload
-
-
-
