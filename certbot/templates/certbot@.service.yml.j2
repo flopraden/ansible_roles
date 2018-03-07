@@ -1,0 +1,12 @@
+[Unit]
+Description=certbot renewal for %i
+Requires=network.target
+After=network.target
+
+[Service]
+EnvironmentFile=-/etc/letsencrypt/env/%i
+User=certbot
+Type=oneshot
+ExecStartPost=-/etc/letsencrypt/hooks/pre.sh %i
+ExecStart=/bin/certbot certonly --non-interactive --agree-tos --domain $DOMAIN $MAIL $OPTIONS
+ExecStartPost=-/etc/letsencrypt/hooks/post.sh %i
