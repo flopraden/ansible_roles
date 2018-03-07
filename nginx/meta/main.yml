@@ -8,3 +8,4 @@ galaxy_info:
 dependencies:
   - role: common
     epel_enabled: true
+  - role: certbot
