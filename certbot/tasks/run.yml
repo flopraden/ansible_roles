@@ -1,0 +1,19 @@
+---
+
+# tasks for running certbot
+
+- name: certbot | service | create unit file
+  template:
+    src: certbot@.service.yml.j2
+    dest: /etc/systemd/system/certbot@.service
+    owner: root
+    group: root
+    mode: "0640"
+
+- name: certbot | timer | create unit file
+  template:
+    src: certbot@.timer.yml.j2
+    dest: /etc/systemd/system/certbot@.timer
+    owner: root
+    group: root
+    mode: "0640"
