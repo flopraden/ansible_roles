@@ -1,2 +1,11 @@
 ---
 # tasks file for certbot
+
+- block:
+    - import_tasks: pre_install.yml
+    - import_tasks: install.yml
+    - import_tasks: configure.yml
+    - import_tasks: run.yml
+  tags:
+    - certbot
+    - letsencrypt
