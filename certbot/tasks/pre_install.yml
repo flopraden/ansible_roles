@@ -1,0 +1,31 @@
+---
+
+# pre-install tasks for cerbot
+
+- name: certbot | group | create
+  group:
+    name: certbot
+    state: present
+    system: false
+
+- name: certbot | user | create
+  user:
+    name: certbot
+    group: certbot
+    state: present
+    system: false
+    home: /var/lib/letsencrypt
+    shell: /sbin/nologin
+
+
+- name: certbot | directories | create
+  file:
+    name: "{{ item }}"
+    state: directory
+    owner: certbot
+    group: certbot
+    mode: "01750"
+  with_items:
+    - /etc/letsencrypt
+    - /var/log/letsencrypt
+    - /var/lib/letsencrypt
