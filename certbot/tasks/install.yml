@@ -1,0 +1,10 @@
+---
+
+# tasks for installing certbot
+
+- name: certbot | install | packages
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ certbot_packages }}"
+
