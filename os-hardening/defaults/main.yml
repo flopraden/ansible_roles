@@ -15,6 +15,9 @@ os_hardening_mac: "selinux"
 # Set to anything but aide to skip
 os_hardening_integrity: "aide"
 
+# Whether or not to enable ip forwarding via sysctl
+os_hardening_ip_forward: false
+
 # Frequency with which integrity should be checked.
 # This should be a name/value accepted by systemd's timer OnCalendar.
 # See https://www.freedesktop.org/software/systemd/man/systemd.time.html#Calendar%20Events
@@ -54,7 +57,7 @@ os_hardening_disable_services:
   - avahi-daemon
   # CUPS and DHCP are not scored, but should be removed/disabled unless needed
   - cups
-  # 
+  #
   - rsh
   - rlogin
   - ypbind
@@ -82,14 +85,14 @@ os_hardening_disable_services:
   - cron
   - nfslock
   - named
-  - httpd
-  - dovecot
   - squid
   - snmpd
   - rpcgssd
   - rpcsvcgssd
   - rpcidmapd
   - dhcpd
+  - httpd
+  - dovecot
 
 
 # Packages linked to legacy services that should be absent from the system.
