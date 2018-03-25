@@ -1,7 +1,41 @@
+
 ---
 # defaults file for ipsec
 
+# Packages to install in order to provide IPsec
+ipsec_packages:
+  - strongswan
 
-ipsec_run_services: not (ansible_virtualization_role == 'guest' and ansible_virtualization_type == 'docker')
+# Name of (main) service to run.
+# For strongswan, a single service is sufficient to provide all
+# functionality.
+# TODO: Check if the same applies to libreswan, others?
+ipsec_service_name: strongswan
 
-ipsec_provider: "libreswan"
+# List of ports needed to provide IPsec functionality.
+ipsec_ports:
+    - name: isakmp
+      proto: udp
+      port: 500
+    - name: ipsec-nat-t
+      proto: udp
+      port: 4500
+
+# A list of connections to create.
+ipsec_connections: []
+
+ipsec_conf_path: "/etc/strongswan/ipsec.conf"
+ipsec_secrets_path: "/etc/strongswan/ipsec.secrets"
+ipsec_conf_d_path: "/etc/strongswan/ipsec.d"
+ipsec_daemon_conf_path: "/etc/strongswan"
+
+
+ipsec_default_ike_ciphers:
+  - aes128-sha256-ecp256
+  - aes256-sha384-ecp384
+  - aes128-sha256-modp2048
+  - "aes128gcm16-sha256-prfsha256-ecp256!"
+ipsec_default_esp_ciphers:
+  - aes128gcm16
+  - aes256gcm16
+  - "aes128gcm16-sha256-prfsha256-ecp256!"
