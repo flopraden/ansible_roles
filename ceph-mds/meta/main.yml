@@ -1,0 +1,9 @@
+galaxy_info:
+  author: iwaseatenbyagrue
+  description: Install and manage ceph metadata server
+  license: GPLv3
+  min_ansible_version: 1.2
+  galaxy_tags: []
+
+dependencies:
+  - role: ceph-common
