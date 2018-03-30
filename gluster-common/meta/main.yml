@@ -1,0 +1,11 @@
+galaxy_info:
+  author: iwaseatenbyagrue
+  description: Common variables, tasks and handlers for gluster roles
+  license: GPLv3
+  min_ansible_version: 1.2
+  galaxy_tags: []
+
+dependencies:
+  - role: common
+    epel_enabled: yes
+
