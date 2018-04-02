@@ -1,0 +1,9 @@
+---
+
+# tasks for running consul
+
+- name: consul | service | enable and start
+  service:
+    name: "{{ consul_service_name }}"
+    state: started
+    enabled: true
