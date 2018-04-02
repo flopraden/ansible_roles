@@ -1,2 +1,22 @@
 ---
 # defaults file for consul
+
+# Version of consul to install
+consul_version: 1.0.6
+
+# Platform to download binary for.
+consul_platform: "{{ 'darwin' if ansible_os_family == 'Darwin' else 'linux' }}"
+
+# Architecture to download binary for.
+consul_architecture: "{{ ('amd64' if ansible_architecture == 'x86_64' else ansible_architecture).split('v')[0] }}"
+
+# Location of URL from which to downlad a (g)zip containing a consul binary
+consul_url: "https://releases.hashicorp.com/consul/{{ consul_version }}/consul_{{ consul_version }}_{{ consul_platform }}_{{ consul_architecture }}.zip"
+
+consul_checksums:
+    linux_amd64: "sha256:bcc504f658cef2944d1cd703eda90045e084a15752d23c038400cf98c716ea01"
+    linux_arm: "sha256:e9e5569eaaa3ef99d127af282a67115b121e23f4653e97db95f9bdafe71f63e8"
+
+consul_home: /opt/consul
+
+
