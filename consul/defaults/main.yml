@@ -4,6 +4,9 @@
 # Version of consul to install
 consul_version: 1.0.6
 
+consul_datacenter: dc1
+consul_domain: consul
+
 # Platform to download binary for.
 consul_platform: "{{ 'darwin' if ansible_os_family == 'Darwin' else 'linux' }}"
 
@@ -19,4 +22,17 @@ consul_checksums:
 
 consul_home: /opt/consul
 
+consul_join_group: consul_servers
+consul_join_nodes: []
 
+consul_server: false
+consul_enable_ui: false
+
+consul_service_name: consul
+
+consul_encryption_key: ""
+
+consul_custom_config: {}
+
+consul_bind: 0.0.0.0
+consul_advertise: "{{ ansible_default_ipv4.address }}"
