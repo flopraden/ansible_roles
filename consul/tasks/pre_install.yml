@@ -25,5 +25,19 @@
     group: consul
   with_items:
     - "{{ consul_home }}"
-    - "{{ consul_home }}/tmp"
     - "{{ consul_home }}/releases"
+    - "{{ consul_home }}/data"
+    - "{{ consul_home }}/scripts"
+
+
+- name: consul | directories | create configuration
+  file:
+    name: "{{ item }}"
+    state: directory
+    mode: "01750"
+    owner: root
+    group: consul
+  with_items:
+    - "/etc/consul"
+    - "/etc/consul/conf.d"
+    - "/etc/consul/env.d"
