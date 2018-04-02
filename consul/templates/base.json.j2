@@ -1,0 +1,12 @@
+{
+    "domain": "{{ consul_domain }}",
+    "datacenter": "{{ consul_datacenter }}",
+    "data_dir":  "{{ consul_home }}/data",
+    "server": {{ consul_server | lower }},
+    "ui": {{ consul_enable_ui | lower }},
+    "encrypt": "{{ consul_encryption_key }}",
+    "bind_addr": "{{ consul_bind }}",
+    "advertise_addr": "{{ consul_advertise }}",
+    "retry_join": {{ (groups.get(consul_join_group,[]) + consul_join_nodes) | to_json }}
+
+}
