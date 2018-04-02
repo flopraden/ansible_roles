@@ -1,0 +1,23 @@
+# {{ ansible_managed }}
+[Unit]
+Description=Consul Agent
+After=network.target
+Documentation=https://www.consul.io/intro/index.html
+
+[Service]
+Type=notify
+Restart=always
+WorkingDirectory=/opt/consul
+EnvironmentFile=-/etc/consul/env.d/consul.env
+ExecStart=/usr/local/bin/consul agent --config-dir /etc/consul/conf.d/ $OPTIONS
+User=consul
+Group=consul
+ProtectSystem=strict
+UMask=0027
+ReadWritePaths=/opt/consul/data
+PrivateTmp=yes
+CPUAccounting=true
+MemoryAccounting=true
+
+[Install]
+WantedBy=multi-user.target
