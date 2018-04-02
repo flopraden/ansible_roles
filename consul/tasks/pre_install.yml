@@ -1,0 +1,29 @@
+---
+# pre-install tasks for consul
+
+- name: consul | group | create
+  group:
+    name: consul
+    state: present
+    system: true
+
+- name: consul | user | create
+  user:
+    name: consul
+    state: present
+    group: consul
+    system: true
+    shell: /sbin/nologin
+    home: "{{ consul_home }}"
+
+- name: consul | directories | create
+  file:
+    name: "{{ item }}"
+    state: directory
+    mode: "01750"
+    owner: consul
+    group: consul
+  with_items:
+    - "{{ consul_home }}"
+    - "{{ consul_home }}/tmp"
+    - "{{ consul_home }}/releases"
