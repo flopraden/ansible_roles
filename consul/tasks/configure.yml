@@ -1,0 +1,32 @@
+---
+# configuration tasks for consul
+
+- name: consul | configuration | create base
+  template:
+    src: base.json.j2
+    dest: /etc/consul/conf.d/10-base.json
+    owner: root
+    group: consul
+    mode: "0640"
+  notify:
+    - consul | service | restart
+
+- name: consul | configuration | create custom
+  copy:
+    dest: /etc/consul/conf.d/90-custom.json
+    content: |
+        {{ consul_custom_config | to_json }}
+    owner: root
+    group: consul
+    mode: "0640"
+  notify:
+    - consul | service | restart
+
+- name: consul | service | create configuration
+  template:
+    src: consul.service.j2
+    dest: "/etc/systemd/system/{{ consul_service_name }}.service"
+    owner: root
+    group: root
+    mode: "0640"
+
