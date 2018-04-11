@@ -1,2 +1,15 @@
 ---
 # defaults file for gluster-server
+
+gluster_server_package_names:
+  - glusterfs
+
+gluster_server_data_dir: "/data/glusterfs"
+gluster_server_service_name: "glusterd"
+
+gluster_server_ports:
+  - name: glusterfs
+    protocol: tcp
+    port: 24007
+
+gluster_server_annouce_consul: false
