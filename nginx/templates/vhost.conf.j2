@@ -17,7 +17,7 @@ upstream {{vhost.name}}_backend {
 {% if vhost.redirect_to_https | default('ssl' in vhost.port | string, true) %}
 server {
     listen 80;
-    server_name server_name {{ vhost.hostname | default(vhost.name) + (vhost.additional_hostnames | default([]) | join(" ")) }};
+    server_name {{ ([vhost.hostname | default(vhost.name)] + (vhost.additional_hostnames | default([]))) | join(" ") }};
 
 {% if vhost.use_letsencrypt | default(false, true) %}
     location /.well-known/acme-challenge/ {
@@ -33,7 +33,7 @@ server {
 # Main Server
 server {
     listen {{ vhost.port | default(80) }};
-    server_name {{ vhost.hostname | default(vhost.name) + (vhost.additional_hostnames | default([]) | join(" ")) }};
+    server_name {{ ([vhost.hostname | default(vhost.name)] + (vhost.additional_hostnames | default([]))) | join(" ") }};
     access_log /var/log/nginx/{{ vhost.name }}.access.log;
     error_log /var/log/nginx/{{ vhost.name }}.error.log;
 
