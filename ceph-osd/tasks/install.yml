@@ -1,0 +1,9 @@
+---
+
+# install tasks for ceph-osd
+
+- name: ceph | packages | install osd
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ ceph_osd_packages }}"
