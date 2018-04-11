@@ -1,2 +1,7 @@
 ---
 # defaults file for ceph-mds
+
+ceph_mds_packages:
+  - ceph-mds
+
+ceph_mds_service_name: ceph-mds
