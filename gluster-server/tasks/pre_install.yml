@@ -1,0 +1,13 @@
+---
+
+# pre-install task for gluster-server
+
+- name: gluster | directories | create data
+  file:
+    name: "{{ gluster_server_data_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "01750"
+
+
