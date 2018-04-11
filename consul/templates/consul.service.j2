@@ -9,10 +9,13 @@ Type=notify
 Restart=always
 WorkingDirectory=/opt/consul
 EnvironmentFile=-/etc/consul/env.d/consul.env
-ExecStart=/usr/local/bin/consul agent --config-dir /etc/consul/conf.d/ $OPTIONS
+ExecStart=/usr/local/bin/consul agent --config-dir /etc/consul/conf.d/ \
+    --config-dir /etc/consul/service.d/ \
+    --config-dir /etc/consul/check.d/ \
+    $OPTIONS
 User=consul
 Group=consul
-ProtectSystem=strict
+ProtectSystem=full
 UMask=0027
 ReadWritePaths=/opt/consul/data
 PrivateTmp=yes
