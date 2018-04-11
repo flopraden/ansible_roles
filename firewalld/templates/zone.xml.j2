@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<zone target="{{item.policy | default('DROP') }}">
+  <description>{{ item.description | default(item.name) }}</description>
+{% for interface in item.interfaces | default([]) %}
+  <interface name="{{ interface }}" />
+{% endfor %}
+{% for port in item.ports | default([]) %}
+  <port protocol="{{ port.split('/')[1] | default('tcp') }}" port="{{ port.split('/')[0] }}"/>
+{% endfor %}
+{% for source in item.sources | default([]) %}
+  <source address="{{ source }}"/>
+{% endfor %}
+{% for service in item.services | default([]) %}
+  <service name="{{ service }}"/>
+{% endfor %}
+{% if item.masquerade | default(false) %}
+  <masquerade/>
+{% endif %}
+{{ item.content | default("") }}
+</zone>
