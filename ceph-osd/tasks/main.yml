@@ -1,2 +1,9 @@
 ---
 # tasks file for ceph-osd
+
+
+- block:
+    - import_tasks: install.yml
+  tags:
+    - ceph-osd
+    - ceph
