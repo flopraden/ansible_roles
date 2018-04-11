@@ -1,0 +1,30 @@
+---
+
+# configuration tasks for ceph-mds
+
+- name: ceph | directories | create mds root
+  file:
+    name: "/var/lib/ceph/mds/{{ ceph_cluster_name }}-{{ ceph_nodename }}"
+    state: directory
+    owner: ceph
+    group: ceph
+    mode: "01750"
+
+
+- name: ceph | auth | create mds account
+  command: "ceph-authtool --create-keyring /var/lib/ceph/mds/{{ ceph_cluster_name }}-{{ ceph_nodename }}/keyring --gen-key -n mds.{{ ceph_nodename }}"
+  args:
+    creates: "/var/lib/ceph/mds/{{ ceph_cluster_name }}-{{ ceph_nodename }}/keyring"
+
+- name: ceph | auth | import mds keyring
+  command: 'ceph auth add mds.{{ ceph_nodename }} osd "allow rwx" mds "allow" mon "allow profile mds" -i /var/lib/ceph/mds/{{ ceph_cluster_name }}-{{ ceph_nodename }}/keyring'
+
+- name: ceph | keyring | adjust mds keyring ownership
+  file:
+    name: "/var/lib/ceph/mds/{{ ceph_cluster_name }}-{{ ceph_nodename }}/keyring"
+    state: file
+    owner: ceph
+    group: ceph
+    mode: "0640"
+
+
