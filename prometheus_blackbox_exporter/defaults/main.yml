@@ -9,7 +9,7 @@ prometheus_blackbox_version: "0.11.0"
 prometheus_blackbox_platform: "{{ 'darwin' if ansible_os_family == 'Darwin' else 'linux' }}"
 
 # Architecture to download binary for.
-prometheus_blackbox_architecture: "{{ 'amd64' if ansible_architecture == 'x86_64' else ansible_architecture }}"
+prometheus_blackbox_architecture: "{{ ('amd64' if ansible_architecture == 'x86_64' else ansible_architecture ).split('l')[0] }}"
 
 # Port for blackbox exporter to listen on.
 # If it is dockerised, this is the port exposed by the container
