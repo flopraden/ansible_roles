@@ -1,0 +1,9 @@
+---
+
+# install task for gluster server
+
+- name: gluster | package | install server
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ gluster_server_package_names }}"

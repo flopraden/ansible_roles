@@ -1,0 +1,9 @@
+---
+
+# run tasks for gluster server
+
+- name: gluster | server | enable and run
+  service:
+    name: "{{ gluster_server_service_name }}"
+    state: started
+    enabled: yes
