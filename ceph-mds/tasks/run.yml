@@ -1,0 +1,9 @@
+---
+
+#
+
+- name: ceph | service | start mds
+  service:
+    name: "{{ ceph_mds_service_name }}@{{ ceph_nodename }}"
+    state: started
+    enabled: yes
