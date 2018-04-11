@@ -3,7 +3,7 @@
 # defaults file for ipsec
 
 # Packages to install in order to provide IPsec
-ipsec_packages:
+ipsec_package_names:
   - strongswan
 
 # Name of (main) service to run.
