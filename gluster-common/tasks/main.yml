@@ -1,2 +1,9 @@
 ---
 # tasks file for gluster-common
+
+- block:
+    - import_tasks: pre_install.yml
+  tags:
+    - gluster
+    - gluster-common
+
