@@ -40,4 +40,6 @@
   with_items:
     - "/etc/consul"
     - "/etc/consul/conf.d"
+    - "/etc/consul/service.d"
+    - "/etc/consul/check.d"
     - "/etc/consul/env.d"
