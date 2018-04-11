@@ -1,0 +1,30 @@
+---
+
+# consul tasks for gluster server
+
+- name: prometheus node exporter | consul | create config
+  copy:
+    dest: /etc/consul/service.d/node_exporter.json
+    owner: root
+    group: consul
+    mode: "0640"
+    content: |-
+        {
+          "service": {
+            "checks": [
+              {
+                "interval": "30s",
+                "http": "http://localhost:9100/health",
+                "timeout": "5s"
+              }
+            ],
+            "id": "node_exporter",
+            "name": "node_exporter",
+            "port": 9100,
+            "tags": [
+              "node_exporter"
+            ]
+          }
+        }
+
+
