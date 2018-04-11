@@ -1,2 +1,7 @@
 ---
 # defaults file for ceph-osd
+
+ceph_osd_packages:
+  - ceph-osd
+
+ceph_osd_service_name: ceph-osd
