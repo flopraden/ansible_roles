@@ -1,0 +1,10 @@
+---
+
+# service tasks for ipsec
+
+- name: ipsec | service | enable and start
+  service:
+    name: "{{ ipsec_service_name }}"
+    state: started
+    enabled: yes
+
