@@ -40,7 +40,7 @@ prometheus_docker_volumes:
 prometheus_platform: "{{ 'darwin' if ansible_os_family == 'Darwin' else 'linux' }}"
 
 # Architecture to download binary for.
-prometheus_architecture: "{{ 'amd64' if ansible_architecture == 'x86_64' else ansible_architecture }}"
+prometheus_architecture: "{{ ('amd64' if ansible_architecture == 'x86_64' else ansible_architecture).split('l')[0] }}"
 
 prometheus_alertmanagers: []
 prometheus_alertmanager_group: "prometheus_alertmanagers"
@@ -83,7 +83,7 @@ prometheus_default_scrape_targets:
     type: node_exporter
     port: 9100
     groups:
-      - node_exporter
+      - node_exporters
   - name: docker
     type: docker
     port: 9323
