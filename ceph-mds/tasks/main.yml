@@ -1,2 +1,10 @@
 ---
 # tasks file for ceph-mds
+
+- block:
+    - import_tasks: install.yml
+    - import_tasks: configure.yml
+    - import_tasks: run.yml
+  tags:
+    - ceph
+    - ceph-mds
