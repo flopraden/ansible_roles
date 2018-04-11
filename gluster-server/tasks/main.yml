@@ -1,2 +1,12 @@
 ---
 # tasks file for gluster-server
+
+- block:
+    - import_tasks: pre_install.yml
+    - import_tasks: install.yml
+    - import_tasks: run.yml
+    - import_tasks: consul.yml
+      when: gluster_server_annouce_consul
+  tags:
+    - gluster
+    - gluster-server
