@@ -1,0 +1,15 @@
+---
+# pre-install tasks for gluster common
+
+- name: gluster | repo | add suse OBS
+  zypper_repository:
+    name: gluster-obs
+    state: present
+    repo: "https://download.opensuse.org/repositories/home:/glusterfs:/Leap42.3-{{ gluster_version }}/openSUSE_Leap_42.3"
+  when: ansible_os_family == "Suse"
+
+- name: gluster | repo | add yum
+  package:
+    name: "centos-release-gluster{{ gluster_version.split('.') | join('') }}"
+    state: present
+  when: ansible_os_family == "RedHat"
