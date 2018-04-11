@@ -10,6 +10,11 @@ prometheus_node_exporter_version: "0.15.2"
 prometheus_node_exporter_ports:
   - 9100
 
+# Creates a simple service definition in /etc/consul.d/service.d.
+# This will announce node_exporter via the local consul agent to peers,
+# allowing DNS or consul service discovery in prometheus.
+prometheus_node_exporter_announce_consul: false
+
 # Whether to publish the prometheus ports.
 # If not falsy, it needs to be a suitable portspec.
 # In other words, to publish prometheus port, you would have:
@@ -42,4 +47,4 @@ prometheus_node_exporter_docker_volumes:
 prometheus_node_exporter_platform: "{{ 'darwin' if ansible_os_family == 'Darwin' else 'linux' }}"
 
 # Architecture to download binary for.
-prometheus_node_exporter_architecture: "{{ 'amd64' if ansible_architecture == 'x86_64' else ansible_architecture }}"
+prometheus_node_exporter_architecture: "{{ ('amd64' if ansible_architecture == 'x86_64' else ansible_architecture).split('l')[0] }}"
