@@ -1,0 +1,44 @@
+---
+# configuration tasks for ipsec
+
+- name: ipsec | configuration | create directories
+  file:
+    name: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "01750"
+  with_items:
+    - "{{ipsec_daemon_conf_path}}"
+    - "{{ ipsec_conf_d_path }}"
+    - "{{ ipsec_conf_d_path }}/conn.d/"
+
+- name: ipsec | configuration | ipsec.conf
+  template:
+    src: ipsec.conf.j2
+    dest: "{{ipsec_conf_path}}"
+    owner: root
+    group: root
+    mode: "0600"
+  notify:
+    - strongswan | service | restart
+- name: ipsec | configuration | ipsec.secrets
+  template:
+    src: ipsec.secrets.j2
+    dest: "{{ipsec_secrets_path }}"
+    owner: root
+    group: root
+    mode: "0600"
+  notify:
+    - strongswan | service | restart
+
+- name: ipsec | configuration | conn blocks
+  template:
+    src: conn.conf.j2
+    dest: "{{ ipsec_conf_d_path }}/conn.d/{{ item.name }}.conf"
+    owner: root
+    group: root
+    mode: "0600"
+  with_items: "{{ ipsec_connections }}"
+  notify:
+    - strongswan | service | restart
