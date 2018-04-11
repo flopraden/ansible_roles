@@ -1,2 +1,4 @@
 ---
 # defaults file for gluster-common
+
+gluster_version: "4.0"
