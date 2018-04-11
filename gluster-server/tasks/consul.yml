@@ -1,0 +1,31 @@
+---
+
+# consul tasks for gluster server
+
+- name: gluster | consul | create config
+  copy:
+    dest: /etc/consul/service.d/gluster.json
+    owner: root
+    group: consul
+    mode: "0640"
+    content: |-
+        {
+          "service": {
+            "checks": [
+              {
+                "interval": "15s",
+                "tcp": "localhost:24007",
+                "timeout": "5s"
+              }
+            ],
+            "id": "gluster",
+            "name": "gluster",
+            "port": 24007,
+            "tags": [
+              "gluster",
+              "server"
+            ]
+          }
+        }
+
+
