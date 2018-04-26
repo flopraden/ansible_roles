@@ -1,5 +1,9 @@
 ---
 # tasks file for ipsec
 
-- include: libreswan.yml
-  when: ipsec_provider == 'libreswan'
+- block:
+    - import_tasks: install.yml
+    - import_tasks: configure.yml
+    - import_tasks: run.yml
+  tags:
+    - ipsec
