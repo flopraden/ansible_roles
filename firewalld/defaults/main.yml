@@ -15,3 +15,10 @@ firewalld_docker_host: true
 # A boolean indicating whether to log denied flows/packets.
 # This is used to populate LogDenied - truthy is 'all', falsy is 'none'.
 firewalld_log_denied: false
+
+firewalld_package_names:
+  - firewalld
+  - python-firewall
+
+
+firewalld_service_name: firewalld
