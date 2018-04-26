@@ -11,3 +11,7 @@ firewalld_zones:
       - ssh
 
 firewalld_docker_host: true
+
+# A boolean indicating whether to log denied flows/packets.
+# This is used to populate LogDenied - truthy is 'all', falsy is 'none'.
+firewalld_log_denied: false
