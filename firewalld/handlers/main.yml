@@ -1,2 +1,11 @@
 ---
 # handlers file for firewalld
+
+- name: firewalld | service | restart
+  service:
+    name: firewalld
+    state: restarted
+
+
+- name: firewalld | service | reload
+  command: "firewalld-cmd --reload"
