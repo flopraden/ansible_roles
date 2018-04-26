@@ -1,0 +1,10 @@
+---
+
+# tasks for running firewalld
+
+- name: firewalld | service | enable and run
+  service:
+    name: "{{ firewalld_service_name }}"
+    state: started
+    enabled: yes
+  when: firewalld_run_services
