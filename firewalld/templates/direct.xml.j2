@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<direct>
+{% if firewalld_docker_host %}
+  <chain ipv="ipv4" table="nat" chain="DOCKER" />
+  <chain ipv="ipv4" table="filter" chain="DOCKER" />
+  <chain ipv="ipv4" table="filter" chain="DOCKER-ISOLATION" />
+  <chain ipv="ipv4" table="filter" chain="DOCKER-USER" />
+
+  <rule table="nat" chain="PREROUTING" ipv="ipv4">
+   -m addrtype --dst-type LOCAL -j DOCKER
+  </rule>
+
+  <rule table="nat" chain="OUTPUT" ipv="ipv4">
+    -d 127.0.0.0/8 -m addrtype --dst-type LOCAL -j DOCKER
+  </rule>
+ <rule table="filter" chain="FORWARD" ipv="ipv4">
+-j DOCKER-USER
+  </rule>
+  <rule table="filter" chain="FORWARD" ipv="ipv4">
+-j DOCKER-ISOLATION
+  </rule>
+
+  <rule table="filter" chain="FORWARD" ipv="ipv4">
+-o docker0 -j DOCKER
+  </rule>
+  <rule table="filter" chain="FORWARD" ipv="ipv4">
+-i docker0 ! -o docker0 -j ACCEPT
+  </rule>
+  <rule table="filter" chain="FORWARD" ipv="ipv4">
+-i docker0 -o docker0 -j ACCEPT
+  </rule>
+
+  <rule table="filter" chain="DOCKER" ipv="ipv4">
+-i docker0 -j RETURN
+  </rule>
+
+{% endif %}
+
+</direct>
