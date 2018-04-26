@@ -1,5 +1,14 @@
 ---
-# Tasks for configuring firewalld - these assume it is running
+
+# tasks for configuring firewalld
+
+- name: firewalld | configuration | create firewalld.conf
+  template:
+    src: firewalld.conf.j2
+    dest: /etc/firewalld/firewalld.conf
+    owner: root
+    group: root
+    mode: "0640"
 
 # Default target for most zones is REJECT - DROP is preferrable.
 # Three zones have their own explicit target, which remains unchanged:
@@ -28,8 +37,8 @@
   with_items: "{{ firewalld_zones }}"
   notify:
     - firewalld | service | restart
-# Create direct rules
 
+# Create direct rules
 - name: firewalld | configuration | create direct rules
   template:
     src: direct.xml.j2
