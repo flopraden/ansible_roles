@@ -6,5 +6,5 @@ CleanupOnExit=yes
 Lockdown=yes
 IPv6_rpfilter=yes
 IndividualCalls=no
-LogDenied=off
+LogDenied={{ 'all' if firewalld_log_denied else 'none' }}
 AutomaticHelpers=system
