@@ -6,6 +6,8 @@ firewalld_run_services: not (ansible_virtualization_role == 'guest' and ansible_
 firewalld_zones:
   - name: public
     sources:
-      - 10.0.0.0/8
-      - 172.16.0.0/12
-      - 192.168.0.0/16
+      - 0.0.0.0/0
+    services:
+      - ssh
+
+firewalld_docker_host: true
