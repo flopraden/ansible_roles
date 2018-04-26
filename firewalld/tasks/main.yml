@@ -1,33 +1,17 @@
 ---
 # tasks file for firewalld
 
-- name: firewalld | package | install
-  package:
-    name: "{{ item }}"
-    state: present
-  with_items:
-    - firewalld
-    - python-firewall
+
+- block:
+    - import_tasks: pre_install.yml
+    - import_tasks: install.yml
+    - import_tasks: configure.yml
+    - import_tasks: run.yml
   tags:
     - firewalld
 
-
-- name: firewalld | configuration | create firewalld.conf
-  template:
-    src: firewalld.conf.j2
-    dest: /etc/firewalld/firewalld.conf
-  tags:
-    - firewalld
-
-- name: firewalld | service | enable and run
-  service:
-    name: firewalld
-    state: started
-    enabled: yes
-  when: firewalld_run_services
-  tags:
-    - firewalld
-
-- include: configure.yml
+# Ensure firewalld's handlers are flushed, to try and ensure firewalld
+# is running and has the expected/desired rules active.
+- meta: flush_handlers
   tags:
     - firewalld
