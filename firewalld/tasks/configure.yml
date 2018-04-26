@@ -18,10 +18,22 @@
     - dmz
     - public
 
-# Due to a limitation in looping that means it can be done for blocks,
-# it is instead necessary(/easier) to include a task file repeatedly.
-# https://github.com/ansible/ansible/issues/13262
-- include: zone_configuration.yml
+- name: firewalld | configuration | create zone config
+  template:
+    src: zone.xml.j2
+    dest: "/etc/firewalld/zones/{{ item.name }}.xml"
+    owner: root
+    group: root
+    mode: 0640
   with_items: "{{ firewalld_zones }}"
-  loop_control:
-    loop_var: "zone"
+  notify:
+    - firewalld | service | restart
+# Create direct rules
+
+- name: firewalld | configuration | create direct rules
+  template:
+    src: direct.xml.j2
+    dest: /etc/firewalld/direct.xml
+    owner: root
+    group: root
+    mode: 0640
