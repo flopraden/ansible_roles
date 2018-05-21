@@ -1,7 +1,7 @@
 # {{ ansible_managed }}
 [Unit]
 Description=Consul Agent
-After=network.target
+After=network-online.target
 Documentation=https://www.consul.io/intro/index.html
 
 [Service]
