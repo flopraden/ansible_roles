@@ -1,0 +1,26 @@
+---
+# configure tasks for local user role
+
+- block:
+    - name: "local-user | user | add authorised keys for {{ local_user.name }}"
+      authorized_key:
+        user: "{{ local_user.name }}"
+        state: present
+        key: "{{ item }}"
+        manage_dir: "{{ not((local_user.authorized_key_path | default(false)) or local_user_default_authorized_keys_path) }}"
+        path: "{{ local_user.authorized_key_path |  default(local_user_authorized_keys_path) | default(omit) }}"
+      with_items: "{{ local_user.get('authorised_keys', local_user.get('authorized_keys'))  | default([]) }}"
+
+    - name: "local-user | user | create sudo configuration for {{ local_user.name }}"
+      template:
+        src: sudoers.j2
+        dest: "/etc/sudoers.d/{{ local_user.name }}"
+        owner: root
+        group: root
+        mode: 0600
+      vars:
+        name: "{{ local_user.name }}"
+        sudo_options: "{{ local_user.sudo_options | default([]) }}"
+        sudo_rules: "{{ local_user.sudo_rules | default([]) }}"
+  tags:
+    - local-user
