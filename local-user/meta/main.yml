@@ -1,0 +1,8 @@
+galaxy_info:
+  author: iwaseatenbyagrue
+  description: Create and manage a local users and sudo rights
+  license: GPLv3
+  min_ansible_version: 1.2
+  galaxy_tags: []
+
+dependencies: []
