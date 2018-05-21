@@ -1,2 +1,15 @@
 ---
 # tasks file for local-user
+
+- block:
+    - import_tasks: pre_install.yml
+    - import_tasks: install.yml
+  tags:
+    - local-user
+
+- include_tasks: configure.yml
+  with_items: "{{ local_user_accounts }}"
+  loop_control:
+    loop_var: local_user
+  tags:
+    - local-user
