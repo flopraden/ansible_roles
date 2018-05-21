@@ -1,0 +1,14 @@
+---
+# install tasks for local user
+
+- name: "local-user | users | create"
+  user:
+    name: "{{ item.name }}"
+    state: present
+    system: "{{ item.system | default(false, true) }}"
+    home: "{{ item.home | default(omit) }}"
+    createhome: "{{ item.create_home | default(true, true) }}"
+    group: "{{ item.group }}"
+    groups: "{{ item.groups | default([]) }}"
+    shell: "{{ item.shell | default(local_user_default_shell) }}"
+  with_items: "{{ local_user_accounts }}"
