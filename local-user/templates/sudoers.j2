@@ -1,0 +1,7 @@
+# {{ ansible_managed }}
+{% for option in local_user_default_sudo_options + sudo_options %}
+Defaults:{{ name }} {{ option }}
+{% endfor %}
+{% for rule in local_user_default_sudo_rules + sudo_rules %}
+{{ name }} {{ rule }}
+{% endfor %}
