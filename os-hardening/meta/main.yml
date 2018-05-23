@@ -12,5 +12,4 @@ dependencies:
   - ipsec
   - rsyslog
   - logrotate
-  - firewalld
   - openssh
