@@ -1,0 +1,9 @@
+---
+
+# tasks for running vault
+
+- name: vault | service | enable and start
+  service:
+    name: "{{ vault_service_name }}"
+    state: started
+    enabled: true
