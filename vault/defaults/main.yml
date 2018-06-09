@@ -54,11 +54,11 @@ vault_tls_cert: ""
 vault_tls_key: ""
 
 # Whether or not to disable TLS for vault listeners.
-vault_disable_tls: false
+vault_tls_disable: false
 
 # For operations involving the vault binary/client, the vault address
 # to contact.
-vault_url: "https://localhost:8200"
+vault_url: "http{{'' if vault_tls_disable else 's'}}://localhost:8200"
 
 # Token to use for operations on vault (e.g. creating policies).
 vault_token: false
