@@ -1,2 +1,7 @@
 ---
 # handlers file for vault
+
+- name: vault | service | restart
+  service:
+    name: "{{ vault_service_name }}"
+    state: restarted
