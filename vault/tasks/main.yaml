@@ -1,0 +1,21 @@
+---
+# tasks file for vault
+
+- block:
+    - import_tasks: pre_install.yaml
+      tags:
+        - vault-install
+    - import_tasks: install.yaml
+      tags:
+        - vault-install
+    - import_tasks: configure.yaml
+      tags:
+        - vault-install
+    - import_tasks: run.yaml
+      tags:
+        - vault-install
+    - import_tasks: policy.yaml
+      tags:
+        - vault-policy
+  tags:
+    - vault
