@@ -1,0 +1,19 @@
+---
+# policy management tasks for vault
+
+- name: vault | policy | create file
+  template:
+    src: "{{ item.policy_base | default('blank') }}-policy.hcl.j2"
+    dest: "/etc/vault/policy.d/{{ item.name }}.hcl"
+    owner: root
+    group: vault
+    mode: "0640"
+  with_items: "{{ vault_policies }}"
+
+- name: vault | policy | create
+  command: "/usr/local/bin/vault policy write {{ vault_cli_flags }} {{ item.name }}  /etc/vault/policy.d/{{ item.name }}.hcl"
+  environment:
+    VAULT_TOKEN: "{{ vault_token }}"
+    VAULT_ADDR: "{{ vault_url }}"
+  with_items: "{{ vault_policies }}"
+  when: vault_token | default(false, true)
