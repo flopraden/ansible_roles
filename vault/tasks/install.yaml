@@ -1,0 +1,20 @@
+---
+# install tasks for vault
+
+- name: vault | binary | download
+  get_url:
+    url: "{{ vault_download_url }}"
+    checksum: "{{ vault_checksums[('_').join([vault_platform, vault_architecture])] }}"
+    owner: vault
+    group: vault
+    mode: "0640"
+    dest: "{{ vault_home }}/releases/vault_{{vault_version}}.zip"
+
+- name: vault | binary | extract
+  unarchive:
+    src: "{{ vault_home }}/releases/vault_{{vault_version}}.zip"
+    dest: "/usr/local/bin"
+    owner: root
+    group: vault
+    mode: "0550"
+    remote_src: true
