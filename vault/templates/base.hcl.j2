@@ -6,7 +6,7 @@ storage "{{ vault_storage_backend }}" {
 
 listener "tcp" {
   address     = "0.0.0.0:8200"
-  tls_disable = {{ "1" if vault_disable_tls else "0" }}
+  tls_disable = {{ "1" if vault_tls_disable else "0" }}
   tls_cert_file = "/etc/vault/ssl.d/cert.pem"
   tls_key_file = "/etc/vault/ssl.d/key.pem"
 }
