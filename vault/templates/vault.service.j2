@@ -1,0 +1,33 @@
+# {{ ansible_managed }}
+[Unit]
+Description=Vault Server
+After=network-online.target
+Documentation=https://www.vault.io/intro/index.html
+
+[Service]
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectSystem=yes
+NoNewPrivileges=yes
+WorkingDirectory={{ vault_home }}
+EnvironmentFile=-/etc/vault/env.d/vault.env
+User=vault
+Group=vault
+UMask=0027
+ReadWritePaths={{ vault_home }}/data
+SecureBits=keep-caps
+AmbientCapabilities=CAP_IPC_LOCK
+CapabilityBoundingSet=CAP_SYSLOG CAP_IPC_LOCK
+LimitMEMLOCK=infinity
+CPUAccounting=true
+MemoryAccounting=true
+ExecStart=/usr/local/bin/vault server --config /etc/vault/conf.d/ \
+    $OPTIONS
+KillSignal=SIGINT
+Restart=on-failure
+TimeoutStopSec=30s
+StartLimitInterval=60s
+StartLimitBurst=3
+
+[Install]
+WantedBy=multi-user.target
