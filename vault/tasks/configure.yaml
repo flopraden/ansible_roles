@@ -1,0 +1,64 @@
+---
+# configuration tasks for vault
+
+- name: vault | configuration | create base
+  template:
+    src: base.hcl.j2
+    dest: /etc/vault/conf.d/10-base.hcl
+    owner: root
+    group: vault
+    mode: "0640"
+  notify:
+    - vault | service | restart
+
+- name: vault | configuration | create custom
+  copy:
+    content: "{{ vault_custom_config | to_nice_json }}"
+    dest: /etc/vault/conf.d/90-custom.json
+    owner: root
+    group: vault
+    mode: "0640"
+  notify:
+    - vault | service | restart
+
+- name: vault | configuration | copy tls key
+  copy:
+    content: "{{ vault_tls_key }}"
+    dest: /etc/vault/ssl.d/key.pem
+    owner: root
+    group: vault
+    mode: "0640"
+  notify:
+    - vault | service | restart
+  when: vault_tls_key and vault_tls_key
+
+- name: vault | configuration | copy tls cert
+  copy:
+    content: "{{ vault_tls_cert }}"
+    dest: /etc/vault/ssl.d/cert.pem
+    owner: root
+    group: vault
+    mode: "0640"
+  notify:
+    - vault | service | restart
+  when: vault_tls_cert
+
+- name: vault | configuration | create tls cert and key
+  command: openssl req -x509 -subj "/CN=localhost" -newkey rsa:2048 -keyout key.pem -nodes -out cert.pem
+  args:
+    chdir: /etc/vault/ssl.d/
+    creates: /etc/vault/ssl.d/cert.pem
+  environment:
+    UMASK: "022"
+  notify:
+    - vault | service | restart
+  when: not vault_tls_cert
+
+- name: vault | service | create configuration
+  template:
+    src: vault.service.j2
+    dest: "/etc/systemd/system/{{ vault_service_name }}.service"
+    owner: root
+    group: root
+    mode: "0640"
+
