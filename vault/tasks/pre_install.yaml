@@ -1,0 +1,45 @@
+---
+# pre-install tasks for vault
+
+- name: vault | group | create
+  group:
+    name: vault
+    state: present
+    system: true
+
+- name: vault | user | create
+  user:
+    name: vault
+    state: present
+    group: vault
+    system: true
+    shell: /sbin/nologin
+    home: "{{ vault_home }}"
+
+- name: vault | directories | create
+  file:
+    name: "{{ item }}"
+    state: directory
+    mode: "01750"
+    owner: vault
+    group: vault
+  with_items:
+    - "{{ vault_home }}"
+    - "{{ vault_home }}/releases"
+    - "{{ vault_home }}/data"
+    - "{{ vault_home }}/scripts"
+
+
+- name: vault | directories | create configuration
+  file:
+    name: "{{ item }}"
+    state: directory
+    mode: "01750"
+    owner: root
+    group: vault
+  with_items:
+    - "/etc/vault"
+    - "/etc/vault/conf.d"
+    - "/etc/vault/policy.d"
+    - "/etc/vault/env.d"
+    - "/etc/vault/ssl.d"
