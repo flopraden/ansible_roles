@@ -1,2 +1,85 @@
 ---
 # defaults file for vault
+
+# The version of vault to deploy.
+vault_version: "0.10.2"
+
+# Platform to download binary for.
+vault_platform: "{{ 'darwin' if ansible_os_family == 'Darwin' else 'linux' }}"
+
+# Architecture to download binary for.
+vault_architecture: "{{ ('amd64' if ansible_architecture == 'x86_64' else ansible_architecture).split('v')[0] }}"
+
+# Location of URL from which to downlad a (g)zip containing a vault binary
+vault_download_url: "https://releases.hashicorp.com/vault/{{ vault_version }}/vault_{{ vault_version }}_{{ vault_platform }}_{{ vault_architecture }}.zip"
+
+# A dict of checksums for binaries (or their (g)zips), entry format is:
+# {{vault_platform}}_{{vault_architecture}}: "sha256:$CHECKSUM"
+# For example, linux_amd64: sha256:ffffff...ff
+# Defaults are taken from:
+# https://releases.hashicorp.com/vault/{{ vault_version }}/vault_{{ vault_version }}_SHA256SUMS
+vault_checksums:
+    linux_amd64: "sha256:f725be68316d10ef2e7779fdedd8eb5d4ed9975303c828466bb9a729e01392dd"
+    linux_arm: "sha256:a53ed18bb5cfb92482344137359450740c0523d2781723b365a575a2e4f27276"
+
+# Home directory for the vault user.
+# By default, the vault data will be saved under this directory.
+vault_home: /opt/vault
+
+# The storage backend fo vault to use.
+# Default is to use a file backend
+vault_storage_backend: "file"
+
+# Storage parameters.
+# Default is based on using a file backend, and sets the path to a data
+# directory under {{vault_home}}.
+vault_storage_params:
+    path: "{{ vault_home }}/data"
+
+# Holder for any custom config to be provided to vault.
+# This can be used to override defaults set in the base file, or
+# to provide additional config.
+# The data is converted to json.
+vault_custom_config: {}
+
+# Name of the service to create and run for vault.
+vault_service_name: vault
+
+# Content for a TLS certificate vault can use to encrypt communications
+# If empty, one will be generated for localhost.
+vault_tls_cert: ""
+
+# Content for a private key matching vault_tls_cert.
+# If empty, one will be generated.
+vault_tls_key: ""
+
+# Whether or not to disable TLS for vault listeners.
+vault_disable_tls: false
+
+# For operations involving the vault binary/client, the vault address
+# to contact.
+vault_url: "https://localhost:8200"
+
+# Token to use for operations on vault (e.g. creating policies).
+vault_token: false
+
+# A default set of policies to create.
+vault_default_policies:
+  - name: default-admin
+    policy: ""
+    policy_base: admin
+  - name: default-provisioner
+    policy: ""
+    policy_base: provisioner
+  - name: pki-admin
+    policy: |
+        path "pki/*" {
+          capabilities = ["create", "read", "update", "delete", "list"]
+        }
+
+# Policies to create/update.
+# By default, this is the same as {{vault_default_policies}}.
+vault_policies: "{{ vault_default_policies }}"
+
+# Shared cli flags passed to all invocations of the vault binary.
+vault_cli_flags: ""
