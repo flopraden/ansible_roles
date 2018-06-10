@@ -2,9 +2,12 @@
 # tasks file for common
 
 - block:
-    - include_tasks: yum.yml
+    - import_tasks: yum.yml
       tags:
         - yum
       when: ansible_pkg_mgr == 'yum'
+    - import_tasks: packages.yaml
+      tags:
+        - common-packages
   tags:
     - common
