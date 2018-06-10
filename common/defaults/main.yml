@@ -9,3 +9,9 @@ epel_repo_mirrorlist: https://mirrors.fedoraproject.org/metalink?repo=epel-7&arc
 # See https://getfedora.org/keys/ for others
 epel_repo_key_url: https://getfedora.org/static/352C64E5.txt
 
+# Default shared packages to install by default.
+common_default_packages:
+    - unzip
+
+# Common/shared packages to install by default.
+common_packages: "{{ common_default_packages }}"
