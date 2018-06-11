@@ -1,0 +1,9 @@
+galaxy_info:
+  author: iwaseatenbyagrue
+  description: Manage a libvirt-based virtualisation host
+  license: GPLv3
+  min_ansible_version: 1.2
+  galaxy_tags: []
+
+dependencies:
+  - role: libvirt-common
