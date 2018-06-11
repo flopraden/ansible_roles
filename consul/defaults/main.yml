@@ -7,6 +7,9 @@ consul_version: 1.1.0
 consul_datacenter: dc1
 consul_domain: consul
 
+# A non-zero value exposes prometheus metrics on the consul agent.
+consul_prometheus_retention_time: 300s
+
 # Platform to download binary for.
 consul_platform: "{{ 'darwin' if ansible_os_family == 'Darwin' else 'linux' }}"
 

@@ -9,6 +9,7 @@
     group: consul
     mode: "0640"
     dest: "{{ consul_home }}/releases/consul_{{consul_version}}.zip"
+  register: consul_downloaded
 
 - name: consul | binary | extract
   unarchive:
@@ -18,3 +19,6 @@
     group: consul
     mode: "0550"
     remote_src: true
+  when: consul_downloaded.changed
+  notify:
+    - consul | service | restart

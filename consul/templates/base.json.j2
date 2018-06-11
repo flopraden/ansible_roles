@@ -7,6 +7,9 @@
     "encrypt": "{{ consul_encryption_key }}",
     "bind_addr": "{{ consul_bind }}",
     "advertise_addr": "{{ consul_advertise }}",
-    "retry_join": {{ (groups.get(consul_join_group,[]) + consul_join_nodes) | to_json }}
-
+    "retry_join": {{ (groups.get(consul_join_group,[]) + consul_join_nodes) | to_json }},
+    "telemetry": {
+        "disable_hostname": true,
+        "prometheus_retention_time": "{{ consul_prometheus_retention_time }}"
+    }
 }
