@@ -1,0 +1,9 @@
+---
+
+# install tasks for libvirt-server
+
+- name: libvirt | packages | install server
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ libvirt_server_packages }}"
