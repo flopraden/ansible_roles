@@ -35,10 +35,10 @@ openssh_server_allow_groups:
   - "users"
 
 
-# Wether to allow root logins
+# Whether to allow root logins
 openssh_server_allow_root: false
 
-# Wether to allow password logins (via PAM)
+# Whether to allow password logins (via PAM)
 openssh_server_allow_password: false
 
 # Port for SSH server to listen on
