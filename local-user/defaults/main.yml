@@ -5,8 +5,6 @@
 # Each group is a dict with a name field, and the following defaults:
 # - name: REQUIRED
 #   system: false
-#   sudo_options: []
-#   sudo_rules: []
 #
 local_user_groups:
     - name: ansible
@@ -16,6 +14,7 @@ local_user_groups:
 # Each group is a dict with a name field, and the following defaults:
 # - name: REQUIRED
 #   system: false
+#   group: REQUIRED
 #   groups: []
 #   sudo_options: []
 #   sudo_rules: []
@@ -44,11 +43,11 @@ local_user_accounts: "{{ local_user_default_accounts}}"
 local_user_default_authorised_keys: []
 
 # A list of sudo options to apply to _all_ users managed by this role.
-# Typicaly use case would be e.g. !requiretty.
+# Typical use case would be e.g. !requiretty.
 local_user_default_sudo_options: []
 
 # A list of sudo rules to apply to _all_ users managed by this role.
-# Typicaly use case would be e.g. !requiretty.
+# Typical use case would be e.g. !requiretty.
 local_user_default_sudo_rules: []
 
 # The default shell for local users.
