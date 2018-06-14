@@ -1,2 +1,6 @@
 ---
 # defaults file for libvirt-common
+
+libvirt_common_packages:
+    - libvirt-python
+
