@@ -49,6 +49,10 @@ prometheus_alertmanager_group: "prometheus_alertmanagers"
 prometheus_blackbox_address: "127.0.0.1:9115"
 
 prometheus_default_scrape_configs:
+  consul_exporter:
+    metrics_path: /v1/agent/metrics
+    params:
+      format: [prometheus]
   blackbox_exporter:
     metrics_path: /probe
     params:
@@ -84,6 +88,11 @@ prometheus_default_scrape_targets:
     port: 9100
     groups:
       - node_exporters
+  - name: consul_servers
+    type: consul_exporter
+    port: 8500
+    groups:
+      - consul_servers
   - name: docker
     type: docker
     port: 9323
