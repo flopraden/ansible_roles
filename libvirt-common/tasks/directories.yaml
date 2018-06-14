@@ -1,0 +1,17 @@
+---
+
+# directories tasks for libvirt-common
+
+- name: libvirt-common | configuration | create directories
+  file:
+    name: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "01750"
+  with_items:
+    - /etc/libvirt
+    - /etc/libvirt/hooks
+    - /etc/libvirt/qemu
+    - /etc/libvirt/secrets
+    - /etc/libvirt/storage
