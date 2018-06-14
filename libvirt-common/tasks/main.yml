@@ -1,2 +1,9 @@
 ---
 # tasks file for libvirt-common
+
+- block:
+    - import_tasks: directories.yaml
+    - import_tasks: install.yaml
+  tags:
+    - libvirt
+    - libvirt-common
