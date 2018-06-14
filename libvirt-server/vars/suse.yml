@@ -1,0 +1,10 @@
+---
+
+# default overrides for opensuse
+
+libvirt_server_default_packages:
+    - libvirt-daemon
+    - libvirt-daemon-driver-qemu
+    - libvirt-daemon-driver-secret
+    - libvirt-daemon-driver-storage
+    - qemu-kvm
