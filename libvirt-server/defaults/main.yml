@@ -1,2 +1,14 @@
 ---
 # defaults file for libvirt-server
+
+libvirt_server_default_packages:
+    - libvirt-daemon
+    - libvirt-daemon-driver-qemu
+    - libvirt-daemon-driver-secret
+    - libvirt-daemon-driver-storage
+    - libvirt-daemon-driver-storage-gluster
+    - qemu-kvm
+
+libvirt_server_packages: "{{libvirt_server_default_packages}}"
+
+libvirt_server_service_name: libvirtd
