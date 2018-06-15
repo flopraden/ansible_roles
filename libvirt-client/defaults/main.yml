@@ -1,2 +1,13 @@
 ---
 # defaults file for libvirt-client
+
+libvirt_client_default_packages:
+    - libvirt-client
+    - qemu-img
+
+libvirt_client_desktop_packages:
+    - virt-manager
+
+libvirt_client_desktop_install: false
+
+libvirt_client_packages: "{{ libvirt_client_default_packages + ( libvirt_client_desktop_install | ternary(libvirt_client_desktop_packages, [])) }}"
