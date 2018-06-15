@@ -1,2 +1,14 @@
 ---
 # tasks file for libvirt-client
+
+- include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_os_family | lower }}.yml"
+    - main.yml
+
+#
+- block:
+    - import_tasks: install.yaml
+  tags:
+    - libvirt
+    - libvirt-client
