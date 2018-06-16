@@ -1,0 +1,35 @@
+---
+
+# network configuration tasks for libvirt-server
+
+- name: libvirt-server | networks | define
+  virt_net:
+    name: "{{ item.name }}"
+    command: define
+    state: present
+    xml: "{{ lookup('template', item.template | default('network/bridge.xml.j2')) }}"
+  with_items: "{{ libvirt_server_networks }}"
+  tags:
+     - libvirt-network
+     - network
+
+- name: libvirt-server | networks | create
+  virt_net:
+    name: "{{ item.name }}"
+    command: create
+    state: active
+  with_items: "{{ libvirt_server_networks }}"
+  tags:
+     - libvirt-network
+     - network
+
+- name: libvirt-server | networks | autostart
+  virt_net:
+    name: "{{ item.name }}"
+    autostart: "{{ item.autostart | default(true, true) }}"
+  with_items: "{{ libvirt_server_networks }}"
+  tags:
+     - libvirt-network
+     - network
+
+
