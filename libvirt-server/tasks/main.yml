@@ -11,6 +11,9 @@
 - block:
     - import_tasks: install.yaml
     - import_tasks: run.yaml
+    - import_tasks: storage.yaml
+    - import_tasks: networks.yaml
+    - import_tasks: domains.yaml
   tags:
     - libvirt
     - libvirt-server
