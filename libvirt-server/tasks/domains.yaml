@@ -1,0 +1,26 @@
+---
+
+# tasks for managing libvirt domains
+
+- name: libvirt-server | domains | define
+  virt:
+    name: "{{ item.name }}"
+    command: define
+    xml: "{{ lookup('template', item.template | default('domain/generic.xml.j2')) }}"
+  with_items: "{{ libvirt_server_domains }}"
+  tags:
+    - libvirt-domain
+    - virtual-machine
+    - domain
+
+- name: libvirt-server | domains | start
+  virt:
+    name: "{{ item.name }}"
+    state: running
+    command: start
+    autostart: "{{ item.autostart | default(false, true) }}"
+  with_items: "{{ libvirt_server_domains }}"
+  tags:
+    - libvirt-domain
+    - virtual-machine
+    - domain
