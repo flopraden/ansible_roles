@@ -1,0 +1,27 @@
+---
+
+# storage_pool configuration tasks for libvirt-server
+
+- name: libvirt-server | storage | define pools
+  virt_pool:
+    command: define
+    name: "{{ item.name }}"
+    state: present
+    xml: "{{ lookup('template', item.template | default('storage/pool.xml.j2')) }}"
+  with_items: "{{ libvirt_server_storage_pools }}"
+  tags:
+     - libvirt-storage-pool
+     - libvirt-storage
+     - storage_pool
+
+- name: libvirt-server | storage | create pools
+  virt_pool:
+    command: create
+    name: "{{ item.name }}"
+    state: present
+  with_items: "{{ libvirt_server_storage_pools }}"
+  tags:
+     - libvirt-storage-pool
+     - libvirt-storage
+     - storage_pool
+
