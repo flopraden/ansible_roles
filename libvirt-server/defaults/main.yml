@@ -4,11 +4,42 @@
 libvirt_server_default_packages:
     - libvirt-daemon
     - libvirt-daemon-driver-qemu
+    - libvirt-daemon-driver-network
+    - libvirt-daemon-driver-nwfilter
     - libvirt-daemon-driver-secret
     - libvirt-daemon-driver-storage
     - libvirt-daemon-driver-storage-gluster
     - qemu-kvm
+    - iptables
+    - ebtables
 
 libvirt_server_packages: "{{libvirt_server_default_packages}}"
 
 libvirt_server_service_name: libvirtd
+
+# A list of networks to create.
+# Each entry should match the following schema:
+# - name: REQUIRED
+#   bridge_name: REQUIRED
+#   ip4: IPv4 address to assign to the interface/bridge. Default is none.
+#   netmask: IPv4 netmask for the bridge, default is 255.255.255.0 (i.e. /24).
+#   ip6: IPv6 address to assign to the interface/bridge. Default is none.
+#   prefix: IPv6 prefix for the bridge, default is /64.
+#   dhcp4_start: Start of IPv4 DHCP range, default is none.
+#   dhcp4_end: End of IPv4 DHCP range, default is none.
+#   nat: Set forwarding mode the 'nat' if true. Default false,
+#   forward_device: Sets forwarding mode to route, using the specified interface. Default is none.
+#   xml: Arbitrary XML config - this will be placed inside a <network /> element. Default is none.
+#   template: Path to a template to use when defining the network. Default is network/bridge.xml.j2.
+libvirt_server_networks: []
+
+# A list of storage pools to create.
+# Each entry should match the following schema:
+# - name: REQUIRED
+#   template: Path to a template to use when defining the storage pool. Default is storage/pool.xml.j2
+#   xml: Arbitrary XML config - this will be placed inside a <pool /> element. Default is none.
+#   type: The type of storage pool to create. Default is 'dir'.
+libvirt_server_storage_pools: []
+
+
+libvirt_server_domains: []
