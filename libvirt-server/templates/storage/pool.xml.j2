@@ -1,0 +1,5 @@
+<pool type="{{ item.type | default('dir') }}">
+  <name>{{ item.name }}</name>
+  {{ item.xml | default('') | indent(2) }}
+
+</pool>

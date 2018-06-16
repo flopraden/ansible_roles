@@ -1,0 +1,32 @@
+<domain type="{{ item.type | default('kvm') }}">
+    <name>{{ item.name }}</name>
+    <title>{{ item.title | default(item.name) }}</title>
+    <description>{{ item.description | default("") }}</description>
+    <memory unit="MiB">{{ item.memory_mbytes }}</memory>
+    <vcpu placement="{{ item.cpu_placement | default('auto') }}">{{ item.cpu_cores | default(1) }}</vcpu>
+    <os>
+        <type>{{ item.os_type | default('hvm') }}</type>
+    </os>
+{% for boot_dev in item.boot_devs|default(['hd']) %}
+    <boot dev="{{ boot_dev }}" />
+{% endfor %}
+    <devices>
+{% for disk in item.disks | default([]) %}
+        <disk type="{{ disk.type | default('file') }}" device="{{ disk.device | default('disk') }}">
+            <driver name="{{ disk.driver_name | default('qemu') }}" type="{{ disk.driver_type | default('qcow2') }}" />
+            {{ disk.xml | default('') | indent(12) }}
+            <target dev="{{ disk.target_dev | default('') }}" bus="{{ disk.target_bus | default('virtio') }}" />
+        </disk>
+{% endfor %}
+{% for interface in item.interfaces | default([]) %}
+        <interface type="{{ interface.type | default('network') }}" >
+            {{ interface.xml | default('') | indent(8) }}
+        </interface>
+{% endfor %}
+
+        {{ item.device_xml | default('') | indent(8) }}
+    </devices>
+
+    {{ item.xml | default('') | indent(4) }}
+
+</domain>

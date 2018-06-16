@@ -1,0 +1,32 @@
+<network>
+  <name>{{ item.name }}</name>
+
+  <bridge name="{{ item.bridge_name }}"/>
+
+  {% if item.nat | default(false, true) %}
+  <forward mode="nat" />
+  {% elif item.forward_device | default(false) %}
+  <forward mode="route"  dev="{{ item.forward_device }}" />
+  {% endif %}
+
+  {% if item.ip4 | default(false) %}
+  <ip address="{{ item.ip4 }}" netmask="{{ item.netmask | default("255.255.255.0") }}">
+    {% if item.dhcp4_start %}
+    <dhcp>
+      <range start="{{ item.dhcp4_start }}" end="{{ item.dhcp4_end }}"/>
+    </dhcp>
+    {% endif %}
+  </ip>
+  {% endif %}
+
+  {% if item.ip6 | default(false) %}
+  <ip family="ipv6" address="{{ item.ip6 }}" prefix="{{ item.ip6_prefix | default("64") }}">
+    {% if item.dhcp6 %}
+    <dhcp>
+    </dhcp>
+    {% endif %}
+  </ip>
+  {% endif %}
+
+  {{ item.xml | default("") | indent(2) }}
+</network>
