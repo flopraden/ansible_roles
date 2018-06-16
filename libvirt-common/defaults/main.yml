@@ -3,4 +3,4 @@
 
 libvirt_common_packages:
     - libvirt-python
-
+    - python-lxml
