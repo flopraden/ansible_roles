@@ -161,5 +161,9 @@ openssh_client_mac:
     - hmac-sha2-256
 
 
-openssh_server_oath: False
-openssh_server_duo: False
+openssh_server_oath: false
+openssh_server_duo: false
+
+openssh_server_user_ca_keys: []
+
+openssh_server_allow_tcp_forwarding: false

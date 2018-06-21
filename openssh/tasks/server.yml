@@ -75,6 +75,30 @@
   tags:
     - ssh_server
 
+
+
+- name: openssh | server | create extra folders
+  file:
+    name: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0751"
+  with_items:
+    - /etc/ssh/user_cas
+    - /etc/ssh/user_authorized_keys
+
+
+# Create trusted user ca files
+- name: openssh | server | create test user ca key files
+  copy:
+    dest: "/etc/ssh/user_cas/{{ item.name }}"
+    owner: root
+    group: root
+    mode: "0644"
+    content: "{{ item.key }}"
+  with_items: "{{ openssh_server_user_ca_keys }}"
+
 # Enable and run the server as a service
 - name: openssh | server | enable and start service
   service:

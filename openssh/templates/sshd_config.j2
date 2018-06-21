@@ -30,7 +30,11 @@ LogLevel INFO
 # Allowed auth methods
 AuthenticationMethods {{ openssh_server_auth_methods | join(" ") }}
 
-#UseLogin no
+{% if openssh_server_user_ca_keys %}
+TrustedUserCAKeys {%- for key in openssh_server_user_ca_keys -%} /etc/ssh/user_ca_keys/{{ key.name }} {%- endfor %}
+{% endif %}
+
+UseLogin no
 PermitRootLogin {{ "yes" if openssh_server_allow_root else "no" }}
 StrictModes yes
 
@@ -69,7 +73,7 @@ UsePAM yes
 # Other settings
 
 AllowAgentForwarding no
-AllowTcpForwarding no
+AllowTcpForwarding {{ "yes" if openssh_server_allow_tcp_forwarding else "no" }}
 GatewayPorts no
 X11Forwarding no
 
