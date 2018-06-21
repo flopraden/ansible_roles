@@ -22,6 +22,8 @@
     mode: "0600"
   notify:
     - strongswan | service | restart
+
+
 - name: ipsec | configuration | ipsec.secrets
   template:
     src: ipsec.secrets.j2
@@ -42,3 +44,44 @@
   with_items: "{{ ipsec_connections }}"
   notify:
     - strongswan | service | restart
+
+
+- name: ipsec | configuration | symlink ipsec.conf
+  file:
+    src: "{{ipsec_conf_path}}"
+    dest: "/etc/ipsec.conf"
+    state: link
+    owner: root
+    group: root
+    mode: "0600"
+    force: true
+  notify:
+    - strongswan | service | restart
+  when: ipsec_conf_path != "/etc/ipsec.conf"
+
+- name: ipsec | configuration | symlink ipsec.secrets
+  file:
+    src: "{{ipsec_secrets_path}}"
+    dest: "/etc/ipsec.secrets"
+    state: link
+    owner: root
+    group: root
+    mode: "0600"
+    force: true
+  notify:
+    - strongswan | service | restart
+  when: ipsec_secrets_path != "/etc/ipsec.secrets"
+
+- name: ipsec | configuration | symlink ipsec.d
+  file:
+    src: "{{ipsec_conf_d_path}}"
+    dest: "/etc/ipsec.d"
+    state: link
+    owner: root
+    group: root
+    mode: "0600"
+    force: true
+  notify:
+    - strongswan | service | restart
+  when: ipsec_conf_d_path != "/etc/ipsec.d"
+

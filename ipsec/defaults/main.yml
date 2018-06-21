@@ -22,7 +22,14 @@ ipsec_ports:
       port: 4500
 
 # A list of connections to create.
-ipsec_connections: []
+ipsec_connections:
+  - name: ssh-clear
+    type: pass
+    action: route
+    config: |
+        leftsubnet=%any[tcp/22]
+        rightsubnet=%dynamic[tcp]
+
 
 ipsec_conf_path: "/etc/strongswan/ipsec.conf"
 ipsec_secrets_path: "/etc/strongswan/ipsec.secrets"
@@ -31,11 +38,12 @@ ipsec_daemon_conf_path: "/etc/strongswan"
 
 
 ipsec_default_ike_ciphers:
-  - aes128-sha256-ecp256
   - aes256-sha384-ecp384
+  - aes128-sha256-ecp256
   - aes128-sha256-modp2048
   - "aes128gcm16-sha256-prfsha256-ecp256!"
+
 ipsec_default_esp_ciphers:
-  - aes128gcm16
   - aes256gcm16
+  - aes128gcm16
   - "aes128gcm16-sha256-prfsha256-ecp256!"
