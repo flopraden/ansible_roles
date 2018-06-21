@@ -1,0 +1,16 @@
+---
+
+# tasks to copy files into place, and create the directories for them.
+
+- name: common | directories | create
+  file:
+    name: "{{ item.name }}"
+    state: directory
+    owner: "{{ item.owner | default('root') }}"
+    group: "{{ item.group | default('root') }}"
+    mode: "{{ item.mode | default('01700') }}"
+  with_items: "{{ common_create_directories }}"
+
+- name: common | files | copy
+  copy: "{{ item }}"
+  with_items: "{{ common_copy_files }}"
