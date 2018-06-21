@@ -1,0 +1,22 @@
+---
+# defaults file for teleport-common
+
+# Version of teleport to install
+teleport_version: "2.6.2"
+
+# Platform to download binary for.
+teleport_platform: "{{ 'darwin' if ansible_os_family == 'Darwin' else 'linux' }}"
+
+# Architecture to download binary for.
+teleport_architecture: "{{ ('amd64' if ansible_architecture == 'x86_64' else ansible_architecture).split('v')[0] }}"
+
+# Location of URL from which to downlad a (g)zip containing teleport binaries
+teleport_url: "https://get.gravitational.com/teleport-{{ teleport_version }}-{{ teleport_platform }}-{{ teleport_architecture }}-bin.tar.gz"
+
+teleport_checksums:
+    linux_amd64: "sha256:d2918db9fccc0346dde66f57e6c82035759095fabafade8c1c3d93b003733ac0"
+    linux_arm: "sha256:caef6827cbc31af4a8a49997c54272e1661f7a112d47b06153d4afd88d23b5fb"
+    # /!\ Not in any way tested on macos.
+    darwin_amd64: "sha256:cebc451fc27e899d9595fb701c4268c60979e2951687b1969e1fb20d78653170"
+
+teleport_home: /opt/teleport

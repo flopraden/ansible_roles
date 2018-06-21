@@ -1,4 +1,4 @@
-teleport-common
+teleport
 ======
 
 Install [teleport]((https://gravitational.com/teleport), a modern SSH
