@@ -9,5 +9,8 @@
     - import_tasks: packages.yaml
       tags:
         - common-packages
+    - import_tasks: files.yaml
+      tags:
+        - common-files
   tags:
     - common

@@ -15,3 +15,8 @@ common_default_packages:
 
 # Common/shared packages to install by default.
 common_packages: "{{ common_default_packages }}"
+
+
+common_copy_files: []
+
+common_create_directories: []
