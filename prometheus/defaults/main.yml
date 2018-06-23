@@ -86,18 +86,15 @@ prometheus_default_scrape_targets:
   - name: ansible_node_exporters
     type: node_exporter
     port: 9100
-    groups:
-      - node_exporters
+    target_group: node_exporters
   - name: consul_servers
     type: consul_exporter
     port: 8500
-    groups:
-      - consul_servers
+    target_group: consul_servers
   - name: docker
     type: docker
     port: 9323
-    groups:
-      - docker
+    target_group: docker
   - name: public_sites
     type: blackbox_exporter
     targets:
@@ -107,13 +104,11 @@ prometheus_default_scrape_targets:
   - name: haproxy
     type: haproxy
     port: 9101
-    groups:
-      - haproxy
+    target_group: haproxy
   - name: grafana
     type: grafana
     port: 3000
-    groups:
-      - grafana
+    target_group: grafana
 
 
 prometheus_scrape_targets: "{{ prometheus_default_scrape_targets }}"

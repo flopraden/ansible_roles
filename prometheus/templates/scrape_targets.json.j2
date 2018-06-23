@@ -1,7 +1,7 @@
 [
   {
     "targets": [
-{% for host in item.groups |default([]) | map('extract',groups) | sum(start=[]) | unique | list | sort %}
+{% for host in groups.get(item.target_group| default(""),[]) | unique | list %}
         "{{host}}:{{item.port}}"{{"" if loop.last else ","}}
 {% endfor %}
     ],
