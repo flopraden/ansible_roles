@@ -72,12 +72,14 @@
     group: root
     mode: "0600"
     validate: /usr/sbin/sshd -t -f %s
+  notify:
+    - openssh | server | restart service
   tags:
     - ssh_server
 
 
 
-- name: openssh | server | create extra folders
+- name: openssh | server | create additional config folders
   file:
     name: "{{ item }}"
     state: directory
@@ -85,19 +87,38 @@
     group: root
     mode: "0751"
   with_items:
-    - /etc/ssh/user_cas
     - /etc/ssh/user_authorized_keys
 
 
-# Create trusted user ca files
-- name: openssh | server | create test user ca key files
+# Create trusted user ca file
+- name: openssh | server | create trusted_user_ca_keys.pub
   copy:
-    dest: "/etc/ssh/user_cas/{{ item.name }}"
+    dest: "/etc/ssh/trusted_user_ca_keys.pub"
     owner: root
     group: root
     mode: "0644"
-    content: "{{ item.key }}"
-  with_items: "{{ openssh_server_user_ca_keys }}"
+    content: |
+        {% for key in openssh_server_user_ca_keys %}
+        {{ key }}
+        {% endfor %}
+  notify:
+    - openssh | server | restart service
+
+
+# Create revoked key file
+- name: openssh | server | create revoked_keys.pub
+  copy:
+    dest: "/etc/ssh/revoked_keys.pub"
+    owner: root
+    group: root
+    mode: "0644"
+    content: |
+        {% for key in openssh_server_revoked_keys %}
+        {{ key }}
+        {% endfor %}
+  notify:
+    - openssh | server | restart service
+
 
 # Enable and run the server as a service
 - name: openssh | server | enable and start service

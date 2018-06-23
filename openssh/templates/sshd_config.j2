@@ -30,11 +30,9 @@ LogLevel INFO
 # Allowed auth methods
 AuthenticationMethods {{ openssh_server_auth_methods | join(" ") }}
 
-{% if openssh_server_user_ca_keys %}
-TrustedUserCAKeys {%- for key in openssh_server_user_ca_keys -%} /etc/ssh/user_ca_keys/{{ key.name }} {%- endfor %}
-{% endif %}
+TrustedUserCAKeys /etc/ssh/trusted_user_ca_keys.pub
+RevokedKeys /etc/ssh/revoked_keys.pub
 
-UseLogin no
 PermitRootLogin {{ "yes" if openssh_server_allow_root else "no" }}
 StrictModes yes
 

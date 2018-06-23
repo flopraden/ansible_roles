@@ -164,6 +164,10 @@ openssh_client_mac:
 openssh_server_oath: false
 openssh_server_duo: false
 
+# A list of public keys used to sign SSH certificates.
 openssh_server_user_ca_keys: []
+
+# A list of revoked public keys, or KRL.
+openssh_server_revoked_keys: []
 
 openssh_server_allow_tcp_forwarding: false
