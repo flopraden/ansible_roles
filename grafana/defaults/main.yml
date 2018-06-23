@@ -1,7 +1,7 @@
 ---
 # defaults file for grafana
 
-grafana_version: "4.5.2"
+grafana_version: "5.1.4"
 
 grafana_app_mode: "production"
 grafana_instance_name: "{{ ansible_hostname }}"
@@ -19,7 +19,7 @@ grafana_docker_name: "grafana"
 grafana_docker_image: "grafana/grafana"
 
 grafana_repository_url: "https://packagecloud.io/grafana/stable/el/{{ ansible_distribution_major_version }}/$basearch"
-grafana_binary_url: "https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana-4.5.2.linux-x64.tar.gz"
+grafana_binary_url: "https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana-{{ grafana_version }}.linux-x64.tar.gz"
 
 grafana_docker_networks:
   - name: bridge

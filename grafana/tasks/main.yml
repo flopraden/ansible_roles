@@ -1,13 +1,12 @@
 ---
 # tasks file for grafana
 
-- include: pre_install.yml
-
-- include: install.yml
-
-- include: configure.yml
-
-- include: run.yml
-
-- include: api.yml
-  when: grafana_data_sources | length
+- block:
+    - import_tasks: pre_install.yml
+    - import_tasks: install.yml
+    - import_tasks: configure.yml
+    - import_tasks: run.yml
+    - import_tasks: api.yml
+      when: grafana_data_sources | length
+  tags:
+    - grafana
