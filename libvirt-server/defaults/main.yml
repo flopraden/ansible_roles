@@ -3,6 +3,7 @@
 
 libvirt_server_default_packages:
     - libvirt-daemon
+    - libvirt-daemon-kvm
     - libvirt-daemon-driver-qemu
     - libvirt-daemon-driver-network
     - libvirt-daemon-driver-nwfilter
