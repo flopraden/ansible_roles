@@ -1,22 +1,11 @@
 ---
 # tasks file for prometheus_alertmanager
 
-- include: pre_install.yml
-  tags:
-    - prometheus
-    - alertmanager
-
-- include: install.yml
-  tags:
-    - prometheus
-    - alertmanager
-
-- include: configure.yml
-  tags:
-    - prometheus
-    - alertmanager
-
-- include: run.yml
+- block:
+    - import_tasks: pre_install.yaml
+    - import_tasks: install.yaml
+    - import_tasks: configure.yaml
+    - import_tasks: run.yaml
   tags:
     - prometheus
     - alertmanager
