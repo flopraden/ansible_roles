@@ -1,4 +1,9 @@
 ---
 # defaults file for rsyslog
 
+rsyslog_package_names:
+  - rsyslog
+
+rsyslog_service_name: rsyslog
+
 rsyslog_run_services: not (ansible_virtualization_role == 'guest' and ansible_virtualization_type == 'docker')
