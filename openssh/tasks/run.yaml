@@ -1,0 +1,11 @@
+---
+
+# tasks for running openssh
+
+# Enable and run the server as a service
+- name: openssh | service | enable and start server
+  service:
+    name: "{{ openssh_server_service }}"
+    state: started
+    enabled: yes
+  when: openssh_server_run_service and not openssh_skip_server

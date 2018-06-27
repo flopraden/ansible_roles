@@ -10,27 +10,11 @@
     - ssh
     - openssh
 
-# Ensure the config directory exists
-- name: openssh | general | create config directory
-  file:
-    name: "{{ openssh_config_dir }}"
-    state: directory
-    owner: root
-    group: root
-    mode: "1751"
-  tags:
-    - ssh_server
-
-- include: server.yml
-  when: "not openssh_skip_server"
+- block:
+    - import_tasks: pre_install.yaml
+    - import_tasks: install.yaml
+    - import_tasks: configure.yaml
+    - import_tasks: run.yaml
   tags:
     - ssh
     - openssh
-    - server
-    
-- include: client.yml
-  when: "not openssh_skip_client"
-  tags:
-    - ssh
-    - openssh
-    - client

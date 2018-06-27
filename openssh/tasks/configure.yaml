@@ -1,65 +1,14 @@
 ---
 
-# Install any server packages that may be required.
-- name: openssh | server | install packages
-  package:
-    name: "{{ item }}"
-    state: present
-  with_items: "{{ openssh_server_packages }}"
-  tags:
-    - ssh_server
-
-# Create the default group allowed ssh access.
-#
-
-# For sandboxing/privilege separation to work,
-#   a user and group called sshd must exist.
-#
-# See http://www.citi.umich.edu/u/provos/ssh/privsep-faq.html.
-
-- name: openssh | server | create sandbox group
-  group:
-    name: "sshd"
-    state: present
-    system: true
-  tags:
-    - ssh_server
-    - sandbox
-
-- name: openssh | server | create sandbox user home
-  file:
-    name: "{{ item }}"
-    state: "directory"
-    owner: "root"
-    group: "root"
-    mode: "1710"
-  with_items:
-    - /var/empty
-    - /var/empty/sshd
-  tags:
-    - ssh_server
-    - sandbox
-
-- name: openssh | server | create sandbox user
-  user:
-    name: "sshd"
-    state: present
-    group: "sshd"
-    shell: "/sbin/nologin"
-    system: true
-    home: "/var/empty/sshd"
-  tags:
-    - ssh_server
-    - sandbox
+# configuration tasks for openssh
 
 # Generate server host keys
 - name: openssh | server | generate host keys
   command: /usr/bin/ssh-keygen -A
   args:
     creates: "{{ openssh_config_dir }}/ssh_host_*_key"
-  become: root
+  when: "not openssh_skip_server"
   tags:
-    - ssh_server
     - key_generation
 
 
@@ -74,6 +23,7 @@
     validate: /usr/sbin/sshd -t -f %s
   notify:
     - openssh | server | restart service
+  when: "not openssh_skip_server"
   tags:
     - ssh_server
 
@@ -86,6 +36,7 @@
     owner: root
     group: root
     mode: "0751"
+  when: "not openssh_skip_server"
   with_items:
     - /etc/ssh/user_authorized_keys
 
@@ -101,6 +52,7 @@
         {% for key in openssh_server_user_ca_keys %}
         {{ key }}
         {% endfor %}
+  when: "not openssh_skip_server"
   notify:
     - openssh | server | restart service
 
@@ -116,16 +68,18 @@
         {% for key in openssh_server_revoked_keys %}
         {{ key }}
         {% endfor %}
+  when: "not openssh_skip_server"
   notify:
     - openssh | server | restart service
 
 
-# Enable and run the server as a service
-- name: openssh | server | enable and start service
-  service:
-    name: "{{ openssh_server_service }}"
-    state: started
-    enabled: yes
-  when: "openssh_server_run_service"
-  tags:
-    - ssh_server
+# Manage SSH client config
+- name: openssh | client | create ssh_config
+  template:
+    dest: /etc/ssh/ssh_config
+    src: ssh_config.j2
+    owner: root
+    group: root
+    mode: "0644"
+  when: "not openssh_skip_client"
+

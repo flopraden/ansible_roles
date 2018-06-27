@@ -1,0 +1,19 @@
+---
+
+# install tasks for openssh
+
+# Install any server packages that may be required.
+- name: openssh | install | server packages
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ openssh_server_packages }}"
+  when: "not openssh_skip_server"
+
+# Install any client packages that may be required.
+- name: openssh | install | client packages
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ openssh_client_packages }}"
+  when: "not openssh_skip_client"

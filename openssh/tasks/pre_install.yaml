@@ -1,0 +1,55 @@
+---
+
+# pre-install tasks for openssh
+
+# Ensure the config directory exists
+- name: openssh | general | create config directory
+  file:
+    name: "{{ openssh_config_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "1751"
+
+# Create the default group allowed ssh access.
+#
+
+# For sandboxing/privilege separation to work,
+#   a user and group called sshd must exist.
+#
+# See http://www.citi.umich.edu/u/provos/ssh/privsep-faq.html.
+
+- name: openssh | server | create sandbox group
+  group:
+    name: "sshd"
+    state: present
+    system: true
+  when: "not openssh_skip_server"
+  tags:
+    - sandbox
+
+- name: openssh | server | create sandbox user home
+  file:
+    name: "{{ item }}"
+    state: "directory"
+    owner: "root"
+    group: "root"
+    mode: "1710"
+  with_items:
+    - /var/empty
+    - /var/empty/sshd
+  when: "not openssh_skip_server"
+  tags:
+    - sandbox
+
+- name: openssh | server | create sandbox user
+  user:
+    name: "sshd"
+    state: present
+    group: "sshd"
+    shell: "/sbin/nologin"
+    system: true
+    home: "/var/empty/sshd"
+  when: "not openssh_skip_server"
+  tags:
+    - sandbox
