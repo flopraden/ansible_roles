@@ -14,14 +14,14 @@
   tags:
     - pam
 
-- include: system.yml
+- import_tasks: system.yml
   tags:
     - pam
     - system
     - password_quality
     - hardening
 
-- include: smartcard.yml
+- import_tasks: smartcard.yml
   tags:
     - pam
     - system
