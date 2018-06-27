@@ -3,10 +3,10 @@
 
 
 - block:
-    - include: pre_install.yml
-    - include: install.yml
-    - include: configure.yml
-    - include: run.yml
+    - import_tasks: pre_install.yaml
+    - import_tasks: install.yaml
+    - import_tasks: configure.yaml
+    - import_tasks: run.yaml
   tags:
     - suricata
     - ids
