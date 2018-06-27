@@ -1,8 +1,7 @@
 # {{ ansible_managed }}
 
 conn {{ item.name }}
-    right={{ item.right | default("%any") }}
-    type={{ item.type | default("transport") }}
+    type={{ item.type | default("tunnel") }}
     authby={{ item.auth | default("psk") }}
     auto={{ item.action | default("route") }}
     {{ item.config | default("") | indent(4) }}

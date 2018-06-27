@@ -9,7 +9,7 @@ conn %default
     ikelifetime=60m
     keylife=20m
     rekeymargin=3m
-    keyingtries=1
+    keyingtries = %forever
     keyexchange=ikev2
     ike={{ ipsec_default_ike_ciphers | join(",") }}
     esp={{ ipsec_default_esp_ciphers | join(",") }}
