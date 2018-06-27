@@ -1,30 +1,15 @@
 ---
 # tasks file for prometheus_node_exporter
 
-- include: pre_install.yml
+- block:
+    - import_tasks: pre_install.yaml
+    - import_tasks: install.yaml
+    - import_tasks: configure.yaml
+    - import_tasks: run.yaml
+    - include_tasks: consul.yml
+      when: prometheus_node_exporter_announce_consul
+      tags:
+        - consul
   tags:
     - prometheus
     - node_exporter
-
-- include: install.yml
-  when: not prometheus_node_exporter_run_dockerised
-  tags:
-    - prometheus
-    - node_exporter
-
-- include: configure.yml
-  tags:
-    - prometheus
-    - node_exporter
-
-- include: run.yml
-  tags:
-    - prometheus
-    - node_exporter
-
-- include: consul.yml
-  when: prometheus_node_exporter_announce_consul
-  tags:
-    - prometheus
-    - node_exporter
-    - consul
