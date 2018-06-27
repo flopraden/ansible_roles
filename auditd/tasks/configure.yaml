@@ -1,0 +1,5 @@
+---
+
+# configuration tasks for auditd
+
+- import_tasks: ruleset.yaml

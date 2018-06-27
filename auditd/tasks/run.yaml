@@ -1,0 +1,10 @@
+---
+
+# run tasks for auditd
+
+- name: audit | service | enable and start
+  service:
+    name: "{{ auditd_service_name }}
+    state: started
+    enabled: yes
+  when: auditd_run_services

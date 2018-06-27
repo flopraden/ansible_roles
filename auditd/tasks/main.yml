@@ -1,27 +1,11 @@
 ---
 # tasks file for auditd
 
-- name: audit | config | create directories
-  file:
-    name: "{{ item }}"
-    state: directory
-    owner: root
-    group: root
-    mode: "01750"
-  with_items:
-    - /etc/audit
-    - /etc/audit/rules.d
-
-- name: audit | package | install
-  package:
-    name: audit
-    state: present
-
-- include: ruleset.yml
-
-- name: audit | service | enable and start
-  service:
-    name: auditd
-    state: started
-    enabled: yes
-  when: auditd_run_services
+- block:
+    - import_tasks: pre_install.yaml
+    - import_tasks: install.yaml
+    - import_tasks: configure.yaml
+    - import_tasks: run.yaml
+  tags:
+    - auditd
+    - audit

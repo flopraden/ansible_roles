@@ -2,3 +2,9 @@
 # defaults file for auditd
 
 auditd_run_services: not (ansible_virtualization_role == 'guest' and ansible_virtualization_type == 'docker')
+
+
+auditd_package_names:
+  - auditd
+
+auditd_service_name: auditd
