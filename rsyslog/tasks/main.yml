@@ -1,5 +1,11 @@
 ---
 # tasks file for rsyslog
 
-# Config for local syslog setup.
-- include: local.yml
+- block:
+    - import_tasks: pre_install.yaml
+    - import_tasks: install.yaml
+    - import_tasks: configure.yaml
+    - import_tasks: run.yaml
+  tags:
+    - syslog
+    - rsyslog

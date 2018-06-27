@@ -1,0 +1,27 @@
+---
+
+# pre_install tasks
+
+- name: rsyslog | configuration | create directory
+  file:
+    name: /etc/rsyslog.d
+    state: directory
+    owner: root
+    group: root
+    mode: "0600"
+
+- name: rsyslog | logfiles | set secure ownership and mode
+  file:
+    name: "{{ item }}"
+    # using state: file will fail if one of the files doesn't exist.
+    state: touch
+    owner: root
+    group: root
+    mode: "0600"
+  with_items:
+    - /var/log/boot.log
+    - /var/log/cron
+    - /var/log/maillog
+    - /var/log/messages
+    - /var/log/secure
+    - /var/log/spooler

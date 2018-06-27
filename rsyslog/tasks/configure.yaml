@@ -1,0 +1,12 @@
+---
+
+# configuration tasks for rsyslog
+
+- name: rsyslog | local | create configuration
+  template:
+    src: rsyslog.conf.j2
+    dest: /etc/rsyslog.conf
+    owner: root
+    group: root
+    mode: "0640"
+    validate: "rsyslogd -nN 1 -f %s"
