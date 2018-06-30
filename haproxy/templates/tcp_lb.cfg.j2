@@ -13,11 +13,6 @@ backend {{ item.name }}-backend
 {% for option in item.get("options", []) %}
     {{ option }}
 {% endfor %}
-{% for group in item.get("backend_groups", []) | unique %}
-{% for backend_server in groups.get(group, []) | unique %}
-    server {{backend_server}} {{backend_server}}:{{ item.backend_port | default(item.port) }} {{ item.get("backend_config", "") }}
-{% endfor %}
-{% endfor %}
-{% for backend_server in item.get("backend_servers", []) | unique %}
+{% for backend_server in (groups.get(item.get("backend_group"), []) + item.get("backend_servers", [])) | unique | list %}
     server {{backend_server}} {{backend_server}}:{{ item.backend_port | default(item.port) }} {{ item.get("backend_config", "") }}
 {% endfor %}
