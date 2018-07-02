@@ -9,7 +9,7 @@ mongodb_packages:
 mongodb_service_name: mongod
 
 # Version of mongod to install and run.
-mongodb_version: 3.6
+mongodb_version: 4.0
 
 # Address for mongod instance to bind to.
 # This will typically be 127.0.0.1 or 0.0.0.0.
