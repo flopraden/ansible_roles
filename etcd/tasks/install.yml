@@ -1,0 +1,39 @@
+---
+# install tasks for etcd
+
+- name: etcd | binary | download
+  get_url:
+    url: "{{ etcd_url }}"
+    checksum: "{{ etcd_checksums[('_').join([etcd_platform, etcd_architecture])] }}"
+    owner: etcd
+    group: etcd
+    mode: "0640"
+    dest: "{{ etcd_home }}/releases/etcd_{{etcd_version}}.tgz"
+  register: etcd_downloaded
+
+- name: etcd | binary | extract
+  unarchive:
+    src: "{{ etcd_home }}/releases/etcd_{{etcd_version}}.tgz"
+    dest: "{{ etcd_home }}/releases/"
+    owner: root
+    group: etcd
+    mode: "0550"
+    remote_src: true
+    creates:  "{{ etcd_home }}/releases/etcd-{{ etcd_version }}-{{ etcd_platform }}-{{ etcd_architecture }}"
+  when: etcd_downloaded.changed
+  notify:
+    - etcd | service | restart
+
+
+- name: etcd | binary | link to current dir
+  file:
+    src: "{{ etcd_home }}/releases/etcd-{{ etcd_version }}-{{ etcd_platform }}-{{ etcd_architecture }}"
+    path: "{{ etcd_home }}/current"
+    state: link
+    owner: root
+    group: etcd
+    mode: "0550"
+    force: true
+  notify:
+    - etcd | service | restart
+
