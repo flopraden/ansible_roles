@@ -2,7 +2,7 @@
 # defaults file for consul
 
 # Version of consul to install
-consul_version: 1.1.0
+consul_version: 1.2.0
 
 consul_datacenter: dc1
 consul_domain: consul
@@ -20,8 +20,8 @@ consul_architecture: "{{ ('amd64' if ansible_architecture == 'x86_64' else ansib
 consul_url: "https://releases.hashicorp.com/consul/{{ consul_version }}/consul_{{ consul_version }}_{{ consul_platform }}_{{ consul_architecture }}.zip"
 
 consul_checksums:
-    linux_amd64: "sha256:09c40c8b5be868003810064916d8460bff334ccfb59a5046390224b27e052c45"
-    linux_arm: "sha256:498f5677a3267222c0ade3b4930370a0fd7e9422716c675f6a92b54eb2947d8d"
+    linux_amd64: "sha256:85d84ea3f6c68d52549a29b00fd0035f72c2eabff672ae46ca643cb407ef94b4"
+    linux_arm: "sha256:005ba55773ec00b383cb128748cdc452868d2f98391ac878378df61219d6d57a"
 
 consul_home: /opt/consul
 
