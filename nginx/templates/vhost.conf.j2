@@ -1,9 +1,6 @@
 # Upstreams
 upstream {{vhost.name}}_backend {
-{% for host in vhost.backend_groups | map('extract',groups) | sum(start=[]) | unique %}
-    server {{ host }}:{{ vhost.backend_port }};
-{% endfor %}
-{% for host in vhost.backend_hosts | default([]) | unique %}
+{% for host in (groups.get(vhost.backend_group, []) + vhost.backend_hosts | default([])) | unique | list %}
     server {{ host }}:{{ vhost.backend_port }};
 {% endfor %}
 {% for host in vhost.backends | default([]) | unique %}
