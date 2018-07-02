@@ -1,2 +1,56 @@
 ---
 # defaults file for etcd
+
+# version of etcd to install
+etcd_version: v3.3.8
+
+etcd_node_name: "{{ ansible_hostname }}"
+
+# the name of the etcd service to run in systemd
+etcd_service_name: etcd
+
+# Home directory for etcd, where the binaries will be extracted and linked
+etcd_home: /var/lib/etcd
+
+# Root directory for data - a sub-directory will be created per etcd_node_name.
+etcd_data_dir: "{{ etcd_home }}/data"
+
+etcd_wal_dir: ""
+
+# URLs to listen on for peer requests
+etcd_listen_peer_urls:
+  - https://{{ ansible_default_ipv4.address }}:2380
+
+# URLs to listen on for client requests
+etcd_listen_client_urls:
+  - https://{{ ansible_default_ipv4.address }}:2379
+
+# URLs to advertise for peer requests
+etcd_advertise_peer_urls:
+  - https://{{ ansible_default_ipv4.address }}:2380
+
+# URLs to advertise for client requests
+etcd_advertise_client_urls:
+  - https://{{ ansible_default_ipv4.address }}:2379
+
+etcd_config: |
+  client-transport-security:
+    auto-tls: true
+  peer-transport-security:
+    auto-tls: true
+
+# Platform to download binary for.
+etcd_platform: "{{ 'darwin' if ansible_os_family == 'Darwin' else 'linux' }}"
+
+# Architecture to download binary for.
+etcd_architecture: "{{ ('amd64' if ansible_architecture == 'x86_64' else ansible_architecture).split('v')[0] }}"
+
+# Location of URL from which to downlad a (g)zip containing a etcd binary
+etcd_url: "https://github.com/coreos/etcd/releases/download/{{ etcd_version }}/etcd-{{ etcd_version }}-{{ etcd_platform }}-{{ etcd_architecture }}.tar.gz"
+
+etcd_checksums:
+    linux_amd64: "sha256:a1e9d30312f712f714be3d09b242b901a531dd9472351425c1e712ba740012a4"
+
+#
+etcd_service_env: ""
+
