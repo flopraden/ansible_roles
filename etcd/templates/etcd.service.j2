@@ -1,0 +1,28 @@
+# {{ ansible_managed }}
+[Unit]
+Description=etcd Agent
+After=network-online.target
+Documentation=https://github.com/coreos/etcd/blob/master/Documentation/docs.md
+
+[Service]
+Type=notify
+Restart=on-failure
+WorkingDirectory={{ etcd_home }}
+EnvironmentFile=-/etc/etcd/env.d/{{ etcd_node_name }}.env
+ExecStart={{ etcd_home }}/current/etcd --config-file /etc/etcd/conf.d/{{ etcd_node_name }}.yaml
+User=etcd
+Group=etcd
+ProtectSystem=yes
+UMask=0027
+ReadOnlyPaths=/
+ReadWritePaths={{ etcd_data_dir }}/{{ etcd_node_name }}
+PrivateTmp=yes
+CPUAccounting=true
+MemoryAccounting=true
+NoNewPrivileges=yes
+AmbientCapabilities=CAP_IPC_LOCK
+CapabilityBoundingSet=CAP_SYSLOG CAP_IPC_LOCK
+SecureBits=keep-caps
+LimitMEMLOCK=infinity
+[Install]
+WantedBy=multi-user.target

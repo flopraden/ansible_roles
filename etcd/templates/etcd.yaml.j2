@@ -1,0 +1,25 @@
+# {{ ansible_managed }}
+
+name: "{{ etcd_node_name }}"
+
+# Path to the data directory.
+data-dir: "{{ etcd_data_dir }}/{{ etcd_node_name }}"
+
+# Path to the dedicated wal directory.
+wal-dir: "{{ etcd_wal_dir }}"
+
+# List of comma separated URLs to listen on for peer traffic.
+listen-peer-urls: {{ etcd_listen_peer_urls | join(',')  }}
+
+# List of comma separated URLs to listen on for client traffic.
+listen-client-urls: {{ etcd_listen_client_urls | join(',')  }}
+
+# List of this member's peer URLs to advertise to the rest of the cluster.
+# The URLs needed to be a comma-separated list.
+initial-advertise-peer-urls: {{ etcd_advertise_peer_urls | join(',') }}
+
+# List of this member's client URLs to advertise to the public.
+# The URLs needed to be a comma-separated list.
+advertise-client-urls: {{ etcd_advertise_client_urls | join(',') }}
+
+{{ etcd_config }}
