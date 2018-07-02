@@ -1,2 +1,7 @@
 ---
 # handlers file for etcd
+
+- name: etcd | service | restart
+  service:
+    name: "{{ etcd_service_name }}"
+    state: restarted
