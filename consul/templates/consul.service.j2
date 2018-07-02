@@ -5,8 +5,8 @@ After=network-online.target
 Documentation=https://www.consul.io/intro/index.html
 
 [Service]
-Type=notify
-Restart=always
+Type=simple
+Restart=on-failure
 WorkingDirectory=/opt/consul
 EnvironmentFile=-/etc/consul/env.d/consul.env
 ExecStart=/usr/local/bin/consul agent --config-dir /etc/consul/conf.d/ \
@@ -15,12 +15,18 @@ ExecStart=/usr/local/bin/consul agent --config-dir /etc/consul/conf.d/ \
     $OPTIONS
 User=consul
 Group=consul
-ProtectSystem=full
+ProtectSystem=yes
 UMask=0027
+ReadOnlyPaths=/
 ReadWritePaths=/opt/consul/data
 PrivateTmp=yes
 CPUAccounting=true
 MemoryAccounting=true
+NoNewPrivileges=yes
+SecureBits=keep-caps
+AmbientCapabilities=CAP_IPC_LOCK
+CapabilityBoundingSet=CAP_SYSLOG CAP_IPC_LOCK
+LimitMEMLOCK=infinity
 
 [Install]
 WantedBy=multi-user.target
