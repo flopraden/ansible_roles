@@ -1,0 +1,43 @@
+---
+# pre-install tasks for etcd
+
+- name: etcd | group | create
+  group:
+    name: etcd
+    state: present
+    system: true
+
+- name: etcd | user | create
+  user:
+    name: etcd
+    state: present
+    group: etcd
+    system: true
+    shell: /sbin/nologin
+    home: "{{ etcd_home }}"
+
+- name: etcd | directories | create
+  file:
+    name: "{{ item }}"
+    state: directory
+    mode: "01750"
+    owner: etcd
+    group: etcd
+  with_items:
+    - "{{ etcd_home }}"
+    - "{{ etcd_home }}/releases"
+    - "{{ etcd_home }}/data"
+    - "{{ etcd_home }}/data/{{ etcd_node_name }}"
+
+
+- name: etcd | directories | create configuration dirs
+  file:
+    name: "{{ item }}"
+    state: directory
+    mode: "01750"
+    owner: root
+    group: etcd
+  with_items:
+    - "/etc/etcd"
+    - "/etc/etcd/conf.d"
+    - "/etc/etcd/env.d"
