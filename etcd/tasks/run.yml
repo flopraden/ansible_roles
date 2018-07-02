@@ -1,0 +1,9 @@
+---
+
+# tasks for running etcd
+
+- name: etcd | service | enable and start
+  service:
+    name: "{{ etcd_service_name }}"
+    state: started
+    enabled: true
