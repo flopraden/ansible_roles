@@ -54,3 +54,5 @@ etcd_checksums:
 #
 etcd_service_env: ""
 
+# Whether or not to advertise etcd via consul
+etcd_announce_consul: "{{ consul_version | default(false, false) }}"
