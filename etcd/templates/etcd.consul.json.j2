@@ -13,8 +13,8 @@
         {
             "interval": "30s",
             "http": "{{ etcd_listen_client_urls | first }}/health",
-            "timeout": "5s"
-            "tls_skip_verify": false,
+            "timeout": "5s",
+            "tls_skip_verify": true
         }
       ]
     },
@@ -32,7 +32,7 @@
             "interval": "30s",
             "http": "{{ etcd_listen_peer_urls | first }}/version",
             "timeout": "5s",
-            "tls_skip_verify": false
+            "tls_skip_verify": true
         }
       ]
     }
