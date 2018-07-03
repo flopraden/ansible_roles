@@ -6,5 +6,7 @@
     - import_tasks: install.yml
     - import_tasks: configure.yml
     - import_tasks: run.yml
+    - import_tasks: consul.yaml
+      when: etcd_announce_consul
   tags:
     - etcd

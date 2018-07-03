@@ -1,0 +1,13 @@
+---
+
+# consul tasks for etcd
+
+- name: etcd | consul | create etcd-client config
+  template:
+    src: etcd.consul.json.j2
+    dest: /etc/consul/service.d/etcd.json
+    owner: root
+    group: consul
+    mode: "0640"
+  notify:
+    - consul | service | restart
