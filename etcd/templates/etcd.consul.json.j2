@@ -1,0 +1,40 @@
+{
+  "services": [
+    {
+      "id": "etcd-client",
+      "name": "etcd-client",
+      "tags": [
+        "etcd",
+        "etcd-client"
+      ],
+      "address": "",
+      "port": 2379,
+      "checks": [
+        {
+            "interval": "30s",
+            "http": "{{ etcd_listen_client_urls | first }}/health",
+            "timeout": "5s"
+            "tls_skip_verify": false,
+        }
+      ]
+    },
+    {
+      "id": "etcd-server",
+      "name": "etcd-server",
+      "tags": [
+        "etcd",
+        "etcd-server"
+      ],
+      "address": "",
+      "port": 2380,
+      "checks": [
+        {
+            "interval": "30s",
+            "http": "{{ etcd_listen_peer_urls | first }}/version",
+            "timeout": "5s",
+            "tls_skip_verify": false
+        }
+      ]
+    }
+  ]
+}
