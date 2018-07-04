@@ -5,4 +5,6 @@ galaxy_info:
   min_ansible_version: 1.2
   galaxy_tags: []
 
-dependencies: []
+dependencies:
+  - role: flannel
+    when: docker_use_flannel_network

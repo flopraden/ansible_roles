@@ -5,6 +5,4 @@
   package:
     name: "{{ item }}"
     state: present
-  with_items:
-    - "{{ docker_package_name }}"
-    - "docker-python"
+  with_items: "{{ docker_package_names }}"

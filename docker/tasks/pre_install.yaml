@@ -1,0 +1,8 @@
+---
+# tasks prior to installing docker
+
+- name: docker | group | create
+  group:
+    name: "{{ docker_group }}"
+    state: present
+    system: yes

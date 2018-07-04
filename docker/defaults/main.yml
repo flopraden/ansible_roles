@@ -1,8 +1,10 @@
 ---
 # defaults file for docker
 
-# Package to install
-docker_package_name: "docker-ce"
+# Packages to install
+docker_package_names:
+  - "docker"
+  - "docker-python"
 
 # Name of docker service to run
 docker_service_name: "docker"
@@ -20,7 +22,9 @@ docker_environment_file: "/etc/sysconfig/docker"
 # By default, this is done unless running in a container.
 docker_run_services: ansible_virtualization_role != 'guest' or ansible_virtualization_type != 'docker'
 
-# Sockets to listen on.
+# Config for docker daemon.
+# Note this uses overlay2, which is not necessarily suitable for
+# production, notably on centos.
 docker_config:
   hosts:
     - unix:///var/run/docker.sock
@@ -30,3 +34,6 @@ docker_config:
     - "overlay2.override_kernel_check=true"
   "metrics-addr" : "0.0.0.0:9323"
   "experimental" : true
+
+
+docker_use_flannel_network: false

@@ -20,15 +20,17 @@
     group: "{{ docker_group }}"
     mode: "0640"
 
-- name: docker | configuration | create sysconfig file
-  copy:
-    dest: "{{ docker_environment_file }}"
-    content: "DOCKER_OPTS='--config-file {{ docker_config_dir }}/daemon.json --group {{ docker_group }}'\n"
+- name: docker | service | create configuration
+  template:
+    src: docker.service.j2
+    dest: /etc/systemd/system/{{ docker_service_name }}.service
     owner: root
     group: root
-    mode: "0640"
+    mode: "0750"
+  when: "ansible_service_mgr == 'systemd'"
 
-- name: docker | configuration | create system service drop-in directory
+
+- name: docker | service | create drop-in directory
   file:
     name: /etc/systemd/system/{{ docker_service_name }}.service.d/
     state: directory
