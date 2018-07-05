@@ -1,2 +1,7 @@
 ---
 # handlers file for flannel
+
+- name: flannel | service | restart
+  service:
+    name: flannel
+    state: restarted
