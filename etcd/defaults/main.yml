@@ -24,6 +24,7 @@ etcd_listen_peer_urls:
 # URLs to listen on for client requests
 etcd_listen_client_urls:
   - https://{{ ansible_default_ipv4.address }}:2379
+  - https://localhost:2379
 
 # URLs to advertise for peer requests
 etcd_advertise_peer_urls:
