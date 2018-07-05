@@ -37,3 +37,12 @@ docker_config:
 
 
 docker_use_flannel_network: false
+
+# The docker default bridge IP.
+docker_bip: 172.17.0.0/16
+
+# Container network MTU
+docker_mtu: 1420
+
+# Enable/disable IP masquerading
+docker_ipmasq: true

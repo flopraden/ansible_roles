@@ -30,6 +30,8 @@ ExecStart=/usr/bin/dockerd-current \
           --config-file /etc/docker/daemon.json \
 {% if docker_use_flannel_network %}
           --bip=${FLANNEL_SUBNET} --mtu=${FLANNEL_MTU} \
+{% else %}
+          --bip={{ docker_bip }} --mtu={{ docker_mtu }} --ipmasq={{ docker_ipmasq }} \
 {% endif %}
           $OPTIONS
 
