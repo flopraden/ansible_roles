@@ -1,0 +1,22 @@
+# {{ ansible_managed }}
+[Unit]
+Description=flannel daemon
+After=network-online.target
+Documentation=https://github.com/coreos/flannel
+
+[Service]
+Type=notify
+Restart=on-failure
+WorkingDirectory=/var/lib/flannel
+EnvironmentFile=/etc/flannel/{{ flannel_service_name }}.env
+RuntimeDirectory=flannel
+ExecStart=/usr/local/bin/flannel
+ProtectSystem=yes
+UMask=0027
+PrivateTmp=yes
+CPUAccounting=true
+MemoryAccounting=true
+NoNewPrivileges=yes
+
+[Install]
+WantedBy=multi-user.target
