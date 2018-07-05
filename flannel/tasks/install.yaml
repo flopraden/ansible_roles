@@ -1,0 +1,24 @@
+---
+
+# install tasks for flannel
+
+- name: flannel | binary | download
+  get_url:
+    url: "{{ flannel_binary_url }}"
+    checksum: "{{ flannel_binary_checksums.get(flannel_architecture, none) }}"
+    owner: root
+    group: flannel
+    mode: "0550"
+    dest: "/usr/local/bin/flannel-{{ flannel_architecture }}-{{ flannel_version }}"
+  notify:
+    - flannel | service | restart
+
+- name: flannel | binary | create symlink
+  file:
+    src: "/usr/local/bin/flannel-{{ flannel_architecture }}-{{ flannel_version }}"
+    path: "/usr/local/bin/flannel"
+    state: link
+    owner: root
+    group: flannel
+    mode: "0550"
+    force: true

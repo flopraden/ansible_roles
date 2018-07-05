@@ -1,0 +1,20 @@
+---
+
+# flannel pre-install install tasks
+
+- name: flannel | group | create
+  group:
+    name: flannel
+    state: present
+
+- name: flannel | configuration | create directories
+  file:
+    name: "{{ item }}"
+    state: directory
+    owner: root
+    group: flannel
+    owner: "01750"
+  with_items:
+    - /etc/flannel
+    - /etc/flannel/ssl/
+    - /var/lib/flannel

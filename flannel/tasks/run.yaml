@@ -1,0 +1,9 @@
+---
+
+# run tasks for flannel
+
+- name: flannel | service | enable and run
+  service:
+    name: "{{ flannel_service_name }}"
+    state: started
+    enabled: yes
