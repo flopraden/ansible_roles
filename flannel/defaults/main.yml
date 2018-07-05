@@ -1,2 +1,27 @@
 ---
 # defaults file for flannel
+
+# version of flannel to install
+flannel_version: v0.10.0
+
+# Architecture to download binary for.
+flannel_architecture: "{{ ('amd64' if ansible_architecture == 'x86_64' else ansible_architecture).split('v')[0] }}"
+
+flannel_binary_url: "https://github.com/coreos/flannel/releases/download/{{ flannel_version }}/flanneld-{{ flannel_architecture }}"
+
+flannel_binary_checksums:
+    amd64: "sha256:8c60b7f5716a5e580bda76400689bf032408bd9964ca559f474ee3f8a9646e35"
+
+flannel_etcd_prefix: /coreos.com/network
+
+flannel_etcd_endpoints:
+    - http://127.0.0.1:2789
+
+flannel_service_name: flannel
+
+flannel_health_ip: 127.0.0.1
+flannel_health_port: 6121
+
+flannel_env_config: ""
+
+flannel_announce_consul: false
