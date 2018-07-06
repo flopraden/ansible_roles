@@ -1,2 +1,26 @@
 ---
 # defaults file for unbound
+
+unbound_package_names:
+  - unbound
+
+unbound_service_name: unbound
+
+# Set up forwarding for a domain to one or more servers.
+# Please note that unbound uses '@' as a port delimiter.
+# unbound_forward_domains:
+#   - name: dnscrypt-proxy
+#     forward_domain: "."
+#     forward_addresses:
+#       - 127.0.0.1@53000
+unbound_forward_domains: []
+
+# A list of acls to pass to access-control.
+#
+unbound_acls:
+    - 127.0.0.1 allow
+    - 10.0.0.0/8 allow
+    - 172.16.0.0/12 allow
+    - 192.168.0.0/16 allow
+
+unbound_chroot: /etc/unbound
