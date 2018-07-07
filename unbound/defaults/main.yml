@@ -15,7 +15,7 @@ unbound_service_name: unbound
 #       - 127.0.0.1@53000
 unbound_forward_domains: []
 
-# A list of acls to pass to access-control.
+# A list of 'subnet[/cidr] action' strings to pass to access-control.
 #
 unbound_acls:
     - 127.0.0.1 allow
@@ -23,4 +23,4 @@ unbound_acls:
     - 172.16.0.0/12 allow
     - 192.168.0.0/16 allow
 
-unbound_chroot: /etc/unbound
+unbound_chroot: "/etc/unbound"

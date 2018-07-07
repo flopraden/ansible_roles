@@ -1,0 +1,65 @@
+---
+
+# pre-install tasks for unbound
+
+- name: unbound | create | group
+  group:
+    name: unbound
+    state: present
+    system: true
+
+- name: unbound | create | user
+  user:
+    name: unbound
+    state: present
+    group: unbound
+    shell: /sbin/nologin
+    system: true
+    home: /var/lib/unbound
+    skeleton: /dev/null
+
+- name: unbound | create | configuration directories
+  file:
+    name: "{{ item }}"
+    state: directory
+    owner: root
+    group: unbound
+    mode: "0750"
+  with_items:
+    - /etc/unbound
+    - "{{ unbound_chroot }}"
+    - "{{ unbound_chroot }}/dev"
+    - /etc/unbound/dev
+    - /var/lib/unbound/
+
+- name: unbound | create | root key directory
+  file:
+    name: "{{ unbound_chroot }}/var"
+    state: directory
+    owner: unbound
+    group: unbound
+    mode: "01750"
+
+
+- name: unbound | create | dummy random and log
+  file:
+    name: "{{ item }}"
+    state: touch
+    owner: root
+    group: unbound
+    mode: "0751"
+  with_items:
+    - "{{ unbound_chroot }}/dev/log"
+    - "{{ unbound_chroot }}/dev/random"
+
+# https://unbound.net/documentation/unbound.conf.html
+- name: unbound | mount | create chroot binds
+  mount:
+    src: "{{ item }}"
+    path: "{{ unbound_chroot }}/{{ item }}"
+    state: mounted
+    fstype: none
+    opts: bind,no-mtab
+  with_items:
+    - /dev/random
+    - /dev/log
