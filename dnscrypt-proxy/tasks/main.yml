@@ -1,2 +1,10 @@
 ---
 # tasks file for dnscrypt-proxy
+
+
+- block:
+    - import_tasks: install.yaml
+    - import_tasks: run.yaml
+  tags:
+    - dnscrypt-proxy
+    - dnscrypt

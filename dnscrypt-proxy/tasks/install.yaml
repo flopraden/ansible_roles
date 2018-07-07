@@ -1,0 +1,9 @@
+---
+
+# install tasks for dnscrypt-proxy
+
+- name: dnscrypt-proxy | install | packages
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ dnscrypt_proxy_package_names }}"

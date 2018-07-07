@@ -1,0 +1,8 @@
+---
+# run tasks for dnscrypt-proxy
+
+- name: dnscrypt-proxy | run | enable and start main service
+  service:
+    name: "{{ dnscrypt_proxy_service_name }}"
+    state: started
+    enabled: yes
