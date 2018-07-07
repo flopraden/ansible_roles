@@ -27,39 +27,4 @@
     mode: "0750"
   with_items:
     - /etc/unbound
-    - "{{ unbound_chroot }}"
-    - "{{ unbound_chroot }}/dev"
-    - /etc/unbound/dev
-    - /var/lib/unbound/
 
-- name: unbound | create | root key directory
-  file:
-    name: "{{ unbound_chroot }}/var"
-    state: directory
-    owner: unbound
-    group: unbound
-    mode: "01750"
-
-
-- name: unbound | create | dummy random and log
-  file:
-    name: "{{ item }}"
-    state: touch
-    owner: root
-    group: unbound
-    mode: "0751"
-  with_items:
-    - "{{ unbound_chroot }}/dev/log"
-    - "{{ unbound_chroot }}/dev/random"
-
-# https://unbound.net/documentation/unbound.conf.html
-- name: unbound | mount | create chroot binds
-  mount:
-    src: "{{ item }}"
-    path: "{{ unbound_chroot }}/{{ item }}"
-    state: mounted
-    fstype: none
-    opts: bind,no-mtab
-  with_items:
-    - /dev/random
-    - /dev/log
