@@ -1,2 +1,7 @@
 ---
 # defaults file for dnscrypt-proxy
+
+dnscrypt_proxy_package_names:
+  - dnscrypt-proxy
+
+dnscrypt_proxy_service_name: dnscrypt-proxy
