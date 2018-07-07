@@ -1,0 +1,35 @@
+---
+
+- name: dnscrypt-proxy | create | group
+  group:
+    name: dnscrypt-proxy
+    state: present
+
+- name: dnscrypt-proxy | create | user
+  user:
+    name: dnscrypt-proxy
+    state: present
+    group: dnscrypt-proxy
+    shell: /sbin/nologin
+    home: /var/lib/dnscrypt-proxy
+
+- name: dnscrypt-proxy | create | shared directories
+  file:
+    name: "{{ item }}"
+    state: directory
+    owner: root
+    group: dnscrypt-proxy
+    mode: "01750"
+  with_items:
+    - /etc/dnscrypt-proxy/
+    - /opt/dnscrypt-proxy/
+
+- name: dnscrypt-proxy | create |  directories
+  file:
+    name: "{{ item }}"
+    state: directory
+    owner: dnscrypt-proxy
+    group: dnscrypt-proxy
+    mode: "01750"
+  with_items:
+    - /opt/dnscrypt-proxy/releases/
