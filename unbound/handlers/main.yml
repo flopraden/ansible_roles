@@ -1,2 +1,7 @@
 ---
 # handlers file for unbound
+
+- name: unbound | restart | service
+  service:
+    name: "{{ unbound_service_name }}"
+    state: restarted
