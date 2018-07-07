@@ -1,0 +1,11 @@
+---
+
+# configuration tasks for dnscrypt-proxy
+
+- name: dnscrypt-proxy | configuration | create dnscrypt-proxy.toml
+  template:
+    src: dnscrypt-proxy.toml.j2
+    dest: "/etc/dnscrypt-proxy/{{ dnscrypt_proxy_service_name }}.toml"
+    owner: root
+    group: dnscrypt-proxy
+    mode: "0640"
