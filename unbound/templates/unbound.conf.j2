@@ -25,7 +25,7 @@ server:
   prefetch-key: yes
   rrset-roundrobin: yes
   minimal-responses: yes
-  module-config: "ipsecmod validator iterator"
+  module-config: "validator iterator"
   trust-anchor-signaling: yes
   trusted-keys-file: "/etc/unbound/keys.d/*.key"
   auto-trust-anchor-file: "/var/lib/unbound/root.key"
@@ -33,8 +33,6 @@ server:
   val-permissive-mode: no
   val-log-level: 1
   include: /etc/unbound/local.d/*.conf
-  ipsecmod-enabled: no
-  ipsecmod-hook: "/usr/libexec/ipsec/_unbound-hook"
   use-syslog: no
   # https://wiki.archlinux.org/index.php/DNSCrypt#Unbound
   do-not-query-localhost: no
