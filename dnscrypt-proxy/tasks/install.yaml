@@ -2,8 +2,46 @@
 
 # install tasks for dnscrypt-proxy
 
-- name: dnscrypt-proxy | install | packages
-  package:
-    name: "{{ item }}"
-    state: present
-  with_items: "{{ dnscrypt_proxy_package_names }}"
+#- name: dnscrypt-proxy | install | packages
+#  package:
+#    name: "{{ item }}"
+#    state: present
+#  with_items: "{{ dnscrypt_proxy_package_names }}"
+
+- name: dnscrypt-proxy | install | download binary tgz
+  get_url:
+    url: "{{ dnscrypt_proxy_url }}"
+    dest: "/opt/dnscrypt-proxy/releases/dnscrypt-proxy-{{ dnscrypt_proxy_version }}.tar.gz"
+    checksum: "{{ dnscrypt_proxy_checksums.get([dnscrypt_proxy_platform, dnscrypt_proxy_architecture] | join('_')) }}"
+    owner: dnscrypt-proxy
+    group: dnscrypt-proxy
+    mode: "0640"
+  become_user: dnscrypt-proxy
+
+- name: dnscrypt-proxy | install | extract binary
+  unarchive:
+    src: "/opt/dnscrypt-proxy/releases/dnscrypt-proxy-{{ dnscrypt_proxy_version }}.tar.gz"
+    dest: /usr/local/bin
+    remote_src: true
+    creates: "/usr/local/bin/dnscrypt-proxy-{{ dnscrypt_proxy_version }}"
+    owner: root
+    group: dnscrypt-proxy
+    mode: "0550"
+    # tl;dr: extract only the dnscrypt-binary, and rename it to include the version, and strip the directory.
+    extra_opts:
+      - --no-anchored
+      - dnscrypt-proxy
+      - --strip-components
+      - "1"
+      - --transform
+      - "s/dnscrypt-proxy/dnscrypt-proxy-{{ dnscrypt_proxy_version }}/"
+
+- name: dnscrypt-proxy | install | symlink binary
+  file:
+    name: /usr/local/bin/dnscrypt-proxy
+    state: link
+    src: "/usr/local/bin/dnscrypt-proxy-{{ dnscrypt_proxy_version }}"
+    owner: root
+    group: dnscrypt-proxy
+    mode: "0550"
+    force: true
