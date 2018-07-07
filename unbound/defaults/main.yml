@@ -13,7 +13,25 @@ unbound_service_name: unbound
 #     forward_domain: "."
 #     forward_addresses:
 #       - 127.0.0.1@53000
+#     forward_hosts:
+#       - localhost@53000
 unbound_forward_domains: []
+
+# Set up a stub zone for a domain to one or more servers.
+# Please note that unbound uses '@' as a port delimiter.
+# unbound_stub_domains:
+#   - name: consul-sub
+#     stub_domain: "consul."
+#     stub_addresses:
+#       - 127.0.0.1@8600
+#     stub_hosts:
+#       - localhost@8600
+unbound_stub_domains: []
+
+# A list of domains for which the authoritative servers are allowed to
+# return results without using DNSsec.
+# A typical use-case is to allow creating a stub zone for consul.
+unbound_insecure_domains: []
 
 # A list of 'subnet[/cidr] action' strings to pass to access-control.
 #
