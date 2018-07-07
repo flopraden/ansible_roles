@@ -27,6 +27,8 @@ ExecStart=/usr/local/bin/dnscrypt-proxy -config /etc/dnscrypt-proxy/{{ dnscrypt_
 ReadWritePaths=/var/lib/dnscrypt-proxy
 WorkingDirectory=/var/lib/dnscrypt-proxy
 ReadPaths=/etc/dnscrypt-proxy
+CPUAccounting=true
+MemoryAccounting=true
 
 [Install]
 WantedBy=multi-user.target

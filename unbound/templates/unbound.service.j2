@@ -18,6 +18,9 @@ ExecStartPre=/usr/sbin/unbound-checkconf /etc/unbound/unbound.conf
 ExecStart=/usr/sbin/unbound -d -c /etc/unbound/unbound.conf $UNBOUND_OPTIONS
 PrivateTmp=true
 RuntimeDirectory=unbound
+PrivateTmp=yes
+CPUAccounting=true
+MemoryAccounting=true
 
 
 [Install]
