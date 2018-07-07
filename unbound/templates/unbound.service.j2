@@ -12,14 +12,12 @@ Wants=nss-lookup.target
 [Service]
 Type=simple
 EnvironmentFile=-/etc/sysconfig/unbound
-ExecStartPre=/usr/bin/cp -a /var/lib/unbound/root.key /etc/unbound/var/root.key
-ExecStartPre=/usr/sbin/unbound-checkconf
-ExecStartPre=-/usr/sbin/unbound-anchor -a /etc/unbound/var/root.key -c /etc/unbound/icannbundle.pem
 ExecStartPre=/usr/sbin/unbound-checkconf /etc/unbound/unbound.conf
-ExecStart=/usr/sbin/unbound -d $UNBOUND_OPTIONS
+ExecStartPre=-/usr/sbin/unbound-anchor -a /var/lib/unbound/root.key -c /etc/unbound/icannbundle.pem
+ExecStartPre=/usr/sbin/unbound-checkconf /etc/unbound/unbound.conf
+ExecStart=/usr/sbin/unbound -d -c /etc/unbound/unbound.conf $UNBOUND_OPTIONS
 PrivateTmp=true
-PrivateDevices=true
-
+RuntimeDirectory=unbound
 
 
 [Install]

@@ -10,10 +10,7 @@ ConditionPathExists=!{{ unbound_chroot }}/unbound_control.key
 Type=oneshot
 Group=unbound
 ExecStart=/usr/sbin/unbound-control-setup -d /etc/unbound
-ExecStart=/sbin/restorecon /etc/unbound/*
-{% if unbound_chroot %}
-ExecStart=/sbin/restorecon {{ unbound_chroot }}/*
-{% endif %}
+ExecStart=/sbin/restorecon -R /etc/unbound/*
 RemainAfterExit=yes
 
 [Install]
