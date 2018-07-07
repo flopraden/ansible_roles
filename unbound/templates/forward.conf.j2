@@ -2,6 +2,12 @@
 
 forward-zone:
   name: "{{ item.forward_domain }}"
-{% for forward_addr in item.forward_addresses %}
+{% for forward_addr in item.forward_addresses | default([]) %}
   forward-addr: {{ forward_addr }}
 {% endfor %}
+{% for forward_host in item.forward_hosts | default([]) %}
+  forward-host: {{ forward_host }}
+{% endfor %}
+{% if item.config | default(false, true) %}
+  {{ item.config | to_nice_yaml(indent=2) }}
+{% endif %}

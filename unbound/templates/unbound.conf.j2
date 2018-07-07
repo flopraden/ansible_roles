@@ -38,10 +38,7 @@ server:
   use-syslog: no
   # https://wiki.archlinux.org/index.php/DNSCrypt#Unbound
   do-not-query-localhost: no
-  # ACLs
-{% for acl in unbound_acls %}
-  access-control: {{ acl }}
-{% endfor %}
+
 
 remote-control:
   control-enable: yes

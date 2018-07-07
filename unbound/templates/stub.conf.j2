@@ -1,0 +1,13 @@
+# {{ ansible_managed }}
+
+stub-zone:
+  name: "{{ item.stub_domain }}"
+{% for stub_addr in item.stub_addresses | default([]) %}
+  stub-addr: {{ stub_addr }}
+{% endfor %}
+{% for stub_host in item.stub_hosts | default([]) %}
+  stub-host: {{ stub_host }}
+{% endfor %}
+{% if item.config | default(false, true) %}
+  {{ item.config | to_nice_yaml(indent=2) }}
+{% endif %}

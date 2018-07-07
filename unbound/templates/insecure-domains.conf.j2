@@ -1,0 +1,6 @@
+# {{ ansible_managed }}
+
+# insecure domains
+{% for domain in unbound_insecure_domains %}
+  domain-insecure: "{{ domain }}"
+{% endfor %}

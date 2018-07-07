@@ -1,0 +1,6 @@
+# {{ ansible_managed }}
+
+# ACLs
+{% for acl in unbound_acls %}
+  access-control: {{ acl }}
+{% endfor %}
