@@ -1,0 +1,34 @@
+---
+
+# run tasks for unbound
+
+- name: unbound | run | create service unit
+  template:
+    src: unbound.service.j2
+    dest: "/etc/systemd/system/{{ unbound_service_name }}.service"
+    owner: root
+    group: root
+    mode: "0640"
+
+
+- name: unbound | run | create anchor and keygen service units
+  template:
+    src: "{{ item }}.j2"
+    dest: "/etc/systemd/system/{{ item }}"
+    owner: root
+    group: root
+    mode: "0640"
+  with_items:
+    - unbound-anchor.service
+    - unbound-keygen.service
+    - unbound-anchor.timer
+
+- name: unbound | run | enable and start services
+  service:
+    name: "{{ item }}"
+    state: started
+    enabled: true
+  with_items:
+    - unbound-anchor.timer
+    - "{{ unbound_service_name }}"
+

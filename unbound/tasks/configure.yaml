@@ -1,0 +1,24 @@
+---
+
+#
+
+- name: unbound | configuration | create unbound.conf
+  template:
+    src: unbound.conf.j2
+    dest: "/etc/unbound/unbound.conf"
+    owner: root
+    group: unbound
+    mode: "0640"
+
+# /!\ Validation needs to be disabled when using chroot
+#    validate: "/sbin/unbound-checkconf %s"
+
+
+- name: unbound | configuration | create forward domains
+  template:
+    src: forward.conf.j2
+    dest: "/etc/unbound/conf.d/{{ item.name }}.conf"
+    owner: root
+    group: unbound
+    mode: "0640"
+  with_items: "{{ unbound_forward_domains }}"

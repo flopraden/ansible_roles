@@ -1,0 +1,10 @@
+---
+
+# install tasks for unbound
+
+- name: unbound | install | packages
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ unbound_package_names }}"
+

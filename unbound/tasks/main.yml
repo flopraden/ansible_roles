@@ -1,2 +1,10 @@
 ---
 # tasks file for unbound
+
+- block:
+    - import_tasks: pre_install.yaml
+    - import_tasks: install.yaml
+    - import_tasks: configure.yaml
+    - import_tasks: run.yaml
+  tags:
+    - unbound
