@@ -9,16 +9,40 @@
     owner: root
     group: unbound
     mode: "0640"
+  notify:
+    - unbound | restart | service
 
-# /!\ Validation needs to be disabled when using chroot
-#    validate: "/sbin/unbound-checkconf %s"
+- name: unbound | configuration | create local.d files
+  template:
+    src: "{{ item }}.conf.j2"
+    dest: "/etc/unbound/local.d/{{ item }}.conf"
+    owner: root
+    group: unbound
+    mode: "0640"
+  with_items:
+    - insecure-domains
+    - acls
+  notify:
+    - unbound | restart | service
 
-
-- name: unbound | configuration | create forward domains
+- name: unbound | configuration | create forward zones
   template:
     src: forward.conf.j2
-    dest: "/etc/unbound/conf.d/{{ item.name }}.conf"
+    dest: "/etc/unbound/conf.d/forward-{{ item.name }}.conf"
     owner: root
     group: unbound
     mode: "0640"
   with_items: "{{ unbound_forward_domains }}"
+  notify:
+    - unbound | restart | service
+
+- name: unbound | configuration | create stub zones
+  template:
+    src: stub.conf.j2
+    dest: "/etc/unbound/conf.d/stub-{{ item.name }}.conf"
+    owner: root
+    group: unbound
+    mode: "0640"
+  with_items: "{{ unbound_stub_domains }}"
+  notify:
+    - unbound | restart | service
