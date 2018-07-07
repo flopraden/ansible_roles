@@ -1,0 +1,52 @@
+# {{ ansible_managed }}
+
+server:
+  interface: 0.0.0.0@53
+  verbosity: 1
+  statistics-interval: 0
+  statistics-cumulative: no
+  extended-statistics: yes
+  num-threads: 4
+  interface-automatic: no
+  so-reuseport: yes
+  ip-transparent: yes
+  chroot: "{{ unbound_chroot }}"
+  username: "unbound"
+  directory: "/etc/unbound"
+  log-time-ascii: yes
+  pidfile: "/var/run/unbound/unbound.pid"
+  harden-glue: yes
+  harden-dnssec-stripped: yes
+  harden-below-nxdomain: yes
+  harden-referral-path: yes
+  unwanted-reply-threshold: 10000000
+  prefetch: yes
+  prefetch-key: yes
+  rrset-roundrobin: yes
+  minimal-responses: yes
+  module-config: "ipsecmod validator iterator"
+  trust-anchor-signaling: yes
+  trusted-keys-file: {{ unbound_chroot }}/keys.d/*.key
+  auto-trust-anchor-file: "{{ unbound_chroot }}/var/root.key"
+  val-clean-additional: yes
+  val-permissive-mode: no
+  val-log-level: 1
+  include: {{ unbound_chroot }}/local.d/*.conf
+  ipsecmod-enabled: no
+  ipsecmod-hook: "/usr/libexec/ipsec/_unbound-hook"
+
+  # https://wiki.archlinux.org/index.php/DNSCrypt#Unbound
+  do-not-query-localhost: no
+
+  {% for acl in unbound_acls %}
+  access-control: {{ acl }}
+  {% endfor %}
+
+remote-control:
+  control-enable: yes
+  server-key-file: "{{ unbound_chroot }}/unbound_server.key"
+  server-cert-file: "{{ unbound_chroot }}/unbound_server.pem"
+  control-key-file: "{{ unbound_chroot }}/unbound_control.key"
+  control-cert-file: "{{ unbound_chroot }}/unbound_control.pem"
+
+include: {{ unbound_chroot }}/conf.d/*.conf

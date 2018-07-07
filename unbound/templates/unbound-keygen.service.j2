@@ -1,0 +1,20 @@
+# {{ ansible_managed }}
+
+[Unit]
+Description=Unbound Control Key And Certificate Generator
+After=syslog.target
+Before=unbound.service
+ConditionPathExists=!{{ unbound_chroot }}/unbound_control.key
+
+[Service]
+Type=oneshot
+Group=unbound
+ExecStart=/usr/sbin/unbound-control-setup -d /etc/unbound
+ExecStart=/sbin/restorecon /etc/unbound/*
+{% if unbound_chroot %}
+ExecStart=/sbin/restorecon {{ unbound_chroot }}/*
+{% endif %}
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

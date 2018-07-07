@@ -1,0 +1,7 @@
+# {{ ansible_managed }}
+
+forward-zone:
+  name: "{{ item.forward_domain }}"
+{% for forward_addr in item.forward_addresses %}
+  forward-addr: {{ forward_addr }}
+{% endfor %}

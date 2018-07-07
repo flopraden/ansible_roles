@@ -1,0 +1,26 @@
+# {{ ansible_managed }}
+
+[Unit]
+Description=Unbound recursive Domain Name Server
+After=syslog.target network.target
+After=unbound-keygen.service
+Wants=unbound-keygen.service
+Wants=unbound-anchor.timer
+Before=nss-lookup.target
+Wants=nss-lookup.target
+
+[Service]
+Type=simple
+EnvironmentFile=-/etc/sysconfig/unbound
+ExecStartPre=/usr/bin/cp -a /var/lib/unbound/root.key /etc/unbound/var/root.key
+ExecStartPre=/usr/sbin/unbound-checkconf
+ExecStartPre=-/usr/sbin/unbound-anchor -a /etc/unbound/var/root.key -c /etc/unbound/icannbundle.pem
+ExecStartPre=/usr/sbin/unbound-checkconf /etc/unbound/unbound.conf
+ExecStart=/usr/sbin/unbound -d $UNBOUND_OPTIONS
+PrivateTmp=true
+PrivateDevices=true
+
+
+
+[Install]
+WantedBy=multi-user.target
