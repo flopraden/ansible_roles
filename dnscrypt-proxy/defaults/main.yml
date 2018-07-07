@@ -1,7 +1,30 @@
 ---
 # defaults file for dnscrypt-proxy
 
-dnscrypt_proxy_package_names:
-  - dnscrypt-proxy
+# NOTE: On CentOS 7.x, the package available pulls in dnscrypt-proxy 1.6.
+# The authors seem to recommend using 2.x, see:
+# https://github.com/jedisct1/dnscrypt-proxy/wiki/Differences-to-v1
+#dnscrypt_proxy_package_names:
+#  - dnscrypt-proxy
+
+dnscrypt_proxy_version: 2.0.15
+
+# Platform to download binary for.
+dnscrypt_proxy_platform: "{{ 'darwin' if ansible_os_family == 'Darwin' else 'linux' }}"
+
+# Architecture to download binary for.
+dnscrypt_proxy_architecture: "{{ ansible_architecture.split('v')[0] }}"
+
+# Location of URL from which to downlad a (g)zip containing a dnscrypt_proxy binary
+dnscrypt_proxy_url: "https://github.com/jedisct1/dnscrypt-proxy/releases/download/{{ dnscrypt_proxy_version }}/dnscrypt-proxy-{{ dnscrypt_proxy_platform }}_{{ dnscrypt_proxy_architecture }}-{{ dnscrypt_proxy_version }}.tar.gz"
+
+dnscrypt_proxy_checksums:
+    linux_x86_64: "sha256:84f91fc219a2cf0455e0a156e5bcdbebbcd8592b04095a38e053424654916905"
+    linux_arm: "sha256:417b151ec04bc9c8178faa9cfeafffb817ca70b2ad322f8706a65d8d1a59369b"
 
 dnscrypt_proxy_service_name: dnscrypt-proxy
+
+dnscrypt_proxy_listen_address:
+  - 127.0.0.1:53000
+
+dnscrypt_proxy_max_clients: 250
