@@ -11,8 +11,12 @@ User=weave-net
 Group=docker
 NoNewPrivileges=yes
 PrivateTmp=yes
-EnvironmentFile=-/etc/weave/{{ weave_net_service_name }}.env
-ExecStartPre=/usr/local/bin/weave launch --no-restart $OPTIONS $PEERS
+EnvironmentFile=-/etc/weave/env/{{ weave_net_service_name }}.env
+ExecStartPre=/usr/local/bin/weave launch --no-restart \
+                --ipalloc-range $IPRANGE  \
+                $OPTIONS \
+                $PEERS
+
 ExecStart=/usr/bin/docker attach weave
 ExecStop=/usr/local/bin/weave stop
 
