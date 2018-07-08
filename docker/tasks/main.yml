@@ -2,6 +2,9 @@
 # tasks file for docker
 
 - block:
+    - include_vars:
+        file: "{{ ansible_os_family | lower }}.yml"
+      ignore_errors: True
     - import_tasks: pre_install.yaml
     - import_tasks: install.yaml
     - import_tasks: configure.yaml
