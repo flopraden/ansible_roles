@@ -8,12 +8,12 @@ After=docker.service
 
 [Service]
 User=weave-net
-Group=docker
-NoNewPrivileges=yes
+Group=weave-net
 PrivateTmp=yes
-EnvironmentFile=-/etc/weave/env/{{ weave_net_service_name }}.env
+EnvironmentFile=/etc/weave-net/env/{{ weave_net_service_name }}.env
 ExecStartPre=/usr/local/bin/weave launch --no-restart \
                 --ipalloc-range $IPRANGE  \
+                --password $PASSWORD \
                 $OPTIONS \
                 $PEERS
 
