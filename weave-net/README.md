@@ -3,7 +3,7 @@ weave-net
 
 Install and manage weaveworks [Weave Net](https://www.weave.works/oss/net/):
 
-> Weave Net is a powerful cloud native networking toolkit.
+> Simple, resilient multi-host containers networking and more.
 
 Requirements
 ------------
