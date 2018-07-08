@@ -21,7 +21,6 @@
     group: dnscrypt-proxy
     mode: "01750"
   with_items:
-    - /etc/dnscrypt-proxy/
     - /opt/dnscrypt-proxy/
 
 - name: dnscrypt-proxy | create |  directories
@@ -32,4 +31,5 @@
     group: dnscrypt-proxy
     mode: "01750"
   with_items:
+    - /etc/dnscrypt-proxy/
     - /opt/dnscrypt-proxy/releases/

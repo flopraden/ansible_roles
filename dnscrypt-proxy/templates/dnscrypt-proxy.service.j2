@@ -24,9 +24,9 @@ RestrictAddressFamilies=AF_INET AF_INET6
 SystemCallArchitectures=native
 SystemCallFilter=~@clock @cpu-emulation @debug @keyring @ipc @module @mount @obsolete @raw-io
 ExecStart=/usr/local/bin/dnscrypt-proxy -config /etc/dnscrypt-proxy/{{ dnscrypt_proxy_service_name}}.toml
-ReadWritePaths=/var/lib/dnscrypt-proxy
+ReadWritePaths=/var/lib/dnscrypt-proxy /etc/dnscrypt-proxy
 WorkingDirectory=/var/lib/dnscrypt-proxy
-ReadPaths=/etc/dnscrypt-proxy
+InaccessablePaths=/
 CPUAccounting=true
 MemoryAccounting=true
 
