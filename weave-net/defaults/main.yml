@@ -9,7 +9,13 @@ weave_net_checksum: "sha256:797781a3641c0929ec05250d4fa64ee80453a9d0ed67e9180214
 weave_net_service_name: "weave-net"
 
 
-weave_net_alloc_range:  "10.32.0.0/12"
+weave_net_ip_range:  "10.32.0.0/12"
 
-weave_net_peer_group: "weave-net_peers"
+weave_net_peer_group: "weave_peers"
+
+#
+weave_net_password: "correcthorsebatterystaple"
+
 weave_net_peer_list: []
+
+weave_net_cli_options: []
