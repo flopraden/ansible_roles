@@ -1,0 +1,20 @@
+# {{ ansible_managed }}
+
+[Unit]
+Description=Weave Network
+Documentation=http://docs.weave.works/weave/latest_release/
+Requires=docker.service
+After=docker.service
+
+[Service]
+User=weave-net
+Group=docker
+NoNewPrivileges=yes
+PrivateTmp=yes
+EnvironmentFile=-/etc/weave/{{ weave_net_service_name }}.env
+ExecStartPre=/usr/local/bin/weave launch --no-restart $OPTIONS $PEERS
+ExecStart=/usr/bin/docker attach weave
+ExecStop=/usr/local/bin/weave stop
+
+[Install]
+WantedBy=multi-user.target
