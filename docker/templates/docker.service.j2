@@ -1,9 +1,16 @@
 [Unit]
 Description=Docker Application Container Engine
 Documentation=http://docs.docker.com
-After=network.target rhel-push-plugin.socket registries.service
+After=network-online.target
+Wants=network-online.target
+{% if ansible_os_family == "RedHat" %}
+After=registries.service
 Wants=docker-storage-setup.service
-Requires=docker-cleanup.timer {%- if docker_use_flannel_network %} flannel.service {% endif %}
+Requires=docker-cleanup.timer
+{% endif %}
+{% if docker_use_flannel_network %}
+Requires=flannel.service
+{% endif %}
 
 
 [Service]
@@ -19,6 +26,7 @@ EnvironmentFile=-/etc/sysconfig/docker-network
 {% endif %}
 Environment=GOTRACEBACK=crash
 Environment=DOCKER_HTTP_HOST_COMPAT=1
+{% if ansible_os_family == "Redhat" %}
 Environment=PATH=/usr/libexec/docker:/usr/bin:/usr/sbin
 ExecStart=/usr/bin/dockerd-current \
           --add-runtime docker-runc=/usr/libexec/docker/docker-runc-current \
@@ -27,21 +35,28 @@ ExecStart=/usr/bin/dockerd-current \
           --userland-proxy-path=/usr/libexec/docker/docker-proxy-current \
           --init-path=/usr/libexec/docker/docker-init-current \
           --seccomp-profile=/etc/docker/seccomp.json \
+{% else %}
+ExecStart=/usr/bin/dockerd \
+{% endif %}
           --config-file /etc/docker/daemon.json \
 {% if docker_use_flannel_network %}
           --bip=${FLANNEL_SUBNET} --mtu=${FLANNEL_MTU} \
 {% else %}
-          --bip={{ docker_bip }} --mtu={{ docker_mtu }} --ipmasq={{ docker_ipmasq }} \
+          --bip={{ docker_bip }} --mtu={{ docker_mtu }} --ip-masq={{ docker_ipmasq | lower }} \
 {% endif %}
           $OPTIONS
 
 ExecReload=/bin/kill -s HUP $MAINPID
 LimitNOFILE=1048576
-LimitNPROC=1048576
+LimitNPROC=infinity
 LimitCORE=infinity
 TimeoutStartSec=0
 Restart=on-abnormal
+StartLimitBurst=3
+StartLimitInterval=60s
 KillMode=process
+# set delegate yes so that systemd does not reset the cgroups of docker containers
+Delegate=yes
 
 [Install]
 WantedBy=multi-user.target
