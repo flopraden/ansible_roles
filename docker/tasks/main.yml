@@ -3,7 +3,7 @@
 
 - block:
     - include_vars:
-        file: "{{ ansible_os_family | lower }}.yml"
+        file: "{{ ansible_os_family | lower }}.yaml"
       ignore_errors: True
     - import_tasks: pre_install.yaml
     - import_tasks: install.yaml
