@@ -1,0 +1,22 @@
+---
+
+# install tasks for weave-net
+
+- name: weave-net | install | download binary
+  get_url:
+    url: "{{ weave_net_url }}"
+    dest: "/usr/local/bin/weave-net-{{ weave_net_version }}"
+    checksum: "{{ weave_net_checksum }}"
+    owner: root
+    group: weave-net
+    mode: "0550"
+
+- name: weave-net | install | create symlink
+  file:
+    name: /usr/local/bin/weave
+    state: link
+    src: "/usr/local/bin/weave-net-{{ weave_net_version }}"
+    force: true
+    owner: root
+    group: weave-net
+    mode: "0550"

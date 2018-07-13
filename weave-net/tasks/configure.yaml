@@ -1,0 +1,13 @@
+---
+
+# configuration tasks for weave-net
+
+- name: weave-net | configure | create env file
+  template:
+    src: weave-net.env.j2
+    dest: "/etc/weave-net/env/{{ weave_net_service_name }}.env"
+    owner: root
+    group: weave-net
+    mode: "0640"
+  notify:
+    - weave-net | restart | service

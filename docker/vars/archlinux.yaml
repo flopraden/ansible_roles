@@ -1,0 +1,12 @@
+docker_default_config:
+  hosts:
+    - unix:///var/run/docker.sock
+  "storage-driver": "overlay2"
+  group: "{{ docker_group }}"
+  "metrics-addr" : "0.0.0.0:9323"
+  "experimental" : true
+
+
+docker_package_names:
+  - "docker"
+  - "python2-docker-py"

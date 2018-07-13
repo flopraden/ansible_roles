@@ -25,7 +25,7 @@ docker_run_services: ansible_virtualization_role != 'guest' or ansible_virtualiz
 # Config for docker daemon.
 # Note this uses overlay2, which is not necessarily suitable for
 # production, notably on centos.
-docker_config:
+docker_default_config:
   hosts:
     - unix:///var/run/docker.sock
   "storage-driver": "overlay2"
@@ -35,11 +35,12 @@ docker_config:
   "metrics-addr" : "0.0.0.0:9323"
   "experimental" : true
 
+docker_config: "{{ docker_default_config }}"
 
 docker_use_flannel_network: false
 
 # The docker default bridge IP.
-docker_bip: 172.17.0.0/16
+docker_bip: 172.17.0.1/16
 
 # Container network MTU
 docker_mtu: 1420

@@ -1,0 +1,7 @@
+---
+# handlers file for weave-net
+
+- name: weave-net | restart | service
+  service:
+    name: "{{ weave_net_service_name }}"
+    state: restarted

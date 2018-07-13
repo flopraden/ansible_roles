@@ -1,0 +1,30 @@
+---
+
+- name: weave-net | create | group
+  group:
+    name: weave-net
+    state: present
+    system: true
+
+- name: weave-net | create | user
+  user:
+    name: weave-net
+    state: present
+    group: weave-net
+    groups:
+      - docker
+    home: /var/lib/weave-net
+    skeleton: /dev/null
+    shell: /sbin/nologin
+    system: true
+
+- name: weave-net | create | configuration directories
+  file:
+    name: "{{ item }}"
+    state: directory
+    owner: root
+    group: weave-net
+    mode: "01750"
+  with_items:
+    - /etc/weave-net
+    - /etc/weave-net/env
