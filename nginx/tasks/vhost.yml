@@ -2,15 +2,46 @@
 
 # vhost tasks for nginx
 
-- name: nginx | vhost | create configuration for {{ vhost.name }}
+- name: nginx | vhost | create configuration for {{ item.name }}
   template:
-    src: vhost.conf.j2
-    dest: "/etc/nginx/sites-available/{{ vhost.name }}.conf"
+    # I apologise
+    src: "{{  item.template | default('vhost/%s.conf.j2' | format('reverse_proxy' if item.get('upstream_group',item.get('upstream_hosts',false)) else 'static')) }}"
+    dest: "/etc/nginx/sites-available/{{ item.name }}.conf"
     owner: root
     group: nginx
     mode: "0640"
+  notify:
+    - nginx | service | reload
 
-- name: nginx | vhost | create letsencrypt directory for {{ vhost.name }}
+- name: nginx | vhost | create default ssl directory for {{ item.name }}
+  file:
+    name: "/etc/nginx/ssl/{{ item.hostname | default(item.name) }}/"
+    state: directory
+    owner: root
+    group: nginx
+    mode: "0750"
+
+- name: nginx | vhost | create self-signed certificates for {{ item.name }}
+  command: "openssl req -x509 -subj '/CN={{ item.hostname | default(item.name) }}' -days 90 -nodes -newkey rsa:2048 -keyout privkey.pem -out fullchain.pem"
+  args:
+    chdir:  "/etc/nginx/ssl/{{ item.hostname | default(item.name) }}/"
+    creates:  "/etc/nginx/ssl/{{ item.hostname | default(item.name) }}/privkey.pem"
+
+
+- name: nginx | vhost | set rights on ssl key and chain
+  file:
+    name: "/etc/nginx/ssl/{{ item.hostname | default(item.name) }}/{{ filename }}.pem"
+    state: file
+    owner: root
+    group: nginx
+    mode: "0600"
+  loop_control:
+    loop_var: filename
+  with_items:
+    - privkey
+    - fullchain
+
+- name: nginx | vhost | create letsencrypt directory for {{ item.name }}
   file:
     name: "{{ item }}"
     state: directory
@@ -19,28 +50,13 @@
     mode: "01750"
   with_items:
     - /usr/share/nginx/letsencrypt
-    - "/usr/share/nginx/letsencrypt/{{ vhost.name }}"
-  when: vhost.use_letsencrypt | default(false, true)
+    - "/usr/share/nginx/letsencrypt/{{ item.name }}"
+  when: item.use_letsencrypt | default(false, true)
 
-- name: nginx | vhost | create letsencrypt configuration
-  copy:
-    dest: "/etc/letsencrypt/env/{{ vhost.name }}"
-    owner: root
-    group: certbot
-    mode: "01750"
-    force: true
-    content: |
-        MAIL={{ "--email" + vhost.email | default(certbot_admin_email) if vhost.email | default(certbot_admin_email) else "" }}
-        DOMAIN={{ ([vhost.hostname | default(vhost.name)] + vhost.additional_hostnames | default([])) | join(",") }}
-        OPTIONS={{ vhost.certbot_options | default('') }} --webroot --webroot-path /usr/share/nginx/letsencrypt/{{ vhost.name }}
-
-  when: vhost.use_letsencrypt | default(false, true)
-
-
-- name: nginx | vhost | enable {{ vhost.name }}
+- name: nginx | vhost | enable {{ item.name }}
   file:
-    src: "/etc/nginx/sites-available/{{ vhost.name }}.conf"
-    dest: "/etc/nginx/sites-enabled/{{ vhost.name }}.conf"
+    src: "/etc/nginx/sites-available/{{ item.name }}.conf"
+    dest: "/etc/nginx/sites-enabled/{{ item.name }}.conf"
     state: link
   notify:
     - nginx | service | reload
