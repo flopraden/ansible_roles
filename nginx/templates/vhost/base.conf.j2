@@ -1,0 +1,99 @@
+# {{ ansible_managed }}
+
+{% block extra_config %}
+{% endblock %}
+
+{% if item.redirect_to_https | default(false, true) %}
+server {
+  listen 80;
+  server_name {{ ([item.hostname | default(item.name)] + (item.additional_hostnames | default([]))) | join(" ") }};
+  access_log /var/log/nginx/{{ item.name }}.access.log;
+  error_log /var/log/nginx/{{ item.name }}.error.log;
+
+  server_tokens off;
+
+{% if item.use_letsencrypt | default(false, true) %}
+  location /.well-known/acme-challenge/ {
+      root /usr/share/nginx/letsencrypt/{{ item.name }}/;
+  }
+{% endif %}
+  return 301 https://{{ item.hostname | default(item.name) }}$request_uri;
+}
+{% endif %}
+
+server {
+
+  listen {{ item.port | default("443") }} ssl {{ "http2" if not item.skip_http2 | default(false, true) else "" }} {{ item.listen_opts | default("") }};
+  server_name {{ ([item.hostname | default(item.name)] + (item.additional_hostnames | default([]))) | join(" ") }};
+
+  access_log /var/log/nginx/{{ item.name }}.access.log;
+
+{% if item.custom_errors | default(nginx_custom_errors, true) %}
+  error_page {{ item.custom_errors | default(nginx_custom_errors) }};
+{% endif %}
+  error_log /var/log/nginx/{{ item.name }}.error.log;
+
+  server_tokens off;
+
+  add_header X-Frame-Options SAMEORIGIN;
+  add_header X-Content-Type-Options nosniff;
+  add_header X-XSS-Protection "1; mode=block";
+
+{% if item.gzip | default(true, true) %}
+  gzip  on;
+  gzip_http_version 1.1;
+  gzip_vary on;
+  gzip_comp_level {{ item.gzip_comp_level | default(6) | int }};
+  gzip_proxied any;
+  gzip_types text/plain text/html text/css application/json application/javascript application/x-javascript text/javascript text/xml application/xml application/rss+xml application/atom+xml application/rdf+xml image/svg+xml {{ item.gzip_types | default([]) | join(" ") }};
+{% endif %}
+
+{% if item.csp | default(false, true) or item.use_csp | default(false, true) %}
+  add_header Content-Security-Policy "{{ item.csp | default(nginx_csp) }}";
+{% endif %}
+
+
+{% if item.use_letsencrypt | default(false, true) %}
+  location /.well-known/acme-challenge/ {
+      root /usr/share/nginx/letsencrypt/{{ item.name }}/;
+  }
+{% endif %}
+
+{% if item.ssl_config | default(false, true) %}
+  {{ item.ssl_config | indent(2) }}
+{% else %}
+  # https://wiki.mozilla.org/Security/Server_Side_TLS#Modern_compatibility
+  # The ssl_certificate MUST contain the full cert chain for stapling to work
+  ssl_certificate {{ item.certificate | default("/etc/nginx/ssl/%s/fullchain.pem" | format(item.hostname | default(item.name))) }};
+  ssl_certificate_key {{ item.certificate_key | default("/etc/nginx/ssl/%s/privkey.pem" | format(item.hostname | default(item.name))) }};
+  ssl_stapling on;
+  ssl_stapling_verify on;
+
+  ssl_session_timeout 1d;
+  ssl_session_cache shared:SSL:50m;
+  ssl_session_tickets off;
+
+  ssl_protocols {{ item.ssl_protcol | default(nginx_ssl_protocol) }};
+  ssl_ciphers '{{ item.ssl_ciphers | default(nginx_ssl_ciphers) | join(":") }}';
+  ssl_prefer_server_ciphers on;
+{% endif %}
+
+{% if item.client_ca  | default(false, true) %}
+  ssl_verify_client {{ item.ssl_verify_client | default("on") }};
+  ssl_trusted_certificate {{ item.client_ca }};
+  ssl_verify_depth {{ item.ssl_verify_depth | default(1) }};
+{% endif %}
+
+{% if item.hsts_duration | default(nginx_hsts_duration, true) %}
+  add_header Strict-Transport-Security "max-age={{ item.hsts_duration | default(nginx_hsts_duration) }}; includeSubdomains; preload";
+{% endif %}
+
+{% if item.root | default(false, true) %}
+  root {{ item.root }};
+{% endif %}
+
+{% block routing %}
+{% endblock %}
+  {{ item.config | default("") | indent(2) }}
+  {{ nginx_common_config | indent(2) }}
+}

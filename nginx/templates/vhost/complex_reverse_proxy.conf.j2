@@ -1,0 +1,32 @@
+{% extends "vhost/base.conf.j2" %}
+
+{% block extra_config %}
+{% for upstream in item.upstreams | default([]) %}
+upstream {{ upstream.name }} {
+  {% for upstream_server in groups.get(upstream.host_group | default(""), []) | union(upstream.hosts | default([])) %}
+  server {{ upstream_server }}:{{ upstream.port | default(80) }} {{ upstream.server_opts | default("") }};
+  {% endfor %}
+
+  {{ upstream.config | default | indent(2) }}
+}
+{% endfor %}
+{% endblock %}
+
+
+{% block routing %}
+{% for upstream in item.upstreams | default([]) %}
+  # {{ upstream.name }} routing
+{% for route in upstream.routes %}
+  location {{ route }} {
+    try_files @{{ upstream.name}}_backend {{ upstream.try_files | default("") }} {{ item.custom_error_dir | default("") }};
+  }
+{% endfor %}
+  # {{ upstream.name }} upstream
+  location @{{ upstream.name }}_backend {
+    proxy_pass {{ upstream.backend_proto | default("http") }}://{{ upstream.name }};
+    {{ upstream.backend_config | default("") | indent(4) }}
+  }
+{% endfor %}
+  return 404;
+{% endblock %}
+

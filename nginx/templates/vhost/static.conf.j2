@@ -1,0 +1,9 @@
+{% extends "vhost/base.conf.j2" %}
+{% block routing %}
+{% if item.try_files | default(false, true) | default(false, true) %}
+  location / {
+    try_files {{ item.try_files | default("") }};
+  }
+{% endif %}
+  return 404;
+{% endblock %}

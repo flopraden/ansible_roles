@@ -1,0 +1,24 @@
+{% extends "vhost/base.conf.j2" %}
+
+{% block extra_config %}
+upstream {{ item.name }}_backend {
+  {% for upstream in groups.get(item.upstream_group | default(""), []) | union(item.upstream_hosts | default([])) %}
+  server {{ upstream }}:{{ item.upstream_port | default(80) }} {{ item.upstream_server_opts | default("") }};
+  {% endfor %}
+
+  {{ item.upstream_config | default | indent(2) }}
+}
+{% endblock %}
+
+
+{% block routing %}
+  location / {
+    try_files @backend {{ item.try_files | default("") }} {{ item.custom_error_dir | default("") }};
+  }
+
+  location @backend {
+    proxy_pass {{ item.backend_proto | default("http") }}://{{ item.name }}_backend;
+    {{ item.backend_config | default("") | indent(4) }}
+  }
+{% endblock %}
+
