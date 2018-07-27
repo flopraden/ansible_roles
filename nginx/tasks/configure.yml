@@ -27,10 +27,19 @@
     group: nginx
     mode: "0640"
   with_items:
+    - /etc/nginx/conf.d/
     - /etc/nginx/sites-enabled/
     - /etc/nginx/sites-available/
 
+- name: nginx | configuration | create conf.d files
+  template:
+    src: "conf.d/{{ item }}.j2"
+    dest: "/etc/nginx/conf.d/{{ item }}"
+    owner: root
+    group: nginx
+    mode: "0640"
+  with_items:
+    - websocket.conf
+
 - include_tasks: vhost.yml
   with_items: "{{ nginx_vhosts }}"
-  loop_control:
-    loop_var: vhost
