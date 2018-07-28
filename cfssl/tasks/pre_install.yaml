@@ -1,0 +1,26 @@
+---
+# pre-install tasks for cfssl
+
+- name: cfssl | create | group
+  group:
+    name: cfssl
+    state: present
+
+- name: cfssl | create | user
+  user:
+    name: cfssl
+    state: present
+    group: cfssl
+    shell: /sbin/nologin
+    home: /var/lib/cfssl
+
+- name: cfssl | create | directories
+  file:
+    name: "{{ item }}"
+    state: directory
+    owner: root
+    group: cfssl
+    mode: "01750"
+  with_items:
+    - /etc/cfssl
+    - /etc/cfssl/conf.d
