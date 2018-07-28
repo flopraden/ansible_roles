@@ -1,0 +1,13 @@
+---
+
+# install tasks for cfssl
+
+- name: cfssl | install | binaries
+  get_url:
+    url: "{{ cfssl_download_root }}/{{ item }}_{{ cfssl_platform }}-{{ cfssl_architecture }}"
+    dest: "/usr/local/bin/{{ item }}"
+    checksum: "{{ cfssl_checksums.get('%s_%s-%s' | format(item, cfssl_platform, cfssl_architecture),'')}}"
+    owner: root
+    group: cfssl
+    mode: "0511"
+  with_items: "{{ cfssl_components }}"
