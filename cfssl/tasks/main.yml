@@ -1,2 +1,10 @@
 ---
 # tasks file for cfssl
+
+- block:
+    - import_tasks: pre_install.yaml
+    - import_tasks: install.yaml
+  tags:
+    - cfssl
+    - ssl
+    - pki
