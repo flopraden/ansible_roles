@@ -1,0 +1,53 @@
+---
+
+# tasks for configuring cfssl
+
+- name: cfssl | configure | default configuration
+  copy:
+    dest: "/etc/cfssl/conf.d/default.json"
+    content: "{{ cfssl_default_config | to_nice_json }}"
+    owner: root
+    group: cfssl
+    mode: "0644"
+
+- name: cfssl | configure | shared configurations
+  copy:
+    dest: "/etc/cfssl/conf.d/{{ item.name }}.json"
+    content: "{{ cfssl_default_config | combine(item.content | default({})) | to_nice_json }}"
+    owner: "{{ item.owner | default('root') }}"
+    group: "{{ item.group | default('cfssl') }}"
+    mode: "{{ item.mode | default('0640') }}"
+  with_items: "{{ cfssl_configurations }}"
+
+- name: cfssl | configure | request configurations
+  copy:
+    dest: "/etc/cfssl/request.d/{{ item.name }}.json"
+    content: "{{ cfssl_default_request | combine(item.content | default({})) | to_nice_json }}"
+    owner: "{{ item.owner | default('root') }}"
+    group: "{{ item.group | default('cfssl') }}"
+    mode: "{{ item.mode | default('0640') }}"
+  with_items: "{{ cfssl_requests }}"
+
+- name: cfssl | configure | parametrised systemd service unit
+  template:
+    src: cfssl@.service.j2
+    dest: /etc/systemd/system/cfssl@.service
+    owner: root
+    group: root
+    mode: "0640"
+
+- name: cfssl | configure | systemd env file
+  copy:
+    dest: "/etc/cfssl/env.d/{{ cfssl_service_config_name }}.env"
+    content: |
+      ADDRESS={{ cfssl_service_address }}
+      PORT={{ cfssl_service_port }}
+      CA_CERT={{ cfssl_service_ca_cert }}
+      CA_KEY={{ cfssl_service_ca_key }}
+      CA_BUNDLE={{ cfssl_service_ca_bundle }}
+      DB_CONFIG={{ cfssl_service_db_config }} 
+      OPTIONS={{ cfssl_service_options }}
+    owner: root
+    group: root
+    mode: "0640"
+  when: cfssl_service_config_name | default(false, true)
