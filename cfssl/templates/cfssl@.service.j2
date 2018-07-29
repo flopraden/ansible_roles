@@ -1,0 +1,33 @@
+# {{ ansible_managed }}
+[Unit]
+Description=cfssl API server
+After=network-online.target
+Documentation=https://github.com/cloudflare/cfssl
+
+[Service]
+Type=simple
+Restart=on-failure
+EnvironmentFile=-/etc/cfssl/env.d/%i.env
+WorkingDirectory=/var/lib/cfssl
+ExecStart=/usr/local/bin/cfssl serve -config /etc/cfssl/conf.d/%i.json \
+            -address ${ADDRESS} -port ${PORT} \
+            -ca ${CA_CERT} -ca-key ${CA_KEY} -ca-bundle "${CA_BUNDLE}" \
+            -db-config "${DB_CONFIG}" \
+            $OPTIONS
+User=cfssl
+Group=cfssl
+ProtectSystem=yes
+UMask=0027
+ReadOnlyPaths=/
+ReadWritePaths=/var/lib/cfssl
+PrivateTmp=yes
+CPUAccounting=true
+MemoryAccounting=true
+NoNewPrivileges=yes
+SecureBits=keep-caps
+AmbientCapabilities=CAP_IPC_LOCK
+CapabilityBoundingSet=CAP_SYSLOG CAP_IPC_LOCK
+LimitMEMLOCK=infinity
+
+[Install]
+WantedBy=multi-user.target
