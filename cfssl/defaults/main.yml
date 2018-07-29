@@ -21,6 +21,102 @@ cfssl_download_root: "https://pkg.cfssl.org/{{ cfssl_version }}"
 cfssl_components:
   - cfssl
   - cfssljson
+  - multirootca
+
+# Default auth key value.
+# This can be generated using `openssl rand -hex 16`
+# The default value should not be considered safe - it protects only from access
+# to the CFSSL API enabling anyone to request/issue their own certs.
+cfssl_default_auth_key: fa834d544521cdff154bd9fb50b4ea97
+
+cfssl_default_config:
+  auth_keys:
+    defaultkey:
+      type: standard
+      key: "{{ cfssl_default_auth_key }}"
+  signing:
+    default:
+      expiry: 240h
+      auth_key: defaultkey
+    profiles:
+      client:
+        auth_key: defaultkey
+        expiry: 2160h
+        usages:
+          - signing
+          - key encipherment
+          - client auth
+      client-server:
+        auth_key: defaultkey
+        expiry: 2160h
+        usages:
+          - signing
+          - key encipherment
+          - server auth
+          - client auth
+      server:
+        auth_key: defaultkey
+        expiry: 2160h
+        usages:
+          - signing
+          - key encipherment
+          - server auth
+      ocsp:
+        auth_key: defaultkey
+        expiry: 2160h
+        usages:
+          - ocsp signing
+          - digital signature
+      intermediate:
+        auth_key: defaultkey
+        # 5 years, as Ziggy/Bowie said.
+        expiry: 43800h
+        usages:
+          - cert sign
+          - crl sign
+        ca_constraints:
+          is_ca: true
+          max_path_len: 1
+      CA:
+        auth_key: defaultkey
+        # 5 years, as Ziggy/Bowie said.
+        expiry: 43800h
+        usages:
+          - cert sign
+          - ocsp signing
+          - crl sign
+        ca_constraints:
+          is_ca: true
+
+
+cfssl_default_request:
+  CN: "{{ ansible_hostname }}"
+  key:
+    algo: rsa
+    size: 2048
+
+cfssl_configurations: []
+cfssl_requests: []
+
+
+# The name of the configuration file to use when running the cfssl service instance.
+# This role includes an instantiated systemd service.
+# The value here must match the name of an existing cfssl_configurations entry.
+# If false-y, don't run any service.
+cfssl_service_config_name: ""
+
+# cfssl serve only supports certain items being provided via the CLI.
+# The following variables are not consumed from config files.
+# See https://github.com/cloudflare/cfssl/issues/566
+cfssl_service_port: 8888
+cfssl_service_address: 127.0.0.1
+cfssl_service_ca_cert: ""
+cfssl_service_ca_key: ""
+cfssl_service_ca_bundle: ""
+cfssl_service_db_config: ""
+
+cfssl_service_options: ""
+
 
 # Dictionary of binary name to checksum.
 # This can be generated using an approopriately modified version of:
