@@ -25,15 +25,4 @@
     - /etc/cfssl
     - /etc/cfssl/env.d
     - /etc/cfssl/conf.d
-    - /etc/cfssl/request.d
-    - /etc/cfssl/response.d
-
-- name: cfssl | create | response directories
-  file:
-    name: "/etc/cfssl/response.d/{{ item.name }}"
-    state: directory
-    owner: "{{ item.owner | default('root') }}"
-    group: root
-    mode: "01700"
-  when: not item.output_directory | default(false, true)
-  with_items: "{{ cfssl_requests }}"
+    - /etc/cfssl/cert.d

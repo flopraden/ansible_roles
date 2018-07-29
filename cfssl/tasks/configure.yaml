@@ -19,9 +19,20 @@
     mode: "{{ item.mode | default('0640') }}"
   with_items: "{{ cfssl_configurations }}"
 
+
+- name: cfssl | configure | cert.d directories
+  file:
+    name: "/etc/cfssl/cert.d/{{ item.name }}"
+    state: directory
+    owner: "{{ item.owner | default('root') }}"
+    group: "{{ item.group | default('cfssl') }}"
+    mode: "{{ item.mode | default('01750') }}"
+  with_items: "{{ cfssl_requests }}"
+
+
 - name: cfssl | configure | request configurations
   copy:
-    dest: "/etc/cfssl/request.d/{{ item.name }}.json"
+    dest: "/etc/cfssl/cert.d/{{ item.name }}/request.json"
     content: "{{ cfssl_default_request | combine(item.content | default({})) | to_nice_json }}"
     owner: "{{ item.owner | default('root') }}"
     group: "{{ item.group | default('cfssl') }}"
@@ -45,7 +56,7 @@
       CA_CERT={{ cfssl_service_ca_cert }}
       CA_KEY={{ cfssl_service_ca_key }}
       CA_BUNDLE={{ cfssl_service_ca_bundle }}
-      DB_CONFIG={{ cfssl_service_db_config }} 
+      DB_CONFIG={{ cfssl_service_db_config }}
       OPTIONS={{ cfssl_service_options }}
     owner: root
     group: root
