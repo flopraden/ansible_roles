@@ -1,0 +1,18 @@
+---
+
+# Run tasks for cfssl
+
+- name: cfssl | run | requests
+  shell: "/usr/local/bin/cfssl {{ item.action | default('genkey') }} -config /etc/cfssl/conf.d/{{ item.config_name | default('blank') }}.json {{ item.arguments | default('') }} /etc/cfssl/request.d/{{ item.name }}.json | /usr/local/bin/cfssljson -bare {{ item.basename | default('cert') }}"
+  args:
+    chdir: "{{ item.output_directory | default('/etc/cfssl/response.d/%s' | format(item.name)) }}"
+    creates: "{{ item.output_directory | default('/etc/cfssl/response.d/%s' | format(item.name)) }}/{{ item.basename | default('cert')}}.csr"
+  become_user: "{{ item.owner | default('root') }}"
+  with_items: "{{ cfssl_requests }}"
+
+- name: cfssl | run | API server
+  service:
+    name: "cfssl@{{ cfssl_service_config_name }}"
+    state: started
+    enabled: yes
+  when: cfssl_service_config_name | default(false, true)
