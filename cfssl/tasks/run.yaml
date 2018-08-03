@@ -3,10 +3,11 @@
 # Run tasks for cfssl
 
 - name: cfssl | run | requests
-  shell: "/usr/local/bin/cfssl {{ item.action | default('genkey') }} -config /etc/cfssl/conf.d/{{ item.config_name | default('blank') }}.json {{ item.arguments | default('') }} /etc/cfssl/cert.d/{{ item.name }}/request.json | /usr/local/bin/cfssljson -bare {{ item.basename | default('cert') }}"
+  shell: "/usr/local/bin/cfssl {{ item.action | default('genkey') }} -config /etc/cfssl/conf.d/{{ item.config_name | default('default') }}.json -profile {{item.profile | default('') | quote }} {{ item.arguments | default('') }} /etc/cfssl/cert.d/{{ item.name }}/request.json | /usr/local/bin/cfssljson -bare {{ item.basename | default('cert') }}"
   args:
     chdir: "/etc/cfssl/cert.d/{{ item.name }}"
     creates: "/etc/cfssl/cert.d/{{ item.name }}/{{ item.basename | default('cert')}}.csr"
+  become: true
   become_user: "{{ item.owner | default('root') }}"
   with_items: "{{ cfssl_requests }}"
 
