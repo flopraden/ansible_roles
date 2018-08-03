@@ -22,24 +22,41 @@
     mode: "0750"
 
 - name: nginx | vhost | create self-signed certificates for {{ item.name }}
-  command: "openssl req -x509 -subj '/CN={{ item.hostname | default(item.name) }}' -days 90 -nodes -newkey rsa:2048 -keyout privkey.pem -out fullchain.pem"
-  args:
-    chdir:  "/etc/nginx/ssl/{{ item.hostname | default(item.name) }}/"
-    creates:  "/etc/nginx/ssl/{{ item.hostname | default(item.name) }}/privkey.pem"
-
+  import_role:
+    name: cfssl
+  vars:
+    cfssl_components:
+      - cfssl
+      - cfssljson
+      - mkbundle
+    cfssl_requests:
+      - name: "nginx-{{ item.name }}"
+        content:
+          CN: "{{ item.hostname | default(item.name) }}"
+          hosts: "{{ [item.hostname | default(item.name)] + item.additional_hostnames | default([]) }}"
+        profile: server
+        arguments: "{{ item.hostname | default(item.name) }}"
+        action: selfsign
+        owner: root
+        group: nginx
+  when: not item.certificate | default(false, true)
 
 - name: nginx | vhost | set rights on ssl key and chain
-  file:
-    name: "/etc/nginx/ssl/{{ item.hostname | default(item.name) }}/{{ filename }}.pem"
-    state: file
+  copy:
+    src: "/etc/cfssl/cert.d/nginx-{{ item.hostname | default(item.name) }}/{{ filename.src }}.pem"
+    dest: "/etc/nginx/ssl/{{ item.hostname | default(item.name) }}/{{ filename.dest | default(filename.src) }}.pem"
     owner: root
     group: nginx
+    remote_src: true
     mode: "0600"
   loop_control:
     loop_var: filename
   with_items:
-    - privkey
-    - fullchain
+    - src: cert-key
+      dest: privkey
+    - src: cert
+      dest: fullchain
+  when: not item.certificate | default(false, true)
 
 - name: nginx | vhost | create letsencrypt directory for {{ item.name }}
   file:
