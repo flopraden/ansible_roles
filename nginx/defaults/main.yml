@@ -38,3 +38,6 @@ nginx_hsts_duration: 31536000
 # Provide server-block level error_page content as a string.
 # If false-y, no custom error pages will be shown.
 nginx_custom_errors: false
+
+# Config to include in all vhost definitions
+nginx_common_config: ""
