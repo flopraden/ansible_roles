@@ -1,6 +1,9 @@
 # {{ ansible_managed }}
 
-{% block extra_config %}
+{% block config %}
+{% endblock %}
+
+{% block upstreams %}
 {% endblock %}
 
 {% if item.redirect_to_https | default(false, true) %}
@@ -11,12 +14,6 @@ server {
   error_log /var/log/nginx/{{ item.name }}.error.log;
 
   server_tokens off;
-
-{% if item.use_letsencrypt | default(false, true) %}
-  location /.well-known/acme-challenge/ {
-      root /usr/share/nginx/letsencrypt/{{ item.name }}/;
-  }
-{% endif %}
   return 301 https://{{ item.hostname | default(item.name) }}$request_uri;
 }
 {% endif %}
@@ -27,11 +24,11 @@ server {
   server_name {{ ([item.hostname | default(item.name)] + (item.additional_hostnames | default([]))) | join(" ") }};
 
   access_log /var/log/nginx/{{ item.name }}.access.log;
+  error_log /var/log/nginx/{{ item.name }}.error.log;
 
 {% if item.custom_errors | default(nginx_custom_errors, true) %}
   error_page {{ item.custom_errors | default(nginx_custom_errors) }};
 {% endif %}
-  error_log /var/log/nginx/{{ item.name }}.error.log;
 
   server_tokens off;
 
@@ -62,7 +59,6 @@ server {
 {% if item.ssl_config | default(false, true) %}
   {{ item.ssl_config | indent(2) }}
 {% else %}
-  # https://wiki.mozilla.org/Security/Server_Side_TLS#Modern_compatibility
   # The ssl_certificate MUST contain the full cert chain for stapling to work
   ssl_certificate {{ item.certificate | default("/etc/nginx/ssl/%s/fullchain.pem" | format(item.hostname | default(item.name))) }};
   ssl_certificate_key {{ item.certificate_key | default("/etc/nginx/ssl/%s/privkey.pem" | format(item.hostname | default(item.name))) }};
@@ -94,6 +90,8 @@ server {
 
 {% block routing %}
 {% endblock %}
-  {{ item.config | default("") | indent(2) }}
+
   {{ nginx_common_config | indent(2) }}
+
+  {{ item.config | default("") | indent(2) }}
 }

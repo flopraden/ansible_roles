@@ -1,6 +1,6 @@
 {% extends "vhost/base.conf.j2" %}
 
-{% block extra_config %}
+{% block upstreams %}
 {% for upstream in item.upstreams | default([]) %}
 upstream {{ upstream.name }} {
   {% for upstream_server in groups.get(upstream.host_group | default(""), []) | union(upstream.hosts | default([])) %}
@@ -18,7 +18,7 @@ upstream {{ upstream.name }} {
   # {{ upstream.name }} routing
 {% for route in upstream.routes %}
   location {{ route }} {
-    try_files @{{ upstream.name}}_backend {{ upstream.try_files | default("") }} {{ item.custom_error_dir | default("") }};
+    try_files @{{ upstream.name}}_backend {{ upstream.try_files | default("") }} {{ item.custom_error_dir | default("") }}  =404;
   }
 {% endfor %}
   # {{ upstream.name }} upstream
@@ -29,4 +29,3 @@ upstream {{ upstream.name }} {
 {% endfor %}
   return 404;
 {% endblock %}
-
