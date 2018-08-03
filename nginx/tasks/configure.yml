@@ -6,19 +6,6 @@
     state: true
     persistent: true
 
-
-- name: nginx | configuration | nginx.conf
-  template:
-    src: nginx.conf.j2
-    dest: /etc/nginx/nginx.conf
-    owner: root
-    group: nginx
-    mode: "0640"
-    validate: /usr/sbin/nginx -t -c %s
-  notify:
-    - nginx | service | restart
-
-
 - name: nginx | configuration | create directories
   file:
     name: "{{ item }}"
@@ -30,6 +17,8 @@
     - /etc/nginx/conf.d/
     - /etc/nginx/sites-enabled/
     - /etc/nginx/sites-available/
+    - /etc/nginx/ssl
+    - /etc/nginx/ssl/default/
 
 - name: nginx | configuration | create conf.d files
   template:
@@ -40,6 +29,52 @@
     mode: "0640"
   with_items:
     - websocket.conf
+
+- name: nginx | configuration | create fallthrough SSL certificate
+  import_role:
+    name: cfssl
+  vars:
+    cfssl_components:
+      - cfssl
+      - cfssljson
+    cfssl_requests:
+      - name: "default-nginx"
+        content:
+          CN: "localhost"
+          hosts:
+            - localhost
+            - 127.0.0.1
+          names: []
+        arguments: "localhost"
+        profile: server
+        action: selfsign
+        owner: root
+        group: nginx
+
+- name: nginx | configuration | set rights on fallthrough ssl key
+  copy:
+    src: "/etc/cfssl/cert.d/default-nginx/{{ filename.src }}.pem"
+    dest: "/etc/nginx/ssl/default/{{ filename.dest | default(filename.src) }}.pem"
+    owner: root
+    group: nginx
+    remote_src: true
+    mode: "0600"
+  loop_control:
+    loop_var: filename
+  with_items:
+    - src: cert-key
+    - src: cert
+
+- name: nginx | configuration | nginx.conf
+  template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/nginx.conf
+    owner: root
+    group: nginx
+    mode: "0640"
+    validate: /usr/sbin/nginx -t -c %s
+  notify:
+    - nginx | service | restart
 
 - include_tasks: vhost.yml
   with_items: "{{ nginx_vhosts }}"
