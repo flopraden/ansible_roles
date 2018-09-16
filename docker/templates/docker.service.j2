@@ -8,7 +8,7 @@ After=registries.service
 Wants=docker-storage-setup.service
 Requires=docker-cleanup.timer
 {% endif %}
-{% if docker_use_flannel_network %}
+{% if docker_use_flannel_network | default(false, true) %}
 Requires=flannel.service
 {% endif %}
 
@@ -19,14 +19,14 @@ NotifyAccess=all
 EnvironmentFile=-/run/containers/registries.conf
 EnvironmentFile=-/etc/sysconfig/docker
 EnvironmentFile=-/etc/sysconfig/docker-storage
-{% if docker_use_flannel_network %}
+{% if docker_use_flannel_network | default(false, true ) %}
 EnvironmentFile=/run/flannel/{{ flannel_service_name }}.env
 {% else %}
 EnvironmentFile=-/etc/sysconfig/docker-network
 {% endif %}
 Environment=GOTRACEBACK=crash
 Environment=DOCKER_HTTP_HOST_COMPAT=1
-{% if ansible_os_family == "Redhat" %}
+{% if ansible_os_family == "RedHat" %}
 Environment=PATH=/usr/libexec/docker:/usr/bin:/usr/sbin
 ExecStart=/usr/bin/dockerd-current \
           --add-runtime docker-runc=/usr/libexec/docker/docker-runc-current \
@@ -39,7 +39,7 @@ ExecStart=/usr/bin/dockerd-current \
 ExecStart=/usr/bin/dockerd \
 {% endif %}
           --config-file /etc/docker/daemon.json \
-{% if docker_use_flannel_network %}
+{% if docker_use_flannel_network | default(false, true) %}
           --bip=${FLANNEL_SUBNET} --mtu=${FLANNEL_MTU} \
 {% else %}
           --bip={{ docker_bip }} --mtu={{ docker_mtu }} --ip-masq={{ docker_ipmasq | lower }} \

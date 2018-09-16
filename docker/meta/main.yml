@@ -7,4 +7,4 @@ galaxy_info:
 
 dependencies:
   - role: flannel
-    when: docker_use_flannel_network
+    when: docker_use_flannel_network | default(false, true)
