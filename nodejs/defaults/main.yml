@@ -1,2 +1,10 @@
 ---
 # defaults file for nodejs
+
+nodejs_package_names:
+  - nodejs
+  - npm
+  - gcc-c++
+
+nodejs_install_n: true
+nodejs_version: 8.9.3

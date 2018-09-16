@@ -1,2 +1,8 @@
 ---
 # tasks file for nodejs
+
+- block:
+    - import_tasks: install.yaml
+  tags:
+    - nodejs
+    - node

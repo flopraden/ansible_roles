@@ -1,0 +1,21 @@
+---
+
+# install tasks for nodejs
+
+- name: nodejs | install | packages
+  package:
+    name: "{{ item }}"
+    state: "present"
+  with_items: "{{ nodejs_package_names }}"
+
+- name: nodejs | install | n
+  npm:
+    name: "n"
+    state: "present"
+    global: true
+    production: true
+  when: nodejs_install_n | default(false, true)
+
+- name: nodejs | install | node version
+  command: "n {{ nodejs_version }}"
+  when: nodejs_install_n | default(false, true)
