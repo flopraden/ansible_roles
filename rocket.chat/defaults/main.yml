@@ -64,6 +64,8 @@ rocketchat_hubot_docker_image: rocketchat/hubot-rocketchat:latest
 # Default is to simply expose 8080.
 rocketchat_hubot_docker_publish: false
 
+rocketchat_validate_api_certs: true
+
 # host:port for hubot to connect to rocketchat
 rocketchat_hubot_url: "{{ rocketchat_root_url }}"
 

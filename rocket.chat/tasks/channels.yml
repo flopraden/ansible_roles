@@ -14,6 +14,7 @@
     headers:
       X-Auth-Token: "{{ rocketchat_token.json.data.authToken }}"
       X-User-Id: "{{ rocketchat_token.json.data.userId }}"
+    validate_certs: "{{ rocketchat_validate_api_certs | bool }}"
   when: channel.action | default(rocketchat_channel_default_action) == "create"
   register: channel_info
   failed_when: not channel_info.json.success and not channel_info.json.get("errorType") == "error-duplicate-channel-name"
@@ -27,6 +28,7 @@
       X-Auth-Token: "{{ rocketchat_token.json.data.authToken }}"
       X-User-Id: "{{ rocketchat_token.json.data.userId }}"
     status_code: 200
+    validate_certs: "{{ rocketchat_validate_api_certs | bool }}"
   when: channel.action | default(rocketchat_channel_default_action) not in ["none", "create"]
   register: channel_info
 
@@ -46,5 +48,6 @@
       X-Auth-Token: "{{ rocketchat_token.json.data.authToken }}"
       X-User-Id: "{{ rocketchat_token.json.data.userId }}"
     status_code: 200
+    validate_certs: "{{ rocketchat_validate_api_certs | bool }}"
   # It doesn't seem worth erroring on failing to clear a non-existent channel.
   when: channel.action | default(rocketchat_channel_default_action) == "clear" and channel_info.json.channels | default(false, true)

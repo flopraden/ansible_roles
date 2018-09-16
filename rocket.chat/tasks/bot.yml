@@ -31,4 +31,3 @@
     name: "rocketchat_hubot@{{ rocketchat_munged_url }}"
     state: started
     enabled: yes
-

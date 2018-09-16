@@ -10,5 +10,6 @@
     headers:
       X-Auth-Token: "{{ rocketchat_token.json.data.authToken }}"
       X-User-Id: "{{ rocketchat_token.json.data.userId }}"
+    validate_certs: "{{ rocketchat_validate_api_certs | bool }}"
   register: user_info
   failed_when: not user_info.json.success and not "already in use" in user_info.json.error
