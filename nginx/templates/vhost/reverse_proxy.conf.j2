@@ -13,7 +13,7 @@ upstream {{ item.name }}_backend {
 
 {% block routing %}
   location / {
-    try_files @backend {{ item.try_files | default("") }} {{ item.custom_error_dir | default("") }} =404;
+    try_files {{ item.try_files | default("_") }} @backend {{ item.custom_error_dir | default("") }} {{ item.default_error | default("") }};
   }
 
   location @backend {

@@ -18,7 +18,7 @@ upstream {{ upstream.name }} {
   # {{ upstream.name }} routing
 {% for route in upstream.routes %}
   location {{ route }} {
-    try_files @{{ upstream.name}}_backend {{ upstream.try_files | default("") }} {{ item.custom_error_dir | default("") }}  =404;
+    try_files {{ upstream.try_files | default("_") }} @{{ upstream.name}}_backend {{ item.default_error | default("") }};
   }
 {% endfor %}
   # {{ upstream.name }} upstream
