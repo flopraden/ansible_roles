@@ -91,3 +91,4 @@ rocketchat_hubot_external_scripts:
   - hubot-shipit
   - hubot-maps
   - hubot-business-cat
+  - hubot-remind-at
