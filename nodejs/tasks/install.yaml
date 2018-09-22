@@ -10,10 +10,13 @@
 
 - name: nodejs | install | n
   npm:
-    name: "n"
+    name: "{{ item }}"
     state: "present"
     global: true
     production: true
+  with_items:
+    - inherits
+    - n
   when: nodejs_install_n | default(false, true)
 
 - name: nodejs | install | node version
